@@ -1,0 +1,64 @@
+CREATE TABLE Location
+(
+	LocationID  INTEGER NOT NULL
+	Address  VARCHAR(200) NOT NULL,
+	Longitude  FLOAT NOT NULL,
+	Latitude  FLOAT NOT NULL,
+)
+;
+
+
+
+ALTER TABLE Location
+	ADD  PRIMARY KEY (LocationID)
+;
+
+
+
+CREATE TABLE Place
+(
+	LocationID  INTEGER NOT NULL,
+	CommonName  VARCHAR(100) NOT NULL,
+	Discription  TEXT NULL,
+	FullName  VARCHAR(200) NULL,
+	ShortName  VARCHAR(100) NULL,
+	PublicPhone  VARCHAR(50) NULL,
+	WorkingHours  TEXT NULL,
+	WebSite  VARCHAR(100) NULL,
+	Rating  FLOAT NULL,
+	PlaceID  INTEGER NOT NULL,
+	TypeID  INTEGER NOT NULL
+)
+;
+
+
+
+ALTER TABLE Place
+	ADD  PRIMARY KEY (PlaceID)
+;
+
+
+
+CREATE TABLE Types
+(
+	TypeID  INTEGER NULL,
+	Name  CHAR(200) NULL
+)
+;
+
+
+
+ALTER TABLE Types
+	ADD  PRIMARY KEY (TypeID)
+;
+
+
+
+ALTER TABLE Place
+	ADD FOREIGN KEY R_58 (LocationID) REFERENCES Location(LocationID)
+;
+
+
+ALTER TABLE Place
+	ADD FOREIGN KEY R_80 (TypeID) REFERENCES Types(TypeID)
+;
