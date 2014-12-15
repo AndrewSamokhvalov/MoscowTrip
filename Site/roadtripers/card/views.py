@@ -32,6 +32,8 @@ def get_places(request):
             #                 lat2 < place.id_location.latitude < lat1,
             #                 places)
 
+            places = places[:20]
+
             res = []
             for place in places:
                 d = {}
