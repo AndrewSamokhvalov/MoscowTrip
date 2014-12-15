@@ -18,7 +18,7 @@
 
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 </head>
-<body>
+<body ng-app="index-map-module" >
 
 <nav class="navbar navbar-fixed-top navbar-inverse">
     <div class="container">
@@ -41,30 +41,29 @@
     </div><!-- /.container -->
 </nav><!-- /.navbar -->
 
-<main ng-app="index-map-module" >
+<main>
     <div ng-controller="YMapController">
-        <div ng-init="coords=[55.21, 34.30];center=[55.21, 34.30];zoom=10">
+        <div ng-init="center=[55.75, 37.61];zoom=11">
             <yandex-map center="center" zoom="zoom" style="display: block; position: fixed; top:4em; bottom:0; right:0; left:0">
-                <ymap-marker coordinates="coords"></ymap-marker>
+                <ymap-marker ng-repeat="marker in markers" index="" coordinates="marker.coords"></ymap-marker>
             </yandex-map>
         </div>
     </div>
 </main>
 
-<div class="btn-toolbar mapfilter">
+<div ng-controller="FilterController" class="btn-toolbar mapfilter">
     <div class="btn-group">
 
-        <button type="button" class="btn btn-default" aria-label="Left Align" onclick="toogle_filter('cinema')">
+        <button type="button" class="btn btn-default" aria-label="Left Align" ng-click="functionWithBlackJackAndHoe(1)">
             <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
         </button>
-
-        <button type="button" class="btn btn-default" aria-label="Left Align" onclick="toogle_filter('food')">
+        <button type="button" class="btn btn-default" aria-label="Left Align" ng-click="functionWithBlackJackAndHoe(2)">
             <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
         </button>
-        <button type="button" class="btn btn-default" aria-label="Left Align" onclick="toogle_filter('club')">
+        <button type="button" class="btn btn-default" aria-label="Left Align" ng-click="functionWithBlackJackAndHoe(3)">
             <span class="glyphicon glyphicon-music" aria-hidden="true"></span>
         </button>
-        <button type="button" class="btn btn-default" aria-label="Left Align" onclick="toogle_filter('park')">
+        <button type="button" class="btn btn-default" aria-label="Left Align" ng-click="functionWithBlackJackAndHoe(4)">
             <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
         </button>
 
