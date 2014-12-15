@@ -45,7 +45,7 @@
     <div ng-controller="YMapController">
         <div ng-init="center=[55.75, 37.61];zoom=11">
             <yandex-map center="center" zoom="zoom" style="display: block; position: fixed; top:4em; bottom:0; right:0; left:0">
-                <ymap-marker ng-repeat="marker in markers" index="" coordinates="marker.coords"></ymap-marker>
+                <ymap-marker ng-repeat="marker in markers" index="" coordinates="marker.coords" properties="marker.properties"></ymap-marker>
             </yandex-map>
         </div>
     </div>
