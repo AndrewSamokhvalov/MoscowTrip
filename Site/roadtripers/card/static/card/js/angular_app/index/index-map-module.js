@@ -1,0 +1,1 @@
+angular.module('index-map-module',['ymaps']);
