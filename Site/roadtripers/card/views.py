@@ -1,11 +1,8 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
-from django.template import RequestContext, loader
 
 from django.views.decorators.csrf import csrf_exempt
-from models import *
-from django.core import serializers
-
+from card.models import *
 import json
 
 
@@ -17,12 +14,12 @@ def card(request):
 def get_places(request):
     if request.method == 'POST':
         try:
-            json_data = json.loads(request.body)
+            json_data = json.loads(request.body.decode())
             filters = json_data["filters"]
-            activeArea = json_data["activeArea"]
-
-            lon1, lat1 = activeArea[0]
-            lon2, lat2 = activeArea[1]
+            # activeArea = json_data["activeArea"]
+            #
+            # lon1, lat1 = activeArea[0]
+            # lon2, lat2 = activeArea[1]
 
             places = Place.objects.select_related()\
                 .filter(
@@ -49,6 +46,12 @@ def get_places(request):
 
         except ValueError:
             return HttpResponse("error in json format")
+
+    return HttpResponse("")
+
+
+@csrf_exempt
+def get_places_info(request):
 
     return HttpResponse("")
 

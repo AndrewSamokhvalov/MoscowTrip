@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-import views
+from card import views
 
 urlpatterns = patterns('',
 
@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^ajax_map_update', views.map_update, name='index'),
 
     url(r'^places/?$', views.get_places)
+    #url(r'^places/id', views.)
 )
