@@ -3,8 +3,10 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 
 from django.views.decorators.csrf import csrf_exempt
-from card.models import *
+from models import *
 from django.core import serializers
+
+import json
 
 
 def card(request):
@@ -12,8 +14,50 @@ def card(request):
 
 
 @csrf_exempt
-def map_update(request):
+def get_places(request):
+    if request.method == 'POST':
+        try:
+            json_data = json.loads(request.body)
+            filters = json_data["filters"]
+            activeArea = json_data["activeArea"]
 
+            lon1, lat1 = activeArea[0]
+            lon2, lat2 = activeArea[1]
+
+            places = Place.objects.select_related()\
+                .filter(
+                    id_type_id__in=filters
+                )
+
+            # places = filter(lambda place:
+            #                 lon1 < place.id_location.longitude < lon2 and
+            #                 lat2 < place.id_location.latitude < lat1,
+            #                 places)
+
+            places = places[:10]
+
+            res = []
+            for place in places:
+                d = {}
+                d["id"] = place.id
+                d["coords"] = [
+                    place.id_location.longitude,
+                    place.id_location.latitude
+                ]
+                d["type"] = place.id_type
+                res.append(d)
+
+            data = serializers.serialize("json", res)
+            return HttpResponse(data, content_type="application/json")
+
+        except ValueError:
+            return HttpResponse("error in json format")
+
+    return HttpResponse("")
+
+
+@csrf_exempt
+def map_update(request):
     # if request.method == 'POST' and request.is_ajax():
     #
     #     filters = request.POST.dict()
