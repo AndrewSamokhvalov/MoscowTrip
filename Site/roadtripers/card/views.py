@@ -34,8 +34,6 @@ def get_places(request):
             #                 lat2 < place.id_location.latitude < lat1,
             #                 places)
 
-            places = places[:10]
-
             res = []
             for place in places:
                 d = {}
@@ -44,11 +42,10 @@ def get_places(request):
                     place.id_location.longitude,
                     place.id_location.latitude
                 ]
-                d["type"] = place.id_type
+                d["type"] = place.id_type.id
                 res.append(d)
 
-            data = serializers.serialize("json", res)
-            return HttpResponse(data, content_type="application/json")
+            return HttpResponse(json.dumps(res))
 
         except ValueError:
             return HttpResponse("error in json format")
