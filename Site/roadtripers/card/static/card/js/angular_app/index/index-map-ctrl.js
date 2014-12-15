@@ -26,15 +26,15 @@ angular.module('index-map-module')
      $rootScope.filter =[];
      $scope.functionWithBlackJackAndHoe = function (e)
      {
-         console.log($rootScope.filter);
-         for (var i=0; i<$rootScope.filter.length; ++i)
-         {
-             if($rootScope.filter[i] == e)
-             {
-                 $rootScope.filter.splice(i,1);
-                 return false;
-             }
+         var index = $rootScope.filter.indexOf(e)
+
+         if (index  == -1) {
+            $rootScope.filter.push(e);
+         } else {
+            $rootScope.filter.splice(index, 1)
          }
-        $rootScope.filter.push(e);
+
+        console.log($rootScope.filter);
+
      };
  }]);
