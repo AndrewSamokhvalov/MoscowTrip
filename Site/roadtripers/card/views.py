@@ -37,8 +37,8 @@ def get_places(request):
                 d = {}
                 d["id"] = place.id
                 d["coords"] = [
-                    place.id_location.longitude,
-                    place.id_location.latitude
+                    place.id_location.latitude,
+                    place.id_location.longitude
                 ]
                 d["type"] = place.id_type.id
                 res.append(d)
