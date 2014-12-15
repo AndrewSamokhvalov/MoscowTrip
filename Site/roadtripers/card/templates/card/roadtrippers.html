@@ -41,10 +41,10 @@
     </div><!-- /.container -->
 </nav><!-- /.navbar -->
 
-<main ng-app="index-map-module">
+<main ng-app="index-map-module" >
     <div ng-controller="YMapController">
         <div ng-init="coords=[55.21, 34.30];center=[55.21, 34.30];zoom=10">
-            <yandex-map center="center" zoom="zoom">
+            <yandex-map center="center" zoom="zoom" style="display: block; position: fixed; top:4em; bottom:0; right:0; left:0">
                 <ymap-marker coordinates="coords"></ymap-marker>
             </yandex-map>
         </div>
@@ -78,7 +78,7 @@
 <script src={% static "card/js/bootstrap.min.js"%}></script>
 
 {#<script src={% static "card/js/roadtrippers.js"%}></script>#}
-
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 <script src={% static "card/js/angular_app/plugins/angular-ymaps.js"%}></script>
 <script src={% static "card/js/angular_app/index/index-map-module.js"%}></script>
 <script src={% static "card/js/angular_app/index/index-map-ctrl.js"%}></script>
