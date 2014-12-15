@@ -43,6 +43,11 @@ def get_places(request):
                     place.id_location.longitude
                 ]
                 d["type"] = place.id_type.id
+                d["properties"] = \
+                    {
+                        "hintContent": place.common_name,
+                        "balloonContent": place.description
+                    }
                 res.append(d)
 
             return HttpResponse(json.dumps(res))
