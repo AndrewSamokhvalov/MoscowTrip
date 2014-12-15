@@ -17,9 +17,6 @@
     <link href= {% static "card/css/roadtrippers.css" %} rel="stylesheet">
 
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
-    <script type="text/javascript"> ymaps.ready(init()) </script>
-
-
 </head>
 <body>
 
@@ -44,7 +41,15 @@
     </div><!-- /.container -->
 </nav><!-- /.navbar -->
 
-<div id="map"></div>
+<main ng-app="index-map-module">
+    <div ng-controller="YMapController">
+        <div ng-init="coords=[55.21, 34.30];center=[55.21, 34.30];zoom=10">
+            <yandex-map center="center" zoom="zoom">
+                <ymap-marker coordinates="coords"></ymap-marker>
+            </yandex-map>
+        </div>
+    </div>
+</main>
 
 <div class="btn-toolbar mapfilter">
     <div class="btn-group">
@@ -72,6 +77,11 @@
 <script src={% static "card/js/jquery.js"%}></script>
 <script src={% static "card/js/bootstrap.min.js"%}></script>
 
-<script src={% static "card/js/roadtrippers.js"%}></script>
+{#<script src={% static "card/js/roadtrippers.js"%}></script>#}
+
+<script src={% static "card/js/angular_app/plugins/angular-ymaps.js"%}></script>
+<script src={% static "card/js/angular_app/index/index-map-module.js"%}></script>
+<script src={% static "card/js/angular_app/index/index-map-ctrl.js"%}></script>
+
 </body>
 </html>
