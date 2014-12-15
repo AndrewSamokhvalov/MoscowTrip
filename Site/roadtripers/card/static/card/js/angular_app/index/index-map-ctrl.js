@@ -13,8 +13,7 @@ angular.module('index-map-module')
             $http.post('/places', {"filters": $rootScope.filter}).
             success(function(data, status, headers, config)
             {
-                console.log(data[1].coords);
-                $scope.markers = data.coords;
+                $scope.markers = data;
             }).
             error(function(data, status, headers, config)
             {
