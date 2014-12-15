@@ -4,12 +4,7 @@
 
 var map;
 
-var filter = {
-    'cinema': true ,
-    'food'  : true ,
-    'club'  : true ,
-    'park'  : true
-};
+var info = { "place_types" : [1,2] }
 
 ymaps.ready(init);
 
@@ -22,23 +17,23 @@ function init(){
 
 function toogle_filter(filter_name){
 
-    isFiltred = filter[filter_name]
-    if (isFiltred) {
-        filter[filter_name] = false
-    } else {
-        filter[filter_name] = true
-    }
+//    isFiltred = filter[filter_name]
+//    if (isFiltred) {
+//        filter[filter_name] = false
+//    } else {
+//        filter[filter_name] = true
+//    }
 
-    map_update(filter)
+    map_update(info)
 }
 
-function map_update(event_filter){
+function map_update(info){
 
-     map.geoObjects.removeAll()
+//     map.geoObjects.removeAll()
      $.ajax({
-        url : "ajax_map_update", // the endpoint
+        url : "places", // the endpoint
         type : "POST", // http method
-        data : filter, // data sent with the post request
+        data : info, // data sent with the post request
 
         // handle a successful response
         success : function(json) {

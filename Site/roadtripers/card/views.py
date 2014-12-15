@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 
 from django.views.decorators.csrf import csrf_exempt
-from card.models import *
+from .models import *
 import json
 
 
@@ -14,6 +14,7 @@ def card(request):
 def get_places(request):
     if request.method == 'POST':
         try:
+
             json_data = json.loads(request.body.decode())
             filters = json_data["filters"]
             # activeArea = json_data["activeArea"]
@@ -51,7 +52,7 @@ def get_places(request):
 
 
 @csrf_exempt
-def get_places_info(request):
+def get_types(request):
 
     return HttpResponse("")
 
