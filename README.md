@@ -16,10 +16,10 @@
     1. Скачиваем лецинзионный Pycharm для студентов
     2. Устанавливаем django
     3. На главной панели Pycharm:
-        3.1 Check out from vesion control
-        3.2 Выбираем Git (Не GitHub)
-        3.3 Вставляем нашу ссылку проекта git@gitlab.com:k7-222/roadtrippers.git
-        3.4 Нажимаем clone
+        a) Check out from vesion control
+        b) Выбираем Git (Не GitHub)
+        c) Вставляем нашу ссылку проекта git@gitlab.com:k7-222/roadtrippers.git
+        d) Нажимаем clone
     4. Читаем как работать с VCS из под Pycharm
         
     
