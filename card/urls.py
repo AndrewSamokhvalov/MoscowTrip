@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from . import views
+from card import views
 
 urlpatterns = patterns('',
 

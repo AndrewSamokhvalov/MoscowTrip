@@ -1,13 +1,14 @@
+import json
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
-
 from django.views.decorators.csrf import csrf_exempt
-from .models import *
-import json
+
+from card.models import *
 
 
 def card(request):
-    return render_to_response('card/roadtrippers.html')
+    return render_to_response('roadtrippers.html')
 
 
 @csrf_exempt

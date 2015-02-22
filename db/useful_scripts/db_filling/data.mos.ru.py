@@ -95,7 +95,7 @@ def insert_data(cur, place, type_id):
 # insert_types(cursor)
 
 for type_index, categoryData in enumerate(filteredData):
-    print type_index
+    print (type_index)
 
     for detailed_type_index, dataId in enumerate(categoryData):
 
@@ -109,7 +109,7 @@ for type_index, categoryData in enumerate(filteredData):
 
         objects_data = json.loads(data_json)
 
-        print "\t%d: total - %d" % (detailed_type_index, len(objects_data))
+        print ("\t%d: total - %d" % (detailed_type_index, len(objects_data)))
 
         ###############
 
