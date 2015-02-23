@@ -33,7 +33,8 @@
 <script src={% static "js/bootstrap.js"%}></script>
 
 <script>
-    $.cookie("roadtrippers-filters", "1");
+    types = [1,2]
+    $.cookie("roadtrippers-types", JSON.stringify(types));
 
     var myMap;
     ymaps.ready(init);
@@ -43,7 +44,7 @@
             center: [55.76, 37.64],
             zoom: 10
         });
-        var rom = new ymaps.RemoteObjectManager('/testPlaces?bbox=%b&filters=[1]',
+        var rom = new ymaps.RemoteObjectManager('/testPlaces?bbox=%b',
             {
                 // Опции кластеров задаются с префиксом cluster.
                 clusterHasBalloon: false,
