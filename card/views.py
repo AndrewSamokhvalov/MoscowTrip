@@ -9,7 +9,7 @@ from urllib.parse import unquote
 
 
 from card.models import *
-
+from django.core.cache import cache
 
 def card(request):
     return render_to_response('index.html')
@@ -67,12 +67,14 @@ def get_test(request):
             # print("types: %s" % types)
             # print("callback: %s" % callback)
             # print("bbox: %s" % bbox)
-            # r = render_to_response('ballon_content.html')
-            # print(r.content)
-            places = filter_places(types, bbox)
+
+            places = cache.get(bbox)
+            if not places:
+                places = filter_places(types, bbox)[:100]
+                cache.set(bbox, list(places))
 
             # print(serialize_places(places[:2]))
-            return HttpResponse(serialize_places(places[:100], callback))
+            return HttpResponse(serialize_places(places, callback))
 
         except Exception as inst:
             print("=" * 150)
@@ -105,6 +107,7 @@ def filter_places(types, bbox):
 
 def serialize_places(places, callback):
     features = []
+
     for place in places:
         feature = {
             "type": 'Feature',
@@ -114,12 +117,11 @@ def serialize_places(places, callback):
             },
             "id": place.id,
             "properties": {
-                "balloonContent": render_to_response('ballon_content.html').content.decode('utf-8'),
-                "clusterCaption": "Метка 2",
-                "hintContent": "Текст подсказки"
+                "balloonContent": 'Содержимое балуна метки',
                 # "iconContent": 'Содержимое метки'
             },
             "options": {
+                #"preset": 'islands#yellowIcon'
                 "preset": 'islands#circleIcon',
                 "iconColor": '#4d7198'
             }
@@ -133,6 +135,5 @@ def serialize_places(places, callback):
             "features": features,
         }
     }
-
 
     return callback + "(" + json.dumps(data) + ");"
