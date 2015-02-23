@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import json
-
+import ast
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from urllib.parse import unquote
-
+from django.core import serializers
 
 from card.models import *
 from django.core.cache import cache
@@ -73,7 +73,6 @@ def get_test(request):
                 places = filter_places(types, bbox)[:100]
                 cache.set(bbox, list(places))
 
-            # print(serialize_places(places[:2]))
             return HttpResponse(serialize_places(places, callback))
 
         except Exception as inst:
@@ -87,8 +86,7 @@ def get_test(request):
 def filter_places(types, bbox):
     # convert string to list of strings
     types = unquote(types)
-    types = types[types.find('[') + 1: types.find(']')]
-    types = types.split(',')
+    types = eval(types)
 
     bbox = list(map(lambda x: float(x), bbox.split(',')))
 
@@ -107,6 +105,7 @@ def filter_places(types, bbox):
 
 def serialize_places(places, callback):
     features = []
+    content = iter(eval(serializers.serialize('json', places)))
 
     for place in places:
         feature = {
@@ -117,11 +116,9 @@ def serialize_places(places, callback):
             },
             "id": place.id,
             "properties": {
-                "balloonContent": 'Содержимое балуна метки',
-                # "iconContent": 'Содержимое метки'
+                "balloonContent": render_to_response('balloon_content.html', next(content)['fields']).content.decode('utf-8'),
             },
             "options": {
-                #"preset": 'islands#yellowIcon'
                 "preset": 'islands#circleIcon',
                 "iconColor": '#4d7198'
             }
