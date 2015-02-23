@@ -10,6 +10,8 @@ from card.models import *
 def card(request):
     return render_to_response('index.html')
 
+def test(request):
+    return render_to_response('test.html')
 
 @csrf_exempt
 def get_places(request):
@@ -22,7 +24,7 @@ def get_places(request):
                     id_type_id__in=filters
                 )
 
-            places = places[:200]
+            places = places[:20]
 
             res = []
             for place in places:
@@ -45,6 +47,12 @@ def get_places(request):
         except ValueError:
             return HttpResponse("error in json format")
     return HttpResponse("")
+
+@csrf_exempt
+def get_test(request):
+    print(request);
+    return HttpResponse("")
+
 
 
 # @csrf_exempt
