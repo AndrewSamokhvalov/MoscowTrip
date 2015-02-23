@@ -5,11 +5,11 @@ import json
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from urllib import unquote
+from urllib.parse import unquote
 
 
 from card.models import *
-
+from django.core.cache import cache
 
 def card(request):
     return render_to_response('index.html')
@@ -68,16 +68,19 @@ def get_test(request):
             # print("callback: %s" % callback)
             # print("bbox: %s" % bbox)
 
-            places = filter_places(types, bbox)
+            places = cache.get(bbox)
+            if not places:
+                places = filter_places(types, bbox)[:100]
+                cache.set(bbox, list(places))
 
             # print(serialize_places(places[:2]))
             return HttpResponse(serialize_places(places, callback))
 
         except Exception as inst:
             print("=" * 150)
-            print type(inst)  # the exception instance
-            print inst.args  # arguments stored in .args
-            print inst  # __str__ allows args to be printed directly
+            print(type(inst))  # the exception instance
+            print(inst.args)  # arguments stored in .args
+            print(inst)  # __str__ allows args to be printed directly
             return HttpResponse("error!")
 
 
@@ -104,6 +107,7 @@ def filter_places(types, bbox):
 
 def serialize_places(places, callback):
     features = []
+
     for place in places:
         feature = {
             "type": 'Feature',
@@ -117,7 +121,9 @@ def serialize_places(places, callback):
                 # "iconContent": 'Содержимое метки'
             },
             "options": {
-                "preset": 'islands#yellowIcon'
+                #"preset": 'islands#yellowIcon'
+                "preset": 'islands#circleIcon',
+                "iconColor": '#4d7198'
             }
         }
         features.append(feature)
@@ -129,6 +135,5 @@ def serialize_places(places, callback):
             "features": features,
         }
     }
-
 
     return callback + "(" + json.dumps(data) + ");"
