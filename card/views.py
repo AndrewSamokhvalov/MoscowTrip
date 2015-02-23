@@ -5,7 +5,7 @@ import json
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from urllib import unquote
+from urllib.parse import unquote
 
 
 from card.models import *
@@ -75,9 +75,9 @@ def get_test(request):
 
         except Exception as inst:
             print("=" * 150)
-            print type(inst)  # the exception instance
-            print inst.args  # arguments stored in .args
-            print inst  # __str__ allows args to be printed directly
+            print(type(inst))  # the exception instance
+            print(inst.args)  # arguments stored in .args
+            print(inst)  # __str__ allows args to be printed directly
             return HttpResponse("error!")
 
 
