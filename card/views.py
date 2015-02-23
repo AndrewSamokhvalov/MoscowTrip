@@ -67,11 +67,12 @@ def get_test(request):
             # print("types: %s" % types)
             # print("callback: %s" % callback)
             # print("bbox: %s" % bbox)
-
+            # r = render_to_response('ballon_content.html')
+            # print(r.content)
             places = filter_places(types, bbox)
 
             # print(serialize_places(places[:2]))
-            return HttpResponse(serialize_places(places, callback))
+            return HttpResponse(serialize_places(places[:100], callback))
 
         except Exception as inst:
             print("=" * 150)
@@ -113,11 +114,14 @@ def serialize_places(places, callback):
             },
             "id": place.id,
             "properties": {
-                "balloonContent": 'Содержимое балуна метки',
+                "balloonContent": render_to_response('ballon_content.html').content.decode('utf-8'),
+                "clusterCaption": "Метка 2",
+                "hintContent": "Текст подсказки"
                 # "iconContent": 'Содержимое метки'
             },
             "options": {
-                "preset": 'islands#yellowIcon'
+                "preset": 'islands#circleIcon',
+                "iconColor": '#4d7198'
             }
         }
         features.append(feature)
