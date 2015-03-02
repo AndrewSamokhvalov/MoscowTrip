@@ -35,7 +35,8 @@ app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debo
         self.map = new ymaps.Map($element[0], {
             center   : $scope.center || [0, 0],
             zoom     : $scope.zoom || 0,
-            behaviors: config.mapBehaviors
+            behaviors: config.mapBehaviors,
+            controls: []
         });
         $scope.markers = new ymaps.GeoObjectCollection({}, config.markerOptions);
 
@@ -44,6 +45,16 @@ app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debo
                 self.addMarker(marker.coords, marker.properties, marker.id);
             });
         });
+
+        var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
+        var typeSelector = new ymaps.control.TypeSelector({options: { position: { right: 8, top: 50 }}});
+        var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}});
+        var routeEditor = new ymaps.control.RouteEditor({options: { position: { left: 40, top: 105 }}});
+
+        self.map.controls.add(routeEditor);
+        self.map.controls.add(zoomControl);
+        self.map.controls.add(typeSelector);
+        self.map.controls.add(geolocationControl);
 
         self.map.geoObjects.add($scope.markers);
         if(config.fitMarkers) {
