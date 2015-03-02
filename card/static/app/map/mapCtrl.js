@@ -40,11 +40,11 @@ app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debo
         });
         $scope.markers = new ymaps.GeoObjectCollection({}, config.markerOptions);
 
-        placesSvc.getPlaces().then(function(markers) {
-            markers.forEach(function(marker) {
-                self.addMarker(marker.coords, marker.properties, marker.id);
-            });
-        });
+        //placesSvc.getPlaces().then(function(markers) {
+        //    markers.forEach(function(marker) {
+        //        self.addMarker(marker.coords, marker.properties, marker.id);
+        //    });
+        //});
 
         var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
         var typeSelector = new ymaps.control.TypeSelector({options: { position: { right: 8, top: 50 }}});
@@ -55,6 +55,15 @@ app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debo
         self.map.controls.add(zoomControl);
         self.map.controls.add(typeSelector);
         self.map.controls.add(geolocationControl);
+
+        var rom = new ymaps.RemoteObjectManager('/testPlaces?bbox=%b',
+            {
+                // Опции кластеров задаются с префиксом cluster.
+                clusterHasBalloon: false,
+                // Опции объектов задаются с префиксом geoObject
+                geoObjectOpenBalloonOnClick: true
+            });
+        self.map.geoObjects.add(rom);
 
         self.map.geoObjects.add($scope.markers);
         if(config.fitMarkers) {

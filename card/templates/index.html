@@ -73,23 +73,8 @@
 <script src={% static "app/utills/$script.js" %}></script>
 
 <script>
-    //types = [1,2]
-    //$.cookie("roadtrippers-types", JSON.stringify(types));
-
-    ymaps.ready(init);
-
-    function init () {
-
-        var rom = new ymaps.RemoteObjectManager('/testPlaces?bbox=%b',
-            {
-                // Опции кластеров задаются с префиксом cluster.
-                clusterHasBalloon: false,
-                // Опции объектов задаются с префиксом geoObject
-                geoObjectOpenBalloonOnClick: true
-            });
-        myMap.geoObjects.add(rom);
-    }
-
+    var types = [1,2]
+    $.cookie("roadtrippers-types", JSON.stringify(types));
 </script>
 
 </body>

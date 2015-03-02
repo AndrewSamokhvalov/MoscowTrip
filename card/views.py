@@ -60,7 +60,6 @@ def get_places(request):
 def get_test(request):
     if request.method == 'GET':
         try:
-
             types = request.COOKIES.get('roadtrippers-types')
             callback = request.GET.get('callback')
             bbox = request.GET.get('bbox')
@@ -69,10 +68,10 @@ def get_test(request):
             # print("callback: %s" % callback)
             # print("bbox: %s" % bbox)
 
-            places = cache.get(bbox)
-            if not places:
-                places = filter_places(types, bbox)[:100]
-                cache.set(bbox, list(places))
+            #places = cache.get(bbox)
+            #if not places:
+            places = filter_places(types, bbox)[:100]
+            #cache.set(bbox, list(places))
 
             return HttpResponse(serialize_places(places, callback))
 
