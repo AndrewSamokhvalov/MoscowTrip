@@ -35,17 +35,18 @@ def get_places(request):
             res = []
             for place in places:
                 d = {}
-                d["id"] = place.id
                 d["coords"] = [
                     place.id_location.latitude,
                     place.id_location.longitude
                 ]
-                d["type"] = place.id_type.id
                 d["properties"] = \
                     {
                         "hintContent": place.common_name,
                         "balloonContent": place.description
                     }
+                d["type"] = place.id_type.id
+                d["id"] = place.id
+
                 res.append(d)
 
             return HttpResponse(json.dumps(res))

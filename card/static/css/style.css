@@ -2,19 +2,6 @@ html,body {
     height: 100%;
     width: 100%;
 }
-
-#map {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.navbar {
-    position: relative;
-    padding: 0;
-    margin: 0;
-}
-
 .mapfilter {
     position: absolute;
     margin-top: 27px;
@@ -24,7 +11,7 @@ html,body {
     z-index: 4000;
 }
 
-yandex-map {
+map {
     display: block;
     position: fixed;
     top: 4em;

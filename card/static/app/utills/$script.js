@@ -1,5 +1,4 @@
-angular.module('ymaps')
-.factory('$script', ['$q', '$rootScope', function ($q, $rootScope) {
+app.factory('$script', ['$q', '$rootScope', function ($q, $rootScope) {
     "use strict";
     //классический кроссбраузерный способ подключить внешний скрипт
     function loadScript(path, callback) {
@@ -41,23 +40,5 @@ angular.module('ymaps')
             pendingPromises[url] = deferred.promise;
         }
         return deferred.promise;
-    };
-}])
-.factory('ymapsLoader', ['$window', '$timeout', '$script', 'ymapsConfig', function($window, $timeout, $script, ymapsConfig) {
-    "use strict";
-    var scriptPromise;
-    return {
-        ready: function(callback) {
-            if(!scriptPromise) {
-                scriptPromise = $script(ymapsConfig.apiUrl).then(function() {
-                    return $window.ymaps;
-                });
-            }
-            scriptPromise.then(function(ymaps) {
-                ymaps.ready(function() {
-                    $timeout(function() {callback(ymaps);});
-                });
-            });
-        }
     };
 }]);

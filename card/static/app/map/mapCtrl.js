@@ -1,6 +1,7 @@
-angular.module('ymaps')
-.controller('YmapController', ['$scope', '$element', 'ymapsLoader', 'ymapsConfig', 'debounce', function ($scope, $element, ymapsLoader, config, debounce) {
+app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debounce', 'placesSvc', function ($scope, $element, mapLoader, config, debounce, placesSvc) {
     "use strict";
+    $scope.center = [55.75, 37.61];
+    $scope.zoom = 11;
     function initAutoFit(map, collection) {
         //brought from underscore http://underscorejs.org/#debounce
         var markerMargin = 0.1,
@@ -22,11 +23,10 @@ angular.module('ymaps')
         collection.events.add('boundschange', fitMarkers);
     }
     var self = this;
-    ymapsLoader.ready(function(ymaps) {
+    mapLoader.ready(function(ymaps) {
         self.addMarker = function(coordinates, properties, options) {
             var placeMark = new ymaps.Placemark(coordinates, properties, options);
             $scope.markers.add(placeMark);
-
             return placeMark;
         };
         self.removeMarker = function (marker) {
@@ -38,12 +38,19 @@ angular.module('ymaps')
             behaviors: config.mapBehaviors
         });
         $scope.markers = new ymaps.GeoObjectCollection({}, config.markerOptions);
+
+        placesSvc.getPlaces().then(function(markers) {
+            markers.forEach(function(marker) {
+                self.addMarker(marker.coords, marker.properties, marker.id);
+            });
+        });
+
         self.map.geoObjects.add($scope.markers);
         if(config.fitMarkers) {
             initAutoFit(self.map, $scope.markers);
         }
         var updatingBounds;
-       $scope.$watch('center', function(newVal) {
+        $scope.$watch('center', function(newVal) {
             if(!updatingBounds) {
                 self.map.panTo(newVal);
             }
