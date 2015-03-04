@@ -56,13 +56,18 @@ app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debo
         self.map.controls.add(typeSelector);
         self.map.controls.add(geolocationControl);
 
-        var rom = new ymaps.RemoteObjectManager('/testPlaces?bbox=%b',
+        var types = [1,2]
+        var typesStr = JSON.stringify(types);
+        var TEMPLATE_URL = '/places?bbox=%b'
+
+        var rom = new ymaps.RemoteObjectManager(TEMPLATE_URL,
             {
                 // Опции кластеров задаются с префиксом cluster.
                 clusterHasBalloon: false,
                 // Опции объектов задаются с префиксом geoObject
                 geoObjectOpenBalloonOnClick: true
             });
+        rom.setUrlTemplate(TEMPLATE_URL + '&types=' + typesStr);
         self.map.geoObjects.add(rom);
 
         self.map.geoObjects.add($scope.markers);

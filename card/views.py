@@ -14,53 +14,11 @@ from django.core.cache import cache
 def card(request):
     return render_to_response('index.html')
 
-
-def test(request):
-    return render_to_response('test.html')
-
-
 @csrf_exempt
 def get_places(request):
     if request.method == 'GET':
         try:
-            filters = request.GET.get('filters');
-
-            places = Place.objects.select_related() \
-                .filter(
-                id_type_id__in=filters
-            )
-
-            places = places[:20]
-
-            res = []
-            for place in places:
-                d = {}
-                d["coords"] = [
-                    place.id_location.latitude,
-                    place.id_location.longitude
-                ]
-                d["properties"] = \
-                    {
-                        "hintContent": place.common_name,
-                        "balloonContent": place.description
-                    }
-                d["type"] = place.id_type.id
-                d["id"] = place.id
-
-                res.append(d)
-
-            return HttpResponse(json.dumps(res))
-
-        except ValueError:
-            return HttpResponse("error in json format")
-    return HttpResponse("")
-
-
-@csrf_exempt
-def get_test(request):
-    if request.method == 'GET':
-        try:
-            types = request.COOKIES.get('roadtrippers-types')
+            types = request.GET.get('types')
             callback = request.GET.get('callback')
             bbox = request.GET.get('bbox')
 
