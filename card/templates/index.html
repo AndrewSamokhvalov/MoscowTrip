@@ -8,70 +8,61 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href={% static "app/css/roadtrippers.css" %} rel="stylesheet">
+
+    <script src={% static "app/bower_components/jquery/dist/jquery.js"%}></script>
+    <script src={% static "app/bower_components/angular/angular.js"%}></script>
+    <script src={% static "app/js/ya-map-2.1.min.js" %}></script>
+    <script src={% static "app/js/controllers.js" %}></script>
+    <script src={% static "app/js/app.js" %}></script>
+
 </head>
 
-<body ng-app="app">
+<body ng-app="roadtrippersApp">
+{##}
+{#    <header>#}
+{#            <div class="logo">#}
+{#                <img src="{% static "app/images/logotype.gif" %}" alt="Путеводитель"/>#}
+{#            </div>#}
+{##}
+{#            <nav class="filters">#}
+{#                <ul>#}
+{#                    <li class="filter-plane" role="button">#}
+{#                        <I class="glyphicon glyphicon-plane" alt="Полеты"></I>#}
+{#                    </li>#}
+{#                    <li class="filter-cart" role="button">#}
+{#                        <I class="glyphicon glyphicon-shopping-cart" alt="Покупки"></I>#}
+{#                    </li>#}
+{#                    <li class="filter-home" role="button">#}
+{#                        <I class="glyphicon glyphicon-home" alt="Отели"></I>#}
+{#                    </li>#}
+{#                    <li class="filter-music" role="button">#}
+{#                        <I class="glyphicon glyphicon-music" alt="Медиа"></I>#}
+{#                    </li>#}
+{#                    <li class="filter-camera" role="button">#}
+{#                        <I class="glyphicon glyphicon-camera" alt="Достопримечательности"></I>#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </nav>#}
+{#        </div>#}
+{##}
+{#        <div class="scroll">#}
+{#            <input class="scroll_area" type="range">#}
+{#        </div>#}
+{##}
+{#    </header>#}
+{##}
+{#    <form class="search-group" role="search">#}
+{#        <div class="input-group">#}
+{#            <input type="text" class="search-control" placeholder="Поиск...">#}
+{#            <button class="search-button" type="submit">#}
+{#                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>#}
+{#            </button>#}
+{#        </div>#}
+{#    </form>#}
 
-    <header>
-            <div class="logo">
-                <img src="{% static "app/images/logotype.gif" %}" alt="Путеводитель"/>
-            </div>
-
-            <nav class="filters">
-                <ul>
-                    <li class="filter-plane" role="button">
-                        <I class="glyphicon glyphicon-plane" alt="Полеты"></I>
-                    </li>
-                    <li class="filter-cart" role="button">
-                        <I class="glyphicon glyphicon-shopping-cart" alt="Покупки"></I>
-                    </li>
-                    <li class="filter-home" role="button">
-                        <I class="glyphicon glyphicon-home" alt="Отели"></I>
-                    </li>
-                    <li class="filter-music" role="button">
-                        <I class="glyphicon glyphicon-music" alt="Медиа"></I>
-                    </li>
-                    <li class="filter-camera" role="button">
-                        <I class="glyphicon glyphicon-camera" alt="Достопримечательности"></I>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
-        <div class="scroll">
-            <input class="scroll_area" type="range">
-        </div>
-
-    </header>
-
-    <form class="search-group" role="search">
-        <div class="input-group">
-            <input type="text" class="search-control" placeholder="Поиск...">
-            <button class="search-button" type="submit">
-                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-            </button>
-        </div>
-    </form>
-
-<map center="center" zoom="zoom">
-</map>
-
-<script src={% static "js/jquery.js"%}></script>
-<script src={% static "js/jquery.cookie.js"%}></script>
-<script src={% static "js/angular.js"%}></script>
-
-<script src={% static "app/app.js" %}></script>
-<script src={% static "app/svc/placesSvc.js" %}></script>
-<script src={% static "app/filter/filterCtrl.js" %}></script>
-<script src={% static "app/map/map.js" %}></script>
-<script src={% static "app/map/mapConfig.js" %}></script>
-<script src={% static "app/map/mapCtrl.js" %}></script>
-<script src={% static "app/map/mapLoader.js" %}></script>
-<script src={% static "app/map/marker.js" %}></script>
-<script src={% static "app/svc/placesSvc.js" %}></script>
-<script src={% static "app/utills/debounce.js" %}></script>
-<script src={% static "app/utills/$script.js" %}></script>
-
+<div ng-controller="CardCtrl">
+<ya-map ya-zoom="8" ya-center="[37.64,55.76]" ya-after-init="afterMapInit($target)"></ya-map>
+</div>
 <script>
     var types = [1,2]
     $.cookie("roadtrippers-types", JSON.stringify(types));

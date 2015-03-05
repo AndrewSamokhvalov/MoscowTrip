@@ -2,21 +2,23 @@
 
 /* Controllers */
 
-var phonecatControllers = angular.module('phonecatControllers', []);
+var roadtrippersControllers = angular.module('roadtrippersControllers', []);
 
-phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
-  function($scope, Phone) {
-    $scope.phones = Phone.query();
-    $scope.orderProp = 'age';
-  }]);
 
-phonecatControllers.controller('PhoneDetailCtrl', ['$scope', '$routeParams', 'Phone',
-  function($scope, $routeParams, Phone) {
-    $scope.phone = Phone.get({phoneId: $routeParams.phoneId}, function(phone) {
-      $scope.mainImageUrl = phone.images[0];
-    });
+roadtrippersControllers.controller('CardCtrl', ['$scope',
+    function ($scope) {
+        var _map;
+        $scope.afterMapInit = function(map){
 
-    $scope.setImage = function(imageUrl) {
-      $scope.mainImageUrl = imageUrl;
+            var remoteObjectManager = new ymaps.RemoteObjectManager('testPlaces?bbox=%b',
+            {
+                // Опции кластеров задаются с префиксом cluster.
+                clusterHasBalloon: false,
+            });
+
+            this.map = map;
+            this.map.geoObjects.add(remoteObjectManager);
+            this.objects = this.map.geoObjects;
+        };
     }
-  }]);
+]);

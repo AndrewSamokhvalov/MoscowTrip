@@ -3,6 +3,12 @@ html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
 }
+ya-map {
+    height: 800px;
+    width: 100%;
+    display: block;
+}
+
 body, html
 {
     padding: 0;
