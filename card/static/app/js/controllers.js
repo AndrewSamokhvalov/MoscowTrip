@@ -7,7 +7,6 @@ var roadtrippersControllers = angular.module('roadtrippersControllers', []);
 
 roadtrippersControllers.controller('CardCtrl', ['$scope',
     function ($scope) {
-        var _map;
         $scope.afterMapInit = function(map){
 
             var remoteObjectManager = new ymaps.RemoteObjectManager('testPlaces?bbox=%b',
