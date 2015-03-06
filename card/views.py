@@ -55,10 +55,10 @@ def filter_places(types, bbox):
 
     # get points in rectangle are specified by two point (lat_left_down,lon_left_down) and (lat_right_up,lon_right_up)
     return Place.objects.select_related().filter(id_type__in=types,
-                                                 id_location__latitude__gt=lat_left_down,
-                                                 id_location__latitude__lt=lat_right_up,
-                                                 id_location__longitude__gt=lon_left_down,
-                                                 id_location__longitude__lt=lon_right_up)
+                                                 lat__gt=lat_left_down,
+                                                 lat__lt=lat_right_up,
+                                                 lon__gt=lon_left_down,
+                                                 lon__lt=lon_right_up)
 
 
 def serialize_places(places, callback):
@@ -70,15 +70,17 @@ def serialize_places(places, callback):
             "type": 'Feature',
             "geometry": {
                 "type": "Point",
-                "coordinates": [place.id_location.latitude, place.id_location.longitude]
+                "coordinates": [place.lat, place.lon]
             },
             "id": place.id,
             "properties": {
                 "balloonContent": render_to_response('balloon_content.html', next(content)['fields']).content.decode('utf-8'),
             },
             "options": {
-                "preset": 'islands#circleIcon',
-                "iconColor": '#4d7198'
+                # "preset": 'islands#circleIcon',
+                # "iconColor": '#4d7198'
+                "iconLayout": "default#image",
+                "iconImageHref": place.id_type.url_image_marker,
             }
         }
         features.append(feature)
