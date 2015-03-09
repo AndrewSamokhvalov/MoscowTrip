@@ -50,11 +50,13 @@ app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debo
         var typeSelector = new ymaps.control.TypeSelector({options: { position: { right: 8, top: 50 }}});
         var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}});
         var routeEditor = new ymaps.control.RouteEditor({options: { position: { left: 40, top: 105 }}});
+        var searchControl = new ymaps.control.SearchControl({options: { position: { right: 8, top: 10 }}});
 
         self.map.controls.add(routeEditor);
         self.map.controls.add(zoomControl);
         self.map.controls.add(typeSelector);
         self.map.controls.add(geolocationControl);
+        self.map.controls.add(searchControl);
 
         var types = [1,2]
         var typesStr = JSON.stringify(types);

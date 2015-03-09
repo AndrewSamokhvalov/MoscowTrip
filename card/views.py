@@ -77,10 +77,9 @@ def serialize_places(places, callback):
                 "balloonContent": render_to_response('balloon_content.html', next(content)['fields']).content.decode('utf-8'),
             },
             "options": {
-                # "preset": 'islands#circleIcon',
-                # "iconColor": '#4d7198'
                 "iconLayout": "default#image",
-                "iconImageHref": place.id_type.url_image_marker,
+                "iconImageHref": "static/images/filter-1.gif",
+                "iconImageSize": [25, 33],
             }
         }
         features.append(feature)

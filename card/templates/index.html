@@ -7,6 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href={% static "images/favicon.ico" %} type="image/x-icon">
     <link href={% static "css/roadtrippers.css" %} rel="stylesheet">
 </head>
 
@@ -19,20 +20,46 @@
 
             <nav class="filters">
                 <ul>
-                    <li class="filter-plane" role="button">
-                        <I class="glyphicon glyphicon-plane" alt="Полеты"></I>
+                    <input type="checkbox" name="filter-1" id="filter_place_of_interests">
+                    <li class="filter-place_of_interests">
+                        <div class="">
+                            <label for="filter_place_of_interests">
+                                <div class="">
+                                    <span class="icon icon-cat-attractions"></span>
+                                </div>
+                            </label>
+                        </div>
                     </li>
-                    <li class="filter-cart" role="button">
-                        <I class="glyphicon glyphicon-shopping-cart" alt="Покупки"></I>
+                    <input type="checkbox" name="filter-2" id="filter_food">
+                    <li class="filter-food">
+                        <div class="">
+                            <label for="filter_food">
+                                <div class="">
+                                    <span class="icon icon-cat-food-drink"></span>
+                                </div>
+                            </label>
+                        </div>
                     </li>
-                    <li class="filter-home" role="button">
-                        <I class="glyphicon glyphicon-home" alt="Отели"></I>
+                    <input type="checkbox" name="filter-3" id="filter_park">
+                    <li class="filter-park">
+                        <div class="">
+                            <label for="filter_park">
+                                <div class="">
+                                    <span class="icon icon-cat-nature"></span>
+                                </div>
+                            </label>
+                        </div>
                     </li>
-                    <li class="filter-music" role="button">
-                        <I class="glyphicon glyphicon-music" alt="Медиа"></I>
-                    </li>
-                    <li class="filter-camera" role="button">
-                        <I class="glyphicon glyphicon-camera" alt="Достопримечательности"></I>
+                    <input type="checkbox" name="filter-6" id="filter_toilet">
+                    <li class="filter-toilet">
+                        <div class="">
+                            <label for="filter_toilet">
+                                <div class="toilet">
+                                    <span class="icon_W">W</span>
+                                    <span class="icon_C">C</span>
+                                </div>
+                            </label>
+                        </div>
                     </li>
                 </ul>
             </nav>
@@ -43,15 +70,6 @@
         </div>
 
     </header>
-
-    <form class="search-group" role="search">
-        <div class="input-group">
-            <input type="text" class="search-control" placeholder="Поиск...">
-            <button class="search-button" type="submit">
-                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-            </button>
-        </div>
-    </form>
 
 <map center="center" zoom="zoom">
 </map>
@@ -70,6 +88,84 @@
 <script src={% static "app/svc/placesSvc.js" %}></script>
 <script src={% static "app/utills/debounce.js" %}></script>
 <script src={% static "app/utills/$script.js" %}></script>
+
+    <script type="text/javascript">
+        $(window).load(function(){
+        $("#show-off").click(function() {
+        $(".main-info").css("bottom", "-150px");
+        $(".show-off-menu").css("bottom", "0");
+        });
+        });
+    </script>
+    <script type="text/javascript">
+        $(window).load(function(){
+        $("#show-on").click(function() {
+        $(".main-info").css("bottom", "0");
+        $(".show-off-menu").css("bottom", "150px");
+        });
+        });
+    </script>
+    <script type="text/javascript">
+        $(window).load(function(){
+        $("#show-off-right").click(function() {
+        $(".main-info-right").css("right", "-150px");
+        $(".show-off-menu-right").css("right", "0");
+        });
+        });
+    </script>
+    <script type="text/javascript">
+        $(window).load(function(){
+        $("#show-on-right").click(function() {
+        $(".main-info-right").css("right", "0");
+        $(".show-off-menu-right").css("right", "150px");
+        });
+        });
+    </script>
+
+
+    <div id="right-bar">
+        <nav class="list_of_nav_buttons_right">
+            <ul class="show-off-menu-right">
+                <input type="checkbox" name="show-btn-right" id="show-btn-right">
+                <li class="show-btn-right">
+                    <label for="show-btn-right">
+                        <div class="up-chk-right" id="show-on-right">
+                            <span class="icon icon-up-micro"></span>
+                        </div>
+                        <div class="up-unchk-right"id="show-off-right">
+                            <span class="icon icon-down-micro"></span>
+                        </div>
+                    </label>
+                </li>
+            </ul>
+            <div class="main-info-right" >
+
+            </div>
+        </nav>
+
+    </div>
+
+    <footer>
+        <nav class="list_of_nav_buttons">
+            <ul class="show-off-menu">
+                <input type="checkbox" name="show-btn" id="show-btn">
+                <li class="show-btn">
+                    <label for="show-btn">
+                        <div class="up-chk" id="show-on">
+                            <span class="icon icon-up-micro"></span>
+                        </div>
+                        <div class="up-unchk"id="show-off">
+                            <span class="icon icon-down-micro"></span>
+                        </div>
+                    </label>
+                </li>
+            </ul>
+            <div class="main-info" >
+
+            </div>
+        </nav>
+
+    </footer>
 
 </body>
 </html>
