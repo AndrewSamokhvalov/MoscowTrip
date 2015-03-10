@@ -12,7 +12,7 @@
     <link href={% static "app/css/roadtrippers.css" %} rel="stylesheet">
     <script src={% static "app/bower_components/jquery/dist/jquery.js"%}></script>
     <script src={% static "app/bower_components/angular/angular.js"%}></script>
-    <script src={% static "app/js/ya-map-2.1.min.js" %}></script>
+    <script src={% static "app/js/ya-map-2.1.js" %}></script>
     <script src={% static "app/js/app.js" %}></script>
     <script src={% static "app/js/services.js" %}></script>
     <script src={% static "app/js/controllers.js" %}></script>
@@ -58,17 +58,6 @@
                             </label>
                         </div>
                     </li>
-                    <input type="checkbox" name="filter-6" id="filter_toilet">
-                    <li class="filter-toilet">
-                        <div class="">
-                            <label for="filter_toilet">
-                                <div class="toilet">
-                                    <span class="icon_W">W</span>
-                                    <span class="icon_C">C</span>
-                                </div>
-                            </label>
-                        </div>
-                    </li>
                 </ul>
             </nav>
         </div>
@@ -80,8 +69,9 @@
     </header>
 
 <div ng-controller="CardCtrl">
-<ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="afterMapInit($target)"></ya-map>
+<ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="init($target)" ya-controls=""></ya-map>
 </div>
+
     <script type="text/javascript">
         $(window).load(function(){
         $("#show-off").click(function() {

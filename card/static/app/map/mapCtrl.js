@@ -1,4 +1,4 @@
-app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debounce', 'filterSvc', function ($scope, $element, mapLoader, config, debounce, filterSvc) {
+roadtrippersApp.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debounce', 'filterSvc', function ($scope, $element, mapLoader, config, debounce, filterSvc) {
     "use strict";
     $scope.center = [55.75, 37.61];
     $scope.zoom = 11;

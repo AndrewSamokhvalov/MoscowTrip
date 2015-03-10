@@ -22,6 +22,11 @@ def get_places(request):
             callback = request.GET.get('callback')
             bbox = request.GET.get('bbox')
 
+            types = "[1,2]"
+            if types == None:
+                print("Types is none")
+                return HttpResponse("error!")
+
             # print("types: %s" % types)
             # print("callback: %s" % callback)
             # print("bbox: %s" % bbox)

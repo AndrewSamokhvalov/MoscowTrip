@@ -2,16 +2,13 @@
 
 /* App Module */
 
-var roadtrippersApp = angular.module('roadtrippersApp', [
-   'yaMap',
-  'roadtrippersControllers'
-]);
+var roadtrippersApp = angular.module('roadtrippersApp', ['yaMap',]);
 
-roadtrippersApp.config(['$interpolateProvider',
-    function($interpolateProvider,$yaMapSettings) {
+roadtrippersApp.config(['$interpolateProvider','yaMapSettingsProvider',
+    function($interpolateProvider,yaMapSettings) {
         $interpolateProvider.startSymbol('{$');
         $interpolateProvider.endSymbol('$}');
 
-//        $yaMapSettings.setCordOrder = 'latlong';
+        yaMapSettings.setOrder('latlong');
     }
 ]);
