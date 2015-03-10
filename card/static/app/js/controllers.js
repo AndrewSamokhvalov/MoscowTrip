@@ -9,7 +9,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
             CardSvc.setRoute();
 
             var rom = CardSvc.getROM();
-            this.map.geoObjects.add(rom);
+            map.geoObjects.add(rom);
 
             var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
             var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}})
