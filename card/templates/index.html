@@ -8,14 +8,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href={% static "images/favicon.ico" %} type="image/x-icon">
-    <link href={% static "css/roadtrippers.css" %} rel="stylesheet">
+
+    <link href={% static "app/css/roadtrippers.css" %} rel="stylesheet">
+    <script src={% static "app/bower_components/jquery/dist/jquery.js"%}></script>
+    <script src={% static "app/bower_components/angular/angular.js"%}></script>
+    <script src={% static "app/js/ya-map-2.1.min.js" %}></script>
+    <script src={% static "app/js/app.js" %}></script>
+    <script src={% static "app/js/services.js" %}></script>
+    <script src={% static "app/js/controllers.js" %}></script>
+
 </head>
 
-<body ng-app="app">
+<body ng-app="roadtrippersApp">
 
     <header>
             <div class="logo">
-                <img src="{% static "images/logotype.gif" %}" alt="Путеводитель"/>
+                <img src="{% static "app/images/logotype.gif" %}" alt="Путеводитель"/>
             </div>
 
             <nav class="filters">
@@ -71,24 +79,9 @@
 
     </header>
 
-<map center="center" zoom="zoom">
-</map>
-
-<script src={% static "js/jquery.js"%}></script>
-<script src={% static "js/angular.js"%}></script>
-
-<script src={% static "app/app.js" %}></script>
-<script src={% static "app/svc/filterSvc.js" %}></script>
-<script src={% static "app/filter/filterCtrl.js" %}></script>
-<script src={% static "app/map/map.js" %}></script>
-<script src={% static "app/map/mapConfig.js" %}></script>
-<script src={% static "app/map/mapCtrl.js" %}></script>
-<script src={% static "app/map/mapLoader.js" %}></script>
-<script src={% static "app/map/marker.js" %}></script>
-<script src={% static "app/svc/filterSvc.js" %}></script>
-<script src={% static "app/utills/debounce.js" %}></script>
-<script src={% static "app/utills/$script.js" %}></script>
-
+<div ng-controller="CardCtrl">
+<ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="afterMapInit($target)"></ya-map>
+</div>
     <script type="text/javascript">
         $(window).load(function(){
         $("#show-off").click(function() {
