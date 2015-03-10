@@ -6,7 +6,7 @@ roadtrippersApp.factory('CardSvc', function($http) {
             var req = {
                 method: 'POST',
                 url: '/setFilters',
-                params: { 'filters': filters }
+                params: { 'filters': JSON.stringify(filters) }
             };
             return $http(req).then(function (response) {
                 return response;
@@ -17,11 +17,19 @@ roadtrippersApp.factory('CardSvc', function($http) {
             var req = {
                 method: 'POST',
                 url: '/setRoute',
-                params: { 'route': route }
+                params: { 'route': JSON.stringify(route)}
             };
             return $http(req).then(function (response) {
                 return response;
             });
+        },
+
+        getROM: function() {
+            return new ymaps.RemoteObjectManager('getPlaces?bbox=%b',
+                {
+                    // Опции кластеров задаются с префиксом cluster.
+                    clusterHasBalloon: false
+                });
         }
     };
 });

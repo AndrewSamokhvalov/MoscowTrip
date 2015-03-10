@@ -24,8 +24,8 @@ def get_places(request):
 
             types = "[1,2]"
             if types == None:
-                print("Types is none")
-                return HttpResponse("error!")
+                print("ERROR: Types is none!")
+                return HttpResponse("ERROR: Types is none!")
 
             # print("types: %s" % types)
             # print("callback: %s" % callback)
@@ -98,3 +98,11 @@ def serialize_places(places, callback):
     }
 
     return callback + "(" + json.dumps(data) + ");"
+
+def set_filters(request):
+    print("set_filters")
+    return HttpResponse("Good!")
+
+def set_route(request):
+    print("set_route")
+    return HttpResponse("Good!")
