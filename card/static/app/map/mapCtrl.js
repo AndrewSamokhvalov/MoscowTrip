@@ -1,4 +1,4 @@
-app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debounce', 'placesSvc', function ($scope, $element, mapLoader, config, debounce, placesSvc) {
+app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debounce', 'filterSvc', function ($scope, $element, mapLoader, config, debounce, filterSvc) {
     "use strict";
     $scope.center = [55.75, 37.61];
     $scope.zoom = 11;
@@ -40,12 +40,6 @@ app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debo
         });
         $scope.markers = new ymaps.GeoObjectCollection({}, config.markerOptions);
 
-        //placesSvc.getPlaces().then(function(markers) {
-        //    markers.forEach(function(marker) {
-        //        self.addMarker(marker.coords, marker.properties, marker.id);
-        //    });
-        //});
-
         var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
         var typeSelector = new ymaps.control.TypeSelector({options: { position: { right: 8, top: 50 }}});
         var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}});
@@ -58,7 +52,7 @@ app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debo
         self.map.controls.add(geolocationControl);
         self.map.controls.add(searchControl);
 
-        var types = [1,2]
+        var types = [1,2];
         var typesStr = JSON.stringify(types);
         var TEMPLATE_URL = '/places?bbox=%b'
 
@@ -71,6 +65,10 @@ app.controller('mapCtrl', ['$scope', '$element', 'mapLoader', 'mapConfig', 'debo
             });
         rom.setUrlTemplate(TEMPLATE_URL + '&types=' + typesStr);
         self.map.geoObjects.add(rom);
+
+        filterSvc.updateFilters().success(function() {
+            self.map.update();
+        });
 
         self.map.geoObjects.add($scope.markers);
         if(config.fitMarkers) {
