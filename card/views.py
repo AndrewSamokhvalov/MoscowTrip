@@ -83,8 +83,8 @@ def serialize_places(places, callback):
             },
             "options": {
                 "iconLayout": "default#image",
-                "iconImageHref": "static/images/filter-1.gif",
-                "iconImageSize": [25, 33],
+                "iconImageHref": "static/app/images/metka2.png",
+                "iconImageSize": [40, 60],
             }
         }
         features.append(feature)
