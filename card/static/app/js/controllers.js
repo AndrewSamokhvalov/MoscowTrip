@@ -5,8 +5,16 @@
 roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
     function ($scope, CardSvc) {
         $scope.init = function(map) {
-            CardSvc.setFilters();
-            CardSvc.setRoute();
+
+            ymaps.route(['Королёв','Химки']).then(function (route) {
+                var points = []
+                route.getPaths().each(function(path){points.push(path.geometry.getCoordinates())})
+                CardSvc.setRoute(points);
+            });
+
+
+            CardSvc.setTypes([1,2]);
+
 
             var rom = CardSvc.getROM();
             map.geoObjects.add(rom);

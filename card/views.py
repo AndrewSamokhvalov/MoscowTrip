@@ -99,10 +99,58 @@ def serialize_places(places, callback):
 
     return callback + "(" + json.dumps(data) + ");"
 
-def set_filters(request):
-    print("set_filters")
-    return HttpResponse("Good!")
+@csrf_exempt
+def set_types(request):
+    if request.method == 'POST':
+        try:
+            str_response = request.body.decode('utf-8')
+            received_json_data = eval(str_response)
 
+            types = received_json_data['types']
+
+            if types == None:
+                print("ERROR: Types is none!")
+                return HttpResponse("ERROR: Types is none!")
+
+            # use django session and save type
+            print('Types %s ' % str(types))
+
+            return HttpResponse("Good!")
+
+        except Exception as inst:
+            print("=" * 150)
+            print(type(inst))  # the exception instance
+            print(inst.args)  # arguments stored in .args
+            print(inst)  # __str__ allows args to be printed directly
+            return HttpResponse("error!")
+
+    return HttpResponse("Not POST request!")
+
+@csrf_exempt
 def set_route(request):
-    print("set_route")
-    return HttpResponse("Good!")
+    if request.method == 'POST':
+        try:
+            str_response = request.body.decode('utf-8')
+
+            # Function 'eval' is not secure!
+            received_json_data = eval(str_response)
+
+            route = received_json_data['points']
+
+            if route == None:
+                print("ERROR: Route is none!")
+                return HttpResponse("ERROR: route is none!")
+
+            # use django session and save route param for current session
+            print('Route %s ' % str(route))
+
+            return HttpResponse("Good!")
+
+        except Exception as inst:
+            print("=" * 150)
+            print(type(inst))  # the exception instance
+            print(inst.args)  # arguments stored in .args
+            print(inst)  # __str__ allows args to be printed directly
+            return HttpResponse("error!")
+
+    return HttpResponse("Not POST request!")
