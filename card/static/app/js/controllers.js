@@ -9,7 +9,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
             ymaps.route(['Королёв','Химки']).then(function (route) {
                 var points = []
                 route.getPaths().each(function(path){points.push(path.geometry.getCoordinates())})
-                CardSvc.setRoute(points);
+                CardSvc.setRoute(map, points[0]);
             });
 
 

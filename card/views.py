@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import json
-import ast
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from urllib.parse import unquote
 from django.core import serializers
-
 from card.models import *
 from django.core.cache import cache
+
+from card.polygon import *
 
 def card(request):
     return render_to_response('index.html')
@@ -135,7 +135,7 @@ def set_route(request):
             # Function 'eval' is not secure!
             received_json_data = eval(str_response)
 
-            route = received_json_data['points']
+            route = eval(received_json_data['points'])
 
             if route == None:
                 print("ERROR: Route is none!")
@@ -144,7 +144,7 @@ def set_route(request):
             # use django session and save route param for current session
             print('Route %s ' % str(route))
 
-            return HttpResponse("Good!")
+            return HttpResponse(get_polygon(0.01, route))
 
         except Exception as inst:
             print("=" * 150)
