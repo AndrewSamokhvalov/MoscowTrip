@@ -1,8 +1,6 @@
 __author__ = 'andrey'
 import math
 import json
-import sys
-from matplotlib import pyplot as pl
 route = [[55.91623, 37.854672], [55.915976, 37.8547], [55.916013, 37.852633000000004], [55.913624, 37.852087000000004], [55.913664, 37.851494], [55.913975, 37.848209000000004]]
 
 def rerange(route, a, b):
@@ -174,19 +172,17 @@ def drange(start, end, dx):
         start = start + dx
     return lx
 
-def draw_line(line):
-    A = line[0]
-    B = line[1]
-    C = line[2]
-
-    lx = range(0,6)
-    ly = []
-    for x in lx:
-        ly.append((-A/B) * x - C/B)
-
-    pl.plot(lx, ly)
-
-def draw_segment(segment):
-    pl.plot(*zip(*segment), marker='o', color='r')
-
-print(get_polygon(0.5, route))
+# def draw_line(line):
+#     A = line[0]
+#     B = line[1]
+#     C = line[2]
+#
+#     lx = range(0,6)
+#     ly = []
+#     for x in lx:
+#         ly.append((-A/B) * x - C/B)
+#
+#     pl.plot(lx, ly)
+#
+# def draw_segment(segment):
+#     pl.plot(*zip(*segment), marker='o', color='r')
