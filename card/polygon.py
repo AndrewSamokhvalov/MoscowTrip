@@ -34,7 +34,56 @@ def rerange(route, a, b):
 
     return newpoints
 
+def get_polygons(R, route):
+    polygons = []
+
+    for point in route:
+        cx = point[0]
+        cy = point[1]
+
+        k = cx/cy
+        df = 20
+        phis = range(0, 360, df)
+        radians = list(map(lambda phi: phi*(math.pi/180), phis))
+
+        circle = []
+        for rad in radians:
+            circle.append([
+                R * math.cos(rad) + cx,
+                k * R * math.sin(rad) + cy
+            ])
+
+        # lx = list(map(lambda c: c[0], circle))
+        # ly = list(map(lambda c: c[1], circle))
+        #
+        # plt.plot(lx ,ly)
+        # plt.show()
+        polygons.append(circle)
+
+
+        # for i in range(0, len(polygons)):
+        #     f_cpoint = route[i]
+        #     for j in range(i, len(polygons)):
+        #         s_cpoint= route[j]
+        #
+        #         D = math.sqrt(math.pow(f_cpoint[0] - s_cpoint[0]) + math.pow(f_cpoint[1] - s_cpoint[1]))
+        #         if  D > 2*R:
+        #             continue
+        #         else:
+
+
+
+
+    return json.dumps(polygons)
+
+
 def get_polygon(R, route):
+
+    newpoints = []
+    for i in range(0, len(route) - 1, 5):
+        newpoints.append(route[i])
+    route = newpoints
+
 
     # route = rerange(route, 0, 5)
 
@@ -186,3 +235,26 @@ def drange(start, end, dx):
 #
 # def draw_segment(segment):
 #     pl.plot(*zip(*segment), marker='o', color='r')
+
+def isInsidePolygon(point, polygons):
+    for polygon in polygons:
+        for i in range(0, len(polygon)-1):
+            segment = polygon[i:i+2]
+            f_point = segment[0]
+            s_point = segment[1]
+
+            px = point[0]
+            py = point[1]
+
+            maxx = max(f_point[0], s_point[0])
+            minx = min(f_point[0], s_point[0])
+
+            maxy = max(s_point[1], s_point[1])
+            miny = min(s_point[1], s_point[1])
+
+            if not (px > minx & px < maxx):
+                return False
+            if not (py > miny & py < maxy):
+                return False
+
+    return True

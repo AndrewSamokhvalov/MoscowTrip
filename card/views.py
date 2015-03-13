@@ -144,7 +144,7 @@ def set_route(request):
             # use django session and save route param for current session
             print('Route %s ' % str(route))
 
-            return HttpResponse(get_polygon(0.01, route))
+            return HttpResponse(get_polygons(0.02, route))
 
         except Exception as inst:
             print("=" * 150)

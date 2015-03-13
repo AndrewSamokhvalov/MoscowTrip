@@ -7,28 +7,40 @@ roadtrippersApp.factory('CardSvc', function ($http) {
             });
         },
 
-        setRoute: function (map, points) {
-            return $http.post('/setRoute', { 'points': JSON.stringify(points)}).success(function (polyline) {
+        setRoute: function (map, route) {
+            var points = []
+            route.getPaths().each(function(path){points.push(path.geometry.getCoordinates())})
+            map.geoObjects.add(route)
+            return $http.post('/setRoute', { 'points': JSON.stringify(points[0])}).success(function (polyline) {
+
+
                         // Создаем ломаную с помощью вспомогательного класса Polyline.
-                        var myPolyline = new ymaps.Polyline(polyline
-                            , {
-                                // Описываем свойства геообъекта.
-                                // Содержимое балуна.
-                                balloonContent: "Ломаная линия"
-                            }, {
-                                // Задаем опции геообъекта.
-                                // Отключаем кнопку закрытия балуна.
-                                balloonCloseButton: false,
-                                // Цвет линии.
-                                strokeColor: "#000000",
-                                // Ширина линии.
-                                strokeWidth: 4,
-                                // Коэффициент прозрачности.
-                                strokeOpacity: 0.5
-                            });
+                        var myGeoObject = new ymaps.GeoObject({
+                        // Описываем геометрию геообъекта.
+                            geometry: {
+                                // Тип геометрии - "Многоугольник".
+                                type: "Polygon",
+                                // Указываем координаты вершин многоугольника.
+                                coordinates: polyline,
+                                // Задаем правило заливки внутренних контуров по алгоритму "nonZero".
+                                fillRule: "nonZero"
+                            }
+                        }, {
+                            // Описываем опции геообъекта.
+                            // Цвет заливки.
+                            fillColor: '#00FFFF',
+                            // Цвет обводки.
+                            strokeColor: '#0000FF',
+                            // Общая прозрачность (как для заливки, так и для обводки).
+                            opacity: 0.5,
+                            // Ширина обводки.
+                            strokeWidth: 0,
+                            // Стиль обводки.
+                            strokeStyle: 'shortdash'
+                        });
 
                         // Добавляем линии на карту.
-                        map.geoObjects.add(myPolyline)
+                        map.geoObjects.add(myGeoObject)
                 });
         },
 
