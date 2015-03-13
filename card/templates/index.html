@@ -22,133 +22,159 @@
 <body ng-app="roadtrippersApp">
 
     <header>
-            <div class="logo">
-                <img src="{% static "app/images/logotype.gif" %}" alt="Путеводитель"/>
-            </div>
-
-            <nav class="filters">
-                <ul>
-                    <input type="checkbox" name="filter-1" id="filter_place_of_interests">
-                    <li class="filter-place_of_interests">
-                        <div class="">
-                            <label for="filter_place_of_interests">
-                                <div class="">
-                                    <span class="icon icon-cat-attractions"></span>
-                                </div>
-                            </label>
-                        </div>
-                    </li>
-                    <input type="checkbox" name="filter-2" id="filter_food">
-                    <li class="filter-food">
-                        <div class="">
-                            <label for="filter_food">
-                                <div class="">
-                                    <span class="icon icon-cat-food-drink"></span>
-                                </div>
-                            </label>
-                        </div>
-                    </li>
-                    <input type="checkbox" name="filter-3" id="filter_park">
-                    <li class="filter-park">
-                        <div class="">
-                            <label for="filter_park">
-                                <div class="">
-                                    <span class="icon icon-cat-nature"></span>
-                                </div>
-                            </label>
-                        </div>
-                    </li>
-                </ul>
-            </nav>
+        <div class="logotype">
+            <img src="{% static "app/images/logotype.gif" %}" alt="Путеводитель"/>
         </div>
-
-        <div class="scroll">
-            <input class="scroll_area" type="range">
-        </div>
-
     </header>
 
-<div ng-controller="CardCtrl">
-<ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="init($target)" ya-controls=""></ya-map>
-</div>
+    <section class="filters">
+        <ul>
+            <input type="checkbox" name="filter-1" id="filter_place_of_interests">
+            <li class="filter-place_of_interests">
+                <div class="">
+                    <label for="filter_place_of_interests">
+                        <div class="">
+                            <span class="icon icon-cat-attractions"></span>
+                        </div>
+                    </label>
+                </div>
+            </li>
+            <input type="checkbox" name="filter-2" id="filter_food">
+            <li class="filter-food">
+                <div class="">
+                    <label for="filter_food">
+                        <div class="">
+                            <span class="icon icon-cat-food-drink"></span>
+                        </div>
+                    </label>
+                </div>
+            </li>
+            <input type="checkbox" name="filter-3" id="filter_park">
+            <li class="filter-park">
+                <div class="">
+                    <label for="filter_park">
+                        <div class="">
+                            <span class="icon icon-cat-nature"></span>
+                        </div>
+                    </label>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <section class="radius">
+        <input class="scroll_area" type="range" id="radius">
+    </section>
+
+    <main ng-controller="CardCtrl">
+        <ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="init($target)" ya-controls=""></ya-map>
+    </main>
+
+    <section id="right-bar">
+        <nav class="list_of_nav_buttons_right">
+            <div class="up-chk-right" id="show-on-right">
+                <span class="icon icon-up-micro"></span>
+            </div>
+            <div class="up-unchk-right"id="show-off-right">
+                <span class="icon icon-down-micro"></span>
+            </div>
+        </nav>
+        <header>
+            <figure></figure>
+        </header>
+        <main class="main-info-right">
+            <div class="input">
+                <span class="icon"></span>
+                <input type="text"/>
+            </div>
+            <div class="input">
+                <span class="icon"></span>
+                <input type="text"/>
+            </div>
+        </main>
+    </section>
+
+    <div id="popup">
+        <div class="close-btn" style="cursor: pointer;" onclick="document.getElementById('parent_popup').style.display='none',document.getElementById('popup').style.display='none';">
+            <div class="x-btn"><b>X</b></div>
+        </div>
+        <div id="scrl">
+            <div id="heady">
+                <h2>Название объекта</h2>
+                <div id="list-of-p">
+                    <p>Адрес</p>
+                    <p>Время работы</p>
+                    <p>Плата</p>
+                </div>
+                <img src="#" id="src" alt="картинка">
+            </div>
+            <div id="footy">
+                <div class="options">
+                    <p>f</p>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>f<br>
+                </div>
+                <div class="contacts">
+                    <p>Контакты</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="parent_popup"></div>
+
+    {% comment %}<section id="bottom-bar">
+        <ul class="show-off-menu">
+            <input type="checkbox" name="show-btn" id="show-btn">
+            <li class="show-btn">
+                <label for="show-btn">
+                    <div class="up-chk" id="show-on">
+                        <span class="icon icon-up-micro"></span>
+                    </div>
+                    <div class="up-unchk"id="show-off">
+                        <span class="icon icon-down-micro"></span>
+                    </div>
+                </label>
+            </li>
+        </ul>{% endcomment %}
+{#        TODO: ng-repeat мест #}
+    </section>
+
+
 
     <script type="text/javascript">
         $(window).load(function(){
         $("#show-off").click(function() {
-        $(".main-info").css("bottom", "-150px");
-        $(".show-off-menu").css("bottom", "0");
+            $(".main-info").css("bottom", "-150px");
+            $(".show-off-menu").css("bottom", "0");
         });
         });
     </script>
     <script type="text/javascript">
         $(window).load(function(){
-        $("#show-on").click(function() {
-        $(".main-info").css("bottom", "0");
-        $(".show-off-menu").css("bottom", "150px");
+            $("#show-on").click(function() {
+            $(".main-info").css("bottom", "0");
+            $(".show-off-menu").css("bottom", "150px");
         });
         });
     </script>
     <script type="text/javascript">
         $(window).load(function(){
         $("#show-off-right").click(function() {
-        $(".main-info-right").css("right", "-150px");
-        $(".show-off-menu-right").css("right", "0");
+            $(".up-unchk-right").css("display", "none");
+            $(".up-chk-right").css("display", "inline");
+            $(".main-info-right").css("right", "-150px");
+            $(".list_of_nav_buttons_right").css("right", "0");
         });
         });
     </script>
     <script type="text/javascript">
         $(window).load(function(){
         $("#show-on-right").click(function() {
-        $(".main-info-right").css("right", "0");
-        $(".show-off-menu-right").css("right", "150px");
+            $(".up-unchk-right").css("display", "inline");
+            $(".up-chk-right").css("display", "none");
+            $(".main-info-right").css("right", "0");
+            $(".list_of_nav_buttons_right").css("right", "150px");
         });
         });
     </script>
-
-
-    <div id="right-bar">
-        <nav class="list_of_nav_buttons_right">
-            <ul class="show-off-menu-right">
-                <input type="checkbox" name="show-btn-right" id="show-btn-right">
-                <li class="show-btn-right">
-                    <label for="show-btn-right">
-                        <div class="up-chk-right" id="show-on-right">
-                            <span class="icon icon-up-micro"></span>
-                        </div>
-                        <div class="up-unchk-right"id="show-off-right">
-                            <span class="icon icon-down-micro"></span>
-                        </div>
-                    </label>
-                </li>
-            </ul>
-            <div class="main-info-right" >
-
-            </div>
-        </nav>
-
-    </div>
-
-    <footer>
-        <nav class="list_of_nav_buttons">
-            <ul class="show-off-menu">
-                <input type="checkbox" name="show-btn" id="show-btn">
-                <li class="show-btn">
-                    <label for="show-btn">
-                        <div class="up-chk" id="show-on">
-                            <span class="icon icon-up-micro"></span>
-                        </div>
-                        <div class="up-unchk"id="show-off">
-                            <span class="icon icon-down-micro"></span>
-                        </div>
-                    </label>
-                </li>
-            </ul>
-            <div class="main-info" >
-
-            </div>
-        </nav>
-
-    </footer>
 
 </body>
 </html>

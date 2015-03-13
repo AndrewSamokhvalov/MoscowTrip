@@ -4,8 +4,9 @@
     <title></title>
 </head>
 <body>
-<h3>Дима и Илья исправьте меня!</h3>
-
+<h3 style="z-index: 10; cursor: pointer; margin-right: 7em; border-right: 0.05em solid grey; " onclick="document.getElementById('parent_popup').style.display='inline',document.getElementById('popup').style.display='inline';">{{ name }}</h3>
+<img style="position: absolute; top: 0.5em; right: 2em;" src="#" alt="picture">
+{% comment %}
 <p>name: {{ name }}</p>
 <p>web_site: {{ website }}</p>
 <p>public_phone: {{ phone }}</p>
@@ -13,6 +14,7 @@
 <p>working_hours: {{ working_hours }}</p>
 <p>rating: {{ rating }}</p>
 <strong> Остальные поля смотреть в models.py</strong>
+{% endcomment %}
 
 </body>
 </html>
