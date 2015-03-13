@@ -20,6 +20,11 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
             var searchControl = new ymaps.control.SearchControl({options: { position: { right: 8, top: 10 }}});
             var routeEditor = new ymaps.control.RouteEditor({options: { position: { left: 40, top: 105 }}});
 
+
+            routeEditor.events.add('deselect', function () {
+                    CardSvc.setRoute(map, routeEditor.getRoute())
+                });
+
             map.controls.add(zoomControl);
             map.controls.add(geolocationControl);
             map.controls.add(searchControl);
