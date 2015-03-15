@@ -154,3 +154,22 @@ def set_route(request):
             return HttpResponse("error!")
 
     return HttpResponse("Not POST request!")
+
+def get_place_info(request):
+    if request.method == 'GET':
+        try:
+            place_id = request.GET.get('place_id')
+            place_id = eval(place_id)
+
+            place = Place.objects.select_related().filter(id_place=place_id)
+            return HttpResponse(serializers.serialize(place))
+
+        except Exception as inst:
+            print("=" * 150)
+            print(type(inst))  # the exception instance
+            print(inst.args)  # arguments stored in .args
+            print(inst)  # __str__ allows args to be printed directly
+            return HttpResponse("error!")
+
+
+

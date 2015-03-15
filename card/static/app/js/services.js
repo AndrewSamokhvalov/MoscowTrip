@@ -7,6 +7,12 @@ roadtrippersApp.factory('CardSvc', function ($http) {
             });
         },
 
+        setPlaceInfo: function (place_id, scope) {
+            return $http.get('/getPlaceInfo', { 'types': JSON.stringify(place_id) }).success(function (response) {
+//                   scope
+            });
+        },
+
         setRoute: function (map, route) {
             var points = []
             route.getPaths().each(function(path){points.push(path.geometry.getCoordinates())})
