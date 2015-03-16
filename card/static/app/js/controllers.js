@@ -5,9 +5,10 @@
 roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
     function ($scope, CardSvc) {
         $scope.init = function(map) {
+            $scope.map = map
 
-            ymaps.route(['Королёв', 'Химки']).then(function (route) {
-                CardSvc.setRoute(map, route);
+            ymaps.route(['москва метро пролетарская', 'Савёловский']).then(function (route) {
+                CardSvc.setRoute($scope, route);
             });
 
             CardSvc.setTypes([1, 2]);
@@ -22,7 +23,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
 
 
             routeEditor.events.add('deselect', function () {
-                    CardSvc.setRoute(map, routeEditor.getRoute())
+                    CardSvc.setRoute($scope, routeEditor.getRoute())
                 });
 
             map.controls.add(zoomControl);

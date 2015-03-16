@@ -11,30 +11,41 @@ from django.core.cache import cache
 
 from card.polygon import *
 
+
 def card(request):
     return render_to_response('index.html')
+
 
 @csrf_exempt
 def get_places(request):
     if request.method == 'GET':
         try:
-            types = request.GET.get('types')
+            types = request.session.get('types')
             callback = request.GET.get('callback')
             bbox = request.GET.get('bbox')
+            route = request.session.get('route')
 
-            types = "[1,2]"
             if types == None:
                 print("ERROR: Types is none!")
                 return HttpResponse("ERROR: Types is none!")
+
+            if route == None:
+                print("ERROR: Types is none!")
+                return HttpResponse("ERROR: Types is none!")
+
 
             # print("types: %s" % types)
             # print("callback: %s" % callback)
             # print("bbox: %s" % bbox)
 
-            #places = cache.get(bbox)
-            #if not places:
-            places = filter_places(types, bbox)[:100]
+            # places = cache.get(bbox)
+
+            # if not places:
+            places = filter_places(route, types, bbox)
             #cache.set(bbox, list(places))
+
+            # if route not None:
+            #     filter_by_route()
 
             return HttpResponse(serialize_places(places, callback))
 
@@ -46,11 +57,7 @@ def get_places(request):
             return HttpResponse("error!")
 
 
-def filter_places(types, bbox):
-    # convert string to list of strings
-    types = unquote(types)
-    types = eval(types)
-
+def filter_places(route, types, bbox):
     bbox = list(map(lambda x: float(x), bbox.split(',')))
 
     lat_left_down = bbox[0]
@@ -58,12 +65,48 @@ def filter_places(types, bbox):
     lat_right_up = bbox[2]
     lon_right_up = bbox[3]
 
-    # get points in rectangle are specified by two point (lat_left_down,lon_left_down) and (lat_right_up,lon_right_up)
-    return Place.objects.select_related().filter(id_type__in=types,
-                                                 lat__gt=lat_left_down,
-                                                 lat__lt=lat_right_up,
-                                                 lon__gt=lon_left_down,
-                                                 lon__lt=lon_right_up)
+    places = Place.objects.select_related().filter(id_type__in=types,
+                                                   lat__gt=lat_left_down,
+                                                   lat__lt=lat_right_up,
+                                                   lon__gt=lon_left_down,
+                                                   lon__lt=lon_right_up)
+
+    if route is not None:
+
+        # worst method which can only be
+        R = 0.02
+        idplaces = []
+        for place in places:
+
+            lat1 = place.lat
+            lon1 = place.lon
+            for point in route:
+                lat2 = point[0]
+                lon2 = point[1]
+
+                d = math.sqrt((lat1 - lat2) ** 2 + (lon1 - lon2) ** 2)
+                if d < R:
+                    idplaces.append(place.id)
+                    break
+
+        places = places.filter(id__in=idplaces)
+        # parameters = []
+        # condition = []
+        # for point in route:
+        # x = point[0]
+        #     y = point[1]
+        #
+        #     condition += ["          acos(   sin(t.lat * 0.0175) * sin(%s * 0.0175)                     " \
+        #                  "                + cos(t.lat * 0.0175) * cos(%s * 0.0175)                      " \
+        #                  "                * cos((%s * 0.0175) - (t.lon * 0.0175))                       " \
+        #                  "              ) * 3959 <= %s                                                  "]
+        #
+        #     parameters += [x, y, 0.02]
+        #
+        # condition = 'OR'.join(condition)
+        # places = places.raw("SELECT * FROM card_place WHERE (" + condition + " )", parameters)
+
+    return places
 
 
 def serialize_places(places, callback):
@@ -79,7 +122,8 @@ def serialize_places(places, callback):
             },
             "id": place.id,
             "properties": {
-                "balloonContent": render_to_response('balloon_content.html', next(content)['fields']).content.decode('utf-8'),
+                "balloonContent": render_to_response('balloon_content.html', next(content)['fields']).content.decode(
+                    'utf-8'),
             },
             "options": {
                 "iconLayout": "default#image",
@@ -99,20 +143,20 @@ def serialize_places(places, callback):
 
     return callback + "(" + json.dumps(data) + ");"
 
+
 @csrf_exempt
 def set_types(request):
     if request.method == 'POST':
         try:
             str_response = request.body.decode('utf-8')
-            received_json_data = eval(str_response)
-
-            types = received_json_data['types']
+            received_json_data = json.loads(str_response)
+            types = json.loads(received_json_data['types'])
 
             if types == None:
                 print("ERROR: Types is none!")
                 return HttpResponse("ERROR: Types is none!")
 
-            # use django session and save type
+            request.session['types'] = types
             print('Types %s ' % str(types))
 
             return HttpResponse("Good!")
@@ -126,22 +170,22 @@ def set_types(request):
 
     return HttpResponse("Not POST request!")
 
+
 @csrf_exempt
 def set_route(request):
     if request.method == 'POST':
         try:
             str_response = request.body.decode('utf-8')
+            received_json_data = json.loads(str_response)
 
-            # Function 'eval' is not secure!
-            received_json_data = eval(str_response)
-
-            route = eval(received_json_data['points'])
+            route = json.loads(received_json_data['points'])
 
             if route == None:
                 print("ERROR: Route is none!")
                 return HttpResponse("ERROR: route is none!")
 
             # use django session and save route param for current session
+            request.session['route'] = route
             print('Route %s ' % str(route))
 
             return HttpResponse(get_polygons(0.02, route))
@@ -154,6 +198,7 @@ def set_route(request):
             return HttpResponse("error!")
 
     return HttpResponse("Not POST request!")
+
 
 def get_place_info(request):
     if request.method == 'GET':

@@ -9,19 +9,23 @@ roadtrippersApp.factory('CardSvc', function ($http) {
 
         setPlaceInfo: function (place_id, scope) {
             return $http.get('/getPlaceInfo', { 'types': JSON.stringify(place_id) }).success(function (response) {
-//                   scope
             });
         },
 
-        setRoute: function (map, route) {
+        setRoute: function ($scope, route) {
             var points = []
             route.getPaths().each(function(path){points.push(path.geometry.getCoordinates())})
-            map.geoObjects.add(route)
+
+            $scope.map.geoObjects.remove($scope.route)
+            $scope.map.geoObjects.remove($scope.area)
+
+            $scope.route = route
+            $scope.map.geoObjects.add(route)
+
             return $http.post('/setRoute', { 'points': JSON.stringify(points[0])}).success(function (polyline) {
 
-
                         // Создаем ломаную с помощью вспомогательного класса Polyline.
-                        var myGeoObject = new ymaps.GeoObject({
+                        var area = new ymaps.GeoObject({
                         // Описываем геометрию геообъекта.
                             geometry: {
                                 // Тип геометрии - "Многоугольник".
@@ -46,7 +50,9 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                         });
 
                         // Добавляем линии на карту.
-                        map.geoObjects.add(myGeoObject)
+                        $scope.area = area
+                        $scope.map.geoObjects.add(area)
+                        $scope.map.update();
                 });
         },
 
