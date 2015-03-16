@@ -10,12 +10,27 @@
     <link rel="shortcut icon" href={% static "images/favicon.ico" %} type="image/x-icon">
 
     <link href={% static "app/css/roadtrippers.css" %} rel="stylesheet">
-    <script src={% static "app/bower_components/jquery/dist/jquery.js"%}></script>
-    <script src={% static "app/bower_components/angular/angular.js"%}></script>
+    <link href={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.css" %} rel="stylesheet">
+
+    <script src={% static "app/bower_components/jquery/dist/jquery.js" %}></script>
+    <script src={% static "app/bower_components/angular/angular.js" %}></script>
+    <script src={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.js" %}></script>
+
     <script src={% static "app/js/ya-map-2.1.js" %}></script>
     <script src={% static "app/js/app.js" %}></script>
     <script src={% static "app/js/services.js" %}></script>
     <script src={% static "app/js/controllers.js" %}></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.slider1').bxSlider({
+                slideWidth: 200,
+                minSlides: 2,
+                maxSlides: 3,
+                slideMargin: 10
+            });
+        });
+    </script>
 
 </head>
 
@@ -134,47 +149,61 @@
                 </label>
             </li>
         </ul>{% endcomment %}
-{#        TODO: ng-repeat мест #}
+        TODO: ng-repeat мест
     </section>
 
+<div>
+    <div class="slider1">
+        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar1"></div>
+        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar2"></div>
+        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar3"></div>
+        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar4"></div>
+        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar5"></div>
+        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar6"></div>
+        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar7"></div>
+        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar8"></div>
+        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar9"></div>
+    </div>
+</div>
 
 
-    <script type="text/javascript">
-        $(window).load(function(){
-        $("#show-off").click(function() {
+<script type="text/javascript">
+    $(window).load(function () {
+        $("#show-off").click(function () {
             $(".main-info").css("bottom", "-150px");
             $(".show-off-menu").css("bottom", "0");
         });
-        });
-    </script>
-    <script type="text/javascript">
-        $(window).load(function(){
-            $("#show-on").click(function() {
+    });
+</script>
+<script type="text/javascript">
+    $(window).load(function () {
+        $("#show-on").click(function () {
             $(".main-info").css("bottom", "0");
             $(".show-off-menu").css("bottom", "150px");
         });
-        });
-    </script>
-    <script type="text/javascript">
-        $(window).load(function(){
-        $("#show-off-right").click(function() {
+    });
+</script>
+<script type="text/javascript">
+    $(window).load(function () {
+        $("#show-off-right").click(function () {
             $(".up-unchk-right").css("display", "none");
             $(".up-chk-right").css("display", "inline");
             $(".main-info-right").css("right", "-150px");
             $(".list_of_nav_buttons_right").css("right", "0");
         });
-        });
-    </script>
-    <script type="text/javascript">
-        $(window).load(function(){
-        $("#show-on-right").click(function() {
+    });
+</script>
+<script type="text/javascript">
+    $(window).load(function () {
+        $("#show-on-right").click(function () {
             $(".up-unchk-right").css("display", "inline");
             $(".up-chk-right").css("display", "none");
             $(".main-info-right").css("right", "0");
             $(".list_of_nav_buttons_right").css("right", "150px");
         });
-        });
-    </script>
+    });
+</script>
+
 
 </body>
 </html>
