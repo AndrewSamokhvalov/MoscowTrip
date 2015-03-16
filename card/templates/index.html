@@ -24,9 +24,10 @@
     <script>
         $(document).ready(function () {
             $('.slider1').bxSlider({
-                slideWidth: 200,
+                slideWidth: 145,
+                adaptiveHeight: true,
                 minSlides: 2,
-                maxSlides: 3,
+                maxSlides: 10,
                 slideMargin: 10
             });
         });
@@ -135,51 +136,53 @@
     </div>
     <div id="parent_popup"></div>
 
-    {% comment %}<section id="bottom-bar">
-        <ul class="show-off-menu">
-            <input type="checkbox" name="show-btn" id="show-btn">
-            <li class="show-btn">
-                <label for="show-btn">
-                    <div class="up-chk" id="show-on">
-                        <span class="icon icon-up-micro"></span>
-                    </div>
-                    <div class="up-unchk"id="show-off">
-                        <span class="icon icon-down-micro"></span>
-                    </div>
-                </label>
-            </li>
-        </ul>{% endcomment %}
-        TODO: ng-repeat мест
+    <section id="bottom-bar">
+        <nav class="list_of_nav_buttons">
+            <div class="up-chk" id="show-on">
+                <span class="icon icon-up-micro"></span>
+            </div>
+            <div class="up-unchk"id="show-off">
+                <span class="icon icon-down-micro"></span>
+            </div>
+        </nav>
+        <main class="main-info">
+            <div>
+                <div class="slider1">
+                    <div class="slide"><img src="http://placehold.it/350x150&text=FooBar1"></div>
+                    <div class="slide"><img src="http://placehold.it/350x150&text=FooBar2"></div>
+                    <div class="slide"><img src="http://placehold.it/350x150&text=FooBar3"></div>
+                    <div class="slide"><img src="http://placehold.it/350x150&text=FooBar4"></div>
+                    <div class="slide"><img src="http://placehold.it/350x150&text=FooBar5"></div>
+                    <div class="slide"><img src="http://placehold.it/350x150&text=FooBar6"></div>
+                    <div class="slide"><img src="http://placehold.it/350x150&text=FooBar7"></div>
+                    <div class="slide"><img src="http://placehold.it/350x150&text=FooBar8"></div>
+                    <div class="slide"><img src="http://placehold.it/350x150&text=FooBar9"></div>
+                </div>
+            </div>
+        </main>
     </section>
 
-<div>
-    <div class="slider1">
-        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar1"></div>
-        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar2"></div>
-        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar3"></div>
-        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar4"></div>
-        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar5"></div>
-        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar6"></div>
-        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar7"></div>
-        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar8"></div>
-        <div class="slide"><img src="http://placehold.it/350x150&text=FooBar9"></div>
-    </div>
-</div>
+
+
 
 
 <script type="text/javascript">
     $(window).load(function () {
         $("#show-off").click(function () {
+            $(".up-unchk").css("display", "none");
+            $(".up-chk").css("display", "inline");
             $(".main-info").css("bottom", "-150px");
-            $(".show-off-menu").css("bottom", "0");
+            $(".list_of_nav_buttons").css("bottom", "0");
         });
     });
 </script>
 <script type="text/javascript">
     $(window).load(function () {
         $("#show-on").click(function () {
+            $(".up-unchk").css("display", "inline");
+            $(".up-chk").css("display", "none");
             $(".main-info").css("bottom", "0");
-            $(".show-off-menu").css("bottom", "150px");
+            $(".list_of_nav_buttons").css("bottom", "150px");
         });
     });
 </script>

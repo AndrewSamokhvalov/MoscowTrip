@@ -87,7 +87,7 @@ header
     border-radius: 0.4em;
     cursor: pointer;
 }
-.list_of_nav_buttons>ul
+#bottom-bar .list_of_nav_buttons
 {
     position: fixed;
     z-index: 2;
@@ -205,7 +205,7 @@ header
     -moz-border-top-right-radius: 0.4em;
     -webkit-border-top-right-radius: 0.4em;
 }
-.list_of_nav_buttons .main-info
+#bottom-bar .main-info
 {
     position: fixed;
     background-color: #f5f5f5;
@@ -226,11 +226,11 @@ header
 }
 .up-chk
 {
-    display: none;
+    display: inline;
 }
 .up-unchk
 {
-    display: inline;
+    display: none;
 }
 .up-chk-right
 {
@@ -244,6 +244,11 @@ header
 li.show-btn-right
 {
     height:2em;
+}
+.slider1 img,
+.slider
+{
+    height: 150px;
 }
 /*---------------------------end-footer_rightbar-------------------------------*/
 
