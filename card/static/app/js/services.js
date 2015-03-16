@@ -1,9 +1,9 @@
 roadtrippersApp.factory('CardSvc', function ($http) {
 
     return {
-        setTypes: function (types) {
+        setTypes: function ($scope, types) {
             return $http.post('/setTypes', { 'types': JSON.stringify(types) }).success(function (response) {
-//                map.update();
+                $scope.updateROM()
             });
         },
 
@@ -52,16 +52,8 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                         // Добавляем линии на карту.
                         $scope.area = area
                         $scope.map.geoObjects.add(area)
-                        $scope.map.update();
+                        $scope.updateROM()
                 });
         },
-
-        getROM: function () {
-            return new ymaps.RemoteObjectManager('getPlaces?bbox=%b',
-                {
-                    // Опции кластеров задаются с префиксом cluster.
-                    clusterHasBalloon: false
-                });
-        }
     };
 });
