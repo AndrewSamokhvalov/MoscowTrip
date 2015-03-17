@@ -1,11 +1,20 @@
+{% load staticfiles %}
+
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
 </head>
 <body>
-<h3 style="z-index: 10; cursor: pointer; margin-right: 7em; border-right: 0.05em solid grey; " onclick="document.getElementById('parent_popup').style.display='inline',document.getElementById('popup').style.display='inline';">{{ name }}</h3>
-<img style="position: absolute; top: 0.5em; right: 2em;" src="#" alt="picture">
+<div style="width:300px; height: 80px;"  onclick="document.getElementById('parent_popup').style.display='inline',document.getElementById('popup').style.display='inline';">
+    <div>
+        <img style="position: absolute; top: 0px; left: 0; bottom:0 ;" src="{% static "app/images/0003.jpg" %}" alt="picture">
+    </div>
+    <div style="position: absolute; left:120px; top: 40px;">
+        <h3 style="z-index: 10; cursor: pointer; margin: 0;">{{ name }}</h3>
+    </div>
+</div>
+
 {% comment %}
 <p>name: {{ name }}</p>
 <p>web_site: {{ website }}</p>
