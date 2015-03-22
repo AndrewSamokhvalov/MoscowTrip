@@ -58,7 +58,7 @@ header
     bottom: 0;
     left:0;
     right:0;
-    z-index: 2;
+    z-index: 1;
 }
 #right-bar
 {
@@ -66,27 +66,9 @@ header
     bottom: 0;
     top:0;
     right:0;
-    z-index: 3;
-}
-.filters>ul
-{
-    position: fixed;
     z-index: 2;
-    top: 2.6em;
-    left: 0.25em;
-    width: auto;
-    height: auto;
-    font-size: 1.5em;
-    box-shadow: 0 0 0.05em ;
-    background: #f5f5f5;
-    list-style-type: none;
-    margin:0 0 0 0;
-    padding: 0 0 0 0;
-    -webkit-border-radius: 0.4em;
-    -moz-border-radius: 0.4em;
-    border-radius: 0.4em;
-    cursor: pointer;
 }
+
 #bottom-bar .list_of_nav_buttons
 {
     position: fixed;
@@ -214,14 +196,87 @@ header
     bottom:-155px;
     height: 155px;
 }
+.main-info-right img
+{
+    position: absolute;
+    top:5px;
+    left:5px;
+    width:340px;
+    height: 230px;
+    border-radius: 5px 5px 0 0;
+}
+.main-info-right .make-trip
+{
+    position: absolute;
+    top:235px;
+    left:5px;
+    bottom:5px;
+    width:340px;
+    height: auto;
+    background: #fff;
+    border-radius: 0 0 5px 5px;
+}
+.make-trip .form-A
+{
+    position: absolute;
+    top: 0;
+    left:45px;
+    width:250px;
+    height: 20px;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+.make-trip .form-B
+{
+    position: absolute;
+    top: 25px;
+    left:45px;
+    width:250px;
+    height: 20px;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+.form-a-inp,
+.form-b-inp
+{
+    position: absolute;
+    right: 0;
+    top: 0;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    width: 230px;
+}
+.icon-A,
+.icon-B
+{
+    position: absolute;
+    top:2px;
+    left:4px;
+}
+.input
+{
+    position: absolute;
+    left:10px;
+    top:0;
+    width:320px;
+    height:150px;
+}
+#find-trip-btn
+{
+    position: absolute;
+    color:#00cc99;
+    top:55px;
+    left: 105px;
+}
 #right-bar .main-info-right
 {
     position: fixed;
     z-index: 3;
     background-color: #f5f5f5;
-    width: 150px;
+    width: 350px;
     box-shadow: 0 0 0.05em ;
-    right:-150px;
+    right:-350px;
     height: 100%;
 }
 .up-chk
@@ -265,6 +320,25 @@ li.show-btn-right
 /*---------------------------end-footer_rightbar-------------------------------*/
 
 /*---------------------------filtersBlock-------------------------------*/
+.filters>ul
+{
+    position: fixed;
+    z-index: 2;
+    top: 2.6em;
+    left: 0.25em;
+    width: auto;
+    height: auto;
+    font-size: 1.5em;
+    box-shadow: 0 0 0.05em ;
+    background: #f5f5f5;
+    list-style-type: none;
+    margin:0 0 0 0;
+    padding: 0 0 0 0;
+    -webkit-border-radius: 0.4em;
+    -moz-border-radius: 0.4em;
+    border-radius: 0.4em;
+    cursor: pointer;
+}
 .filters>ul>.filter-place_of_interests:hover {
     background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
     background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
@@ -375,10 +449,10 @@ li.show-btn-right
 /*---------------------------balloonbox-------------------------------*/
 #parent_popup{
     position: fixed;
-    top: 0px;
-    left: 0px;
-    margin: 0px;
-    padding: 0px;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
     background: black;
@@ -391,39 +465,48 @@ li.show-btn-right
     z-index: 111;
     width:auto;
     height:80%;
-    border: 4px double black;
     background: #dfdfdf;
     padding: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
     position: fixed;
     display: none;
     top: 4em;
+    min-width: 800px;
     right: 21em;
     left: 21em;
 }
+.popup-main
+{
+    background: #fff;
+    border-radius: 10px;
+    height: 100%;
+}
 #scrl
 {
-    height: 100%;
+    height: 68%;
     width: 100%;
     overflow-y: scroll;
+}
+#heady img
+{
+    position: absolute;
+    top: 0;
+    left: 20px;
+    width:140px;
+    height: 140px;
 }
 #heady
 {
     width: 100%;
-    height: 18em;
+    height: 12em;
     position: relative;
     top: 0;
     left:0;
+    box-shadow: 0 4px 2px -2px gray;
 }
 #footy
 {
     width: 100%;
-    height: auto;
+    height: 100%;
     position: relative;
     bottom: 0;
     left:0;
@@ -432,43 +515,83 @@ li.show-btn-right
 {
     position:absolute;
     width: 15em;
-    left:5em;
+    left:10em;
 }
 #heady #list-of-p
 {
     position: absolute;
     top: 3em;
-    left:1.5em;
-    font-size: 1.2em;
+    left:14em;
+    font-size: 1em;
+}
+#footy .add-like-place
+{
+    position: absolute;
+    top:1em;
+    left:20px;
+    border: 1px solid gray;
+    box-shadow: 0.2em 0.2em 2px rgba(122,122,122,0.5);
+    width:7.5em;
+    height:1.4em;
+    border-radius: 5px;
+    font-size: 2em;
+    color: #ff3366;
+    cursor: pointer;
+}
+#footy .add-like-place:hover
+{
+    color:#ff0099;
+}
+#footy .add-to-trip:hover
+{
+    color:#00cccc;
+}
+.add-like-place span,
+.add-to-trip span
+{
+    position: absolute;
+    top:5px;
+    left:7px;
+}
+#footy .add-to-trip
+{
+    position: absolute;
+    top:1em;
+    left:9em;
+    border: 1px solid gray;
+    box-shadow: 0.2em 0.2em 2px rgba(122,122,122,0.5);
+    width:8em;
+    height:1.4em ;
+    border-radius: 5px;
+    font-size: 2em;
+    color: #00cc99;
+    cursor: pointer;
 }
 .contacts
 {
     position:absolute;
-    top:0;
+    top:6em;
     right:2em;
-    width:20em;
+    width:18em;
+    border: 1px solid gray;
+    border-radius: 5px;
+    box-shadow: 0.2em 0.2em 2px rgba(122,122,122,0.5);
     height: auto;
 }
 .options
 {
     position:absolute;
-    top: 0;
+    top: 6em;
+    /*border: 1px solid gray;
+    border-radius: 5px;
+    box-shadow: 0.2em 0.2em 2px rgba(122,122,122,0.5);*/
     left:1.6em;
-    width:28em;
-}
-#src
-{
-    position:absolute;
-    top:1em;
-    right:2em;
-    width:20em;
-    height: 15em;
+    width:33em;
 }
 .close-btn{
     z-index: 112;
     width: 10px;
     height: 10px;
-    border: 4px double black;
     background: #dfdfdf;
     padding: 5px;
     -webkit-border-radius: 20px;
@@ -478,8 +601,8 @@ li.show-btn-right
     -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.5);
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
     position: absolute;
-    bottom: 98%;
-    right: -1em;
+    bottom: 94%;
+    right: 1em;
 }
 .x-btn{
     position: absolute;
@@ -489,6 +612,109 @@ li.show-btn-right
 
 /*---------------------------end-balloonbox-------------------------------*/
 
+/*---------------------------balloon_balloon-elements-------------------------------*/
+
+.ymaps-2-1-22-balloon__close
+{
+    margin: 0 0 0 0 !important;
+    right:41px !important;
+    top:3px !important;
+}
+.ymaps-2-1-22-balloon__content
+{
+    width: 290px !important;
+    height:80px !important;
+    margin:0 0 0 0 !important;
+    padding:0 0 0 0 !important;
+    background: rgba(0,0,0,0.5) !important;
+}
+.ymaps-2-1-22-balloon__content .balloon-info
+{
+    position: absolute;
+    border-radius: 5px;
+    top:5px;
+    left:5px;
+    right:41px;
+    bottom:5px;
+    background: #fff;
+}
+.ymaps-2-1-22-balloon__tail:after
+{
+    background: rgba(0,0,0,0.5) !important;
+}
+.balloon-img > img
+{
+    top:5px;
+    left:5px;
+    width: 70px;
+    height: 70px;
+    border-radius: 5px 0 0 5px;
+
+}
+.like-balloon
+{
+    position: absolute;
+    right: -36px;
+    top:0;
+    border-radius: 5px;
+    width: 34px;
+    height: 34px;
+    background: #fff;
+    cursor: pointer;
+}
+.trip-balloon
+{
+    position: absolute;
+    cursor: pointer;
+    right: -36px;
+    bottom:0;
+    border-radius: 5px;
+    width: 34px;
+    height: 34px;
+    background: #fff;
+}
+.trip-balloon .icon-cab
+{
+    position: absolute;
+    font-size: 1.8em;
+    top: 6px;
+    left:4px;
+    color: #00cc99;
+}
+.like-balloon .icon-heart
+{
+    position: absolute;
+    font-size: 1.8em;
+    top: 6px;
+    left:5px;
+    color: #ff3366;
+}
+.like-balloon .icon-heart:hover
+{
+    color:#ff0099;
+}
+.trip-balloon .icon-cab:hover
+{
+    color:#00cccc;
+}
+.balloon-info h4
+{
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    top:20px;
+    left:75px;
+}
+.balloon-info .balloon-rate
+{
+    position: absolute;
+    top:0;
+    left: 15px;
+    background: #00ff00;
+    width:20px;
+    height: 20px;
+}
+/*---------------------------end-balloon_balloon-elements-------------------------------*/
 
 .radius
 {
@@ -532,21 +758,13 @@ li.show-btn-right
     line-height: 1em;
 }
 
-.icon-leaf:before { content: '\e800'; }
-
-.icon-search:before { content: '\e801'; }
-
-.icon-bank:before { content: '\e802'; }
-
-.icon-camera:before { content: '\e803'; }
-
 .icon-down-micro:before { content: '\e804'; }
 
 .icon-up-micro:before { content: '\e805'; }
 
-.icon-restaurant:before { content: '\e806'; }
+.icon-cab:before { content: '\e808'; }
 
-.icon-diamond:before { content: '\e807'; }
+.icon-heart:before { content: '\e809'; }
 
 
 

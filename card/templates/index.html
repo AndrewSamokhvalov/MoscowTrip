@@ -95,58 +95,68 @@
                 <span class="icon icon-down-micro"></span>
             </div>
         </nav>
-        <header>
-            <figure></figure>
-        </header>
         <main class="main-info-right">
-            <div class="input">
-                <span class="icon"></span>
-                <input type="text"/>
-            </div>
-            <div class="input">
-                <span class="icon"></span>
-                <input type="text"/>
+            <img src="{% static "app/images/0002.jpg" %}" alt="Маршрут">
+            <div class="make-trip">
+                <div class="form-A">
+                    <span class="icon-A">A:</span>
+                    <input class="form-a-inp" type="text" placeholder="Введите пункт А"/>
+                </div>
+                <div class="form-B">
+                    <span class="icon-B">B:</span>
+                    <input class="form-b-inp" type="text" placeholder="Введите пункт В"/>
+                </div>
+                <input id="find-trip-btn" type="submit" value="Построить маршрут">
             </div>
         </main>
     </section>
 
     <div id="popup">
-        <div class="close-btn" style="cursor: pointer;" onclick="document.getElementById('parent_popup').style.display='none',document.getElementById('popup').style.display='none';">
-            <div class="x-btn"><b>X</b></div>
-        </div>
-        <div id="scrl">
+        <div class="popup-main">
+            <div class="close-btn" style="cursor: pointer;" onclick="document.getElementById('parent_popup').style.display='none',document.getElementById('popup').style.display='none';">
+                <div class="x-btn"><b>X</b></div>
+            </div>
             <div id="heady">
+                <img src="{% static "app/images/0003.jpg" %}" alt="Picture">
                 <h2>Ресторан "Панучи"</h2>
                 <div id="list-of-p">
                     <p>Адрес - г.Москва, ул. Ленина, д.9, к.3. </p>
                     <p>Время работы - круглосуточно.</p>
                     <p>Плата - до 20:00 вход беслпатный.</p>
                 </div>
-                <img src="{% static "app/images/0001.jpg" %}" id="src" alt="картинка">
             </div>
-            <div id="footy">
-                <div class="options">
-                    <h3>Описание места:</h3>
-                    <p>Ресторан «Панучи» - это классический европейский ресторан.
-                    Дизайн интерьера в точности отражает его название.
-                    Все элементы выдержаны в едином, тонком, современном минималистичном, но при этом дорогом стиле.
-                    Цветовая гамма заведения подобрана таким образом, чтобы гости могли расслабиться и спокойно насладиться превосходными блюдами.
-                    Просторное светлое помещение, хорошо подобранные предметы декора, изящность и красота линий.
-                    Яблочная тема, проскальзывая во всем, превосходно поднимает тонус и заряжает энергией: подсвечники, выполненные в форме яблока, шторы, цвета насыщенной яблочной листвы и даже посуда ярко-зеленого цвета.
-                    В ресторане царит удивительная атмосфера легкости, элегантности и хорошего настроения.</p>
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                    Долистали
-                </div>
-                <div class="contacts">
-                    <h3>Контакты:</h3>
-                    <p>Резервация столика - 8-987-654-32-10</p>
-                    <p>Книга отзывов и предложений - 8-898-939-52-31.</p>
-                    <br>
-                    <p>Сайретдинов У.Т.- владелец ресторана.</p>
-                    <p>Контактный телефон - 8-888-999-55-33.</p>
+            <div id="scrl">
+                <div id="footy">
+                    <div class="add-like-place">
+                        <span class="icon icon-heart"> I LIKE THAT</span>
+                    </div>
+                    <div class="add-to-trip">
+                        <span class="icon icon-cab"> ADD TO TRIP</span>
+                    </div>
+
+                    <div class="options">
+                        <h3>Описание места:</h3>
+                        <p>Ресторан «Панучи» - это классический европейский ресторан.
+                        Дизайн интерьера в точности отражает его название.
+                        Все элементы выдержаны в едином, тонком, современном минималистичном, но при этом дорогом стиле.
+                        Цветовая гамма заведения подобрана таким образом, чтобы гости могли расслабиться и спокойно насладиться превосходными блюдами.
+                        Просторное светлое помещение, хорошо подобранные предметы декора, изящность и красота линий.
+                        Яблочная тема, проскальзывая во всем, превосходно поднимает тонус и заряжает энергией: подсвечники, выполненные в форме яблока, шторы, цвета насыщенной яблочной листвы и даже посуда ярко-зеленого цвета.
+                        В ресторане царит удивительная атмосфера легкости, элегантности и хорошего настроения.</p>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                        Долистали
+                    </div>
+                    <div class="contacts">
+                        <h3>Контакты:</h3>
+                        <p>Резервация столика - 8-987-654-32-10</p>
+                        <p>Книга отзывов и предложений - 8-898-939-52-31.</p>
+                        <br>
+                        <p>Сайретдинов У.Т.- владелец ресторана.</p>
+                        <p>Контактный телефон - 8-888-999-55-33.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -213,7 +223,7 @@
         $("#show-off-right").click(function () {
             $(".up-unchk-right").css("display", "none");
             $(".up-chk-right").css("display", "inline");
-            $(".main-info-right").css("right", "-150px");
+            $(".main-info-right").css("right", "-350px");
             $(".list_of_nav_buttons_right").css("right", "0");
         });
     });
@@ -224,7 +234,7 @@
             $(".up-unchk-right").css("display", "inline");
             $(".up-chk-right").css("display", "none");
             $(".main-info-right").css("right", "0");
-            $(".list_of_nav_buttons_right").css("right", "150px");
+            $(".list_of_nav_buttons_right").css("right", "350px");
         });
     });
 </script>
