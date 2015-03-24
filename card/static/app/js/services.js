@@ -54,6 +54,6 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                         $scope.map.geoObjects.add(area)
                         $scope.updateROM()
                 });
-        },
+        }
     };
 });

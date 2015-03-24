@@ -312,9 +312,10 @@ li.show-btn-right
 .slide div.rang
 {
     position: absolute;
-    width:3em;
-    height: 2em;
-    top:0.5em;
+    width:1.8em;
+    height: 1.4em;
+    background: #fff;
+    top:0;
     left:0.5em;
 }
 /*---------------------------end-footer_rightbar-------------------------------*/

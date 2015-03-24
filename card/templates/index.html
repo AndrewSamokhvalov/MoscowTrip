@@ -128,10 +128,10 @@
             <div id="scrl">
                 <div id="footy">
                     <div class="add-like-place">
-                        <span class="icon icon-heart"> I LIKE THAT</span>
+                        <span class="icon icon-heart"> НРАВИТСЯ</span>
                     </div>
                     <div class="add-to-trip">
-                        <span class="icon icon-cab"> ADD TO TRIP</span>
+                        <span class="icon icon-cab"> В МАРШРУТ</span>
                     </div>
 
                     <div class="options">
@@ -172,23 +172,10 @@
                 <span class="icon icon-down-micro"></span>
             </div>
         </nav>
-        <main class="main-info">
+        <main class="main-info" >
             <div>
-                <div class="slider1">
-                    <div class="slide"><div class="rang">4.4</div><img src="http://placehold.it/350x150&text=FooBar1"></div>
-                    <div class="slide"><div class="rang">4.5</div><img src="http://placehold.it/350x150&text=FooBar2"></div>
-                    <div class="slide"><div class="rang">2.5</div><img src="http://placehold.it/350x150&text=FooBar3"></div>
-                    <div class="slide"><div class="rang">4.1</div><img src="http://placehold.it/350x150&text=FooBar4"></div>
-                    <div class="slide"><div class="rang">4.2</div><img src="http://placehold.it/350x150&text=FooBar5"></div>
-                    <div class="slide"><div class="rang">1.2</div><img src="http://placehold.it/350x150&text=FooBar6"></div>
-                    <div class="slide"><div class="rang">5.0</div><img src="http://placehold.it/350x150&text=FooBar7"></div>
-                    <div class="slide"><div class="rang">3.3</div><img src="http://placehold.it/350x150&text=FooBar8"></div>
-                    <div class="slide"><div class="rang">2.9</div><img src="http://placehold.it/350x150&text=FooBar9"></div>
-                    <div class="slide"><div class="rang">3.8</div><img src="http://placehold.it/350x150&text=FooBar10"></div>
-                    <div class="slide"><div class="rang">4.7</div><img src="http://placehold.it/350x150&text=FooBar11"></div>
-                    <div class="slide"><div class="rang">2.4</div><img src="http://placehold.it/350x150&text=FooBar12"></div>
-                    <div class="slide"><div class="rang">1.4</div><img src="http://placehold.it/350x150&text=FooBar13"></div>
-                    <div class="slide"><div class="rang">4.5</div><img src="http://placehold.it/350x150&text=FooBar14"></div>
+                <div class="slider1" ng-app ng-controller="CardCtrl">
+                    <div class="slide" ng-repeat="(rang,src) in GeoObjects"><div class="rang">[[rang]]</div><img src="[[src]]"></div>
                 </div>
             </div>
         </main>

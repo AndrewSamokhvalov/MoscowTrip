@@ -4,6 +4,23 @@
 
 roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
     function ($scope, CardSvc) {
+
+        var m = {
+                    "4.4": "static/app/images/0001.jpg",
+                    "3.2": "static/app/images/0001.jpg",
+                    "1.4": "static/app/images/0001.jpg",
+                    "2.2": "static/app/images/0001.jpg",
+                    "4.5": "static/app/images/0001.jpg",
+                    "5.4": "static/app/images/0001.jpg",
+                    "5.2": "static/app/images/0001.jpg",
+                    "6.4": "static/app/images/0001.jpg",
+                    "6.2": "static/app/images/0001.jpg",
+                    "6.5": "static/app/images/0001.jpg",
+                    "5.0": "static/app/images/0001.jpg"
+                };
+        $scope.GeoObjects = m;
+        $scope.example = "Sergey";
+
         $scope.createROM = function(){
             this.rom = new ymaps.RemoteObjectManager('getPlaces?bbox=%b',
                 {
@@ -26,12 +43,17 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
         $scope.setTypes = function(types){
             CardSvc.setTypes($scope, [1,2]);
         }
+
+
+
         $scope.init = function(map) {
             $scope.map = map
 
             ymaps.route(['москва метро пролетарская', 'Савёловский']).then(function (route) {
                 CardSvc.setRoute($scope, route);
             });
+
+
 
             $scope.setTypes('ла-ла-ла')
 
