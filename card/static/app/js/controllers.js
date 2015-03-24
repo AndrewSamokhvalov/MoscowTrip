@@ -18,6 +18,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
                     "6.5": "static/app/images/0001.jpg",
                     "5.0": "static/app/images/0001.jpg"
                 };
+
         $scope.GeoObjects = m;
         $scope.example = "Sergey";
 
