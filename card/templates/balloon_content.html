@@ -8,10 +8,10 @@
 <body>
 <div class="balloon-info">
     <div class="balloon-img">
-        <img src="{% static "app/images/0003.jpg" %}" alt="img">
+        <img src={{ image }} alt="img">
     </div>
     <div class="balloon-rate">
-        5.0
+        {{ rating }}
     </div>
     <h4 onclick="document.getElementById('parent_popup').style.display='inline',document.getElementById('popup').style.display='inline';">
         {{ name }}
@@ -23,15 +23,5 @@
         <span class="icon icon-cab"></span>
     </div>
 </div>
-{% comment %}
-<p>name: {{ name }}</p>
-<p>web_site: {{ website }}</p>
-<p>public_phone: {{ phone }}</p>
-<p>description: {{ description }}</p>
-<p>working_hours: {{ working_hours }}</p>
-<p>rating: {{ rating }}</p>
-<strong> Остальные поля смотреть в models.py</strong>
-{% endcomment %}
-
 </body>
 </html>

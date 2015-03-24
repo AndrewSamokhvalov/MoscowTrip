@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import json
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from urllib.parse import unquote
+from django.template import RequestContext
 from django.core import serializers
 from card.models import *
 from django.core.cache import cache
 
 from card.polygon import *
-
+import json
 
 def card(request):
     return render_to_response('index.html')
@@ -106,14 +105,34 @@ def filter_places(route, types, bbox):
         # condition = 'OR'.join(condition)
         # places = places.raw("SELECT * FROM card_place WHERE (" + condition + " )", parameters)
 
+
     return places
 
 
 def serialize_places(places, callback):
     features = []
-    content = iter(eval(serializers.serialize('json', places)))
+    idplaces = set(place.id for place in places)
+    images = Image.objects.all().filter(id_place__in=idplaces).values('id', 'url_image')
+
 
     for place in places:
+
+        image = next((image for image in images if image['id'] == place.id), None)
+
+        # TODO: Как сделать лучше?
+        if image is not None:
+            context = {
+                'image': image['url_image'],
+                'name': place.name,
+                'rating': place.rating
+            }
+        else:
+            context = {
+                'image': "",
+                'name': place.name,
+                'rating': place.rating
+            }
+
         feature = {
             "type": 'Feature',
             "geometry": {
@@ -122,14 +141,17 @@ def serialize_places(places, callback):
             },
             "id": place.id,
             "properties": {
-                "balloonContent": render_to_response('balloon_content.html', next(content)['fields']).content.decode(
-                    'utf-8'),
+                "balloonContent": render_to_response('balloon_content.html', context).content.decode('utf-8'),
             },
             "options": {
                 "iconLayout": "default#image",
-                "iconImageHref": "static/app/images/metka2.png",
-                "iconImageSize": [40, 60],
-            }
+                "iconImageHref": place.id_type.url_image_marker,
+                "iconImageSize": [30, 40],
+            },
+            # "fields" : {
+            #     "rating": place.rating,
+            #     "name": place.name
+            # }
         }
         features.append(feature)
 
