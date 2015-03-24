@@ -1,7 +1,6 @@
 {% load staticfiles %}
-
 <!DOCTYPE html>
-<html>
+<html ng-app="roadtrippersApp" ng-controller="CardCtrl">
 
 <head>
     <meta charset="utf-8">
@@ -35,7 +34,7 @@
 
 </head>
 
-<body ng-app="roadtrippersApp">
+<body>
 
     <header>
         <div class="logotype">
@@ -82,7 +81,7 @@
         <input class="scroll_area" type="range" id="radius">
     </section>
 
-    <main ng-controller="CardCtrl">
+    <main>
         <ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="init($target)" ya-controls=""></ya-map>
     </main>
 
@@ -174,11 +173,14 @@
         </nav>
         <main class="main-info" >
             <div>
-                <div class="slider1" ng-app ng-controller="CardCtrl">
-                    <div class="slide" ng-repeat="(rang,src) in GeoObjects"><div class="rang">[[rang]]</div><img src="[[src]]"></div>
+                <div class="slider1">
+
+                  <div class="slide" ng-repeat="place in places()"><div class="rang">[[place.fields.rating]]</div><img src=[[place.fields.image]]></div>
                 </div>
             </div>
         </main>
+        <h1>[[places().length]]</h1>
+
     </section>
 
 

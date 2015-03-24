@@ -5,35 +5,32 @@
 roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
     function ($scope, CardSvc) {
 
-        var m = {
-                    "4.4": "static/app/images/0001.jpg",
-                    "3.2": "static/app/images/0001.jpg",
-                    "1.4": "static/app/images/0001.jpg",
-                    "2.2": "static/app/images/0001.jpg",
-                    "4.5": "static/app/images/0001.jpg",
-                    "5.4": "static/app/images/0001.jpg",
-                    "5.2": "static/app/images/0001.jpg",
-                    "6.4": "static/app/images/0001.jpg",
-                    "6.2": "static/app/images/0001.jpg",
-                    "6.5": "static/app/images/0001.jpg",
-                    "5.0": "static/app/images/0001.jpg"
-                };
-
-        $scope.GeoObjects = m;
-        $scope.example = "Sergey";
+        $scope.places = function(){ return $scope.rom.objects.getAll() }
 
         $scope.createROM = function(){
             this.rom = new ymaps.RemoteObjectManager('getPlaces?bbox=%b',
                 {
                     clusterHasBalloon: false
                 });
+
+            this.rom.objects.events.add('add', function(child) {
+                $scope.$apply();
+            });
+
+            this.rom.objects.events.add('remove', function(child) {
+                $scope.$apply();
+            });
+
             $scope.map.geoObjects.add(this.rom);
+
         }
 
         $scope.deleteROM = function(){
             if(this.rom != null) {
                 $scope.map.geoObjects.remove(this.rom);
+                $scope.$apply()
             }
+
         }
 
         $scope.updateROM = function(){
@@ -76,5 +73,11 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
             map.controls.add(routeEditor);
 
         }
+
+        $scope.placeUpdate = function(){
+            $scope.places = []
+            $scope.rom.objects.each(function(place){ $scope.places.push(place.fields)})
+        }
+
     }
 ]);

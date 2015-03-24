@@ -118,20 +118,19 @@ def serialize_places(places, callback):
     for place in places:
 
         image = next((image for image in images if image['id'] == place.id), None)
+        url = ""
 
         # TODO: Как сделать лучше?
         if image is not None:
-            context = {
-                'image': image['url_image'],
-                'name': place.name,
-                'rating': place.rating
-            }
+            url = image['url_image']
         else:
-            context = {
-                'image': "",
-                'name': place.name,
-                'rating': place.rating
-            }
+            url = ""
+
+        context = {
+            'image': url,
+            'name': place.name,
+            'rating': place.rating
+        }
 
         feature = {
             "type": 'Feature',
@@ -148,11 +147,13 @@ def serialize_places(places, callback):
                 "iconImageHref": place.id_type.url_image_marker,
                 "iconImageSize": [30, 40],
             },
-            # "fields" : {
-            #     "rating": place.rating,
-            #     "name": place.name
-            # }
+            "fields" : {
+                "rating": place.rating,
+                "name": place.name,
+                "image": url
+            }
         }
+
         features.append(feature)
 
     data = {
