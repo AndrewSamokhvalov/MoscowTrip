@@ -21,6 +21,10 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
                 $scope.$apply();
             });
 
+            this.rom.events.add('click', function(child) {
+                console.log(child);
+            });
+
             $scope.map.geoObjects.add(this.rom);
 
         }
@@ -28,7 +32,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
         $scope.deleteROM = function(){
             if(this.rom != null) {
                 $scope.map.geoObjects.remove(this.rom);
-                $scope.$apply()
+//                $scope.$apply()
             }
 
         }

@@ -147,7 +147,7 @@ def serialize_places(places, callback):
                 "iconImageHref": place.id_type.url_image_marker,
                 "iconImageSize": [30, 40],
             },
-            "fields" : {
+            "fields": {
                 "rating": place.rating,
                 "name": place.name,
                 "image": url
@@ -227,10 +227,10 @@ def get_place_info(request):
     if request.method == 'GET':
         try:
             place_id = request.GET.get('place_id')
-            place_id = eval(place_id)
+            place_id = json.loads(place_id)
 
-            place = Place.objects.select_related().filter(id_place=place_id)
-            return HttpResponse(serializers.serialize(place))
+            place = Place.objects.select_related().filter(id=place_id)
+            return HttpResponse(serializers.serialize("json", place))
 
         except Exception as inst:
             print("=" * 150)

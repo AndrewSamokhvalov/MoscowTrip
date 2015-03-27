@@ -175,7 +175,10 @@
             <div>
                 <div class="slider1">
 
-                  <div class="slide" ng-repeat="place in places()"><div class="rang">[[place.fields.rating]]</div><img src=[[place.fields.image]]></div>
+                  <div class="slide" ng-repeat="place in places()">
+                      <div class="rang">[[place.fields.rating]]</div>
+                      <img width="150px" height="150px" src=[[place.fields.image]]>
+                  </div>
                 </div>
             </div>
         </main>
