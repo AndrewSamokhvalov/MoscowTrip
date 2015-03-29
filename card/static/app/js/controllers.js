@@ -6,7 +6,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
     function ($scope, CardSvc) {
 
         $scope.places = function(){ return $scope.rom.objects.getAll() }
-
+        $scope.placess = [{'fields':{'rating':'5', 'image':'static/app/images/0001.jpg'}}];
         $scope.createROM = function(){
             this.rom = new ymaps.RemoteObjectManager('getPlaces?bbox=%b',
                 {
