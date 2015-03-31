@@ -13,7 +13,6 @@ roadtrippersApp.config(['$interpolateProvider','yaMapSettingsProvider',
     }
 ]);
 
-
 roadtrippersApp.directive('slideit', [function () {
     return {
         restrict: 'A',
