@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html ng-app="roadtrippersApp" ng-controller="CardCtrl">
+<html >
 
 <head>
     <meta charset="utf-8">
@@ -19,22 +19,14 @@
     <script src={% static "app/js/app.js" %}></script>
     <script src={% static "app/js/services.js" %}></script>
     <script src={% static "app/js/controllers.js" %}></script>
-
     <script>
-        $(document).ready(function () {
-            $('.slider1').bxSlider({
-                slideWidth: 145,
-                adaptiveHeight: true,
-                minSlides: 2,
-                maxSlides: 10,
-                slideMargin: 10
-            });
-        });
+
     </script>
+
 
 </head>
 
-<body>
+<body ng-app="roadtrippersApp" ng-controller="CardCtrl">
 
     <header>
         <div class="logotype">
@@ -173,17 +165,11 @@
         </nav>
         <main class="main-info" >
             <div>
-                <div class="slider1">
-
-                  <div class="slide" ng-repeat="place in places()">
-                      <div class="rang">[[place.fields.rating]]</div>
-                      <img width="150px" height="150px" src=[[place.fields.image]]>
-                  </div>
+                <div class="slider1" slideit >
                 </div>
             </div>
         </main>
         <h1>[[places().length]]</h1>
-
 
     </section>
 
