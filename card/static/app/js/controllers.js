@@ -62,7 +62,6 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
 
 
 
-
             $scope.setTypes('ла-ла-ла')
 
             $scope.createROM()

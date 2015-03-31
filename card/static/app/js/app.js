@@ -5,7 +5,6 @@
 var roadtrippersApp = angular.module('roadtrippersApp', ['yaMap',]);
 
 
-
 roadtrippersApp.config(['$interpolateProvider','yaMapSettingsProvider',
     function($interpolateProvider,yaMapSettings) {
         $interpolateProvider.startSymbol('[[');
