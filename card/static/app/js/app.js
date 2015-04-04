@@ -13,6 +13,7 @@ roadtrippersApp.config(['$interpolateProvider','yaMapSettingsProvider',
     }
 ]);
 
+/*
 roadtrippersApp.directive('slideit', [function () {
     return {
         restrict: 'A',
@@ -42,7 +43,6 @@ roadtrippersApp.directive('slideit', [function () {
                 }
 //watch пока криво работает
                 scope.$watch("places",function(newValue,oldValue) {
-                    console.log('watch');
 
                 });
             });
@@ -61,4 +61,4 @@ roadtrippersApp.directive('slideit', [function () {
             }
         }
     }
-}]);
+}]);*/

@@ -1,12 +1,39 @@
 'use strict';
 
-/* Controllers */
 
 roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
-    function ($scope, CardSvc) {
-
-        $scope.placess = [{'fields':{'rating':'5', 'image':'static/app/images/0001.jpg'}}];
+    function ($scope, CardSvc)
+    {
         $scope.places = function(){ return $scope.rom.objects.getAll() };
+
+        function Filters()
+        {
+            var filterArray = [];
+
+            function switchFilter(filter)
+            {
+                var indx = filter;
+                if (indx)
+                {
+                    var i = filterArray.indexOf(indx);
+                    console.log(i);
+                    if (i >= 0)
+                        filterArray.splice(i, 1);
+                    else
+                        filterArray.push(indx);
+                    CardSvc.setTypes($scope, filterArray);
+                }
+            }
+
+            return{
+                filters: filterArray,
+                switchFilter: function(i){switchFilter(i)}
+            }
+        };
+
+        $scope.places = function(){ return $scope.rom.objects.getAll() };
+
+        $scope.filters = new Filters();
 
         $scope.createROM = function(){
             this.rom = new ymaps.RemoteObjectManager('getPlaces?bbox=%b',
@@ -28,7 +55,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
 
             $scope.map.geoObjects.add(this.rom);
 
-        }
+        };
 
         $scope.deleteROM = function(){
             if(this.rom != null) {
@@ -36,34 +63,21 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
 //                $scope.$apply()
             }
 
-        }
+        };
 
         $scope.updateROM = function(){
             $scope.deleteROM();
             $scope.createROM();
-        }
-
-        $scope.setTypes = function(types){
-            CardSvc.setTypes($scope, [1,2]);
-        }
-        $scope.$watch("places",function (newVal, oldVal)
-        {
-            if(oldVal != newVal)
-                elm.reloadSlider();
-        });
+        };
 
         $scope.init = function(map) {
-            $scope.map = map
+            $scope.map = map;
 
             ymaps.route(['москва метро пролетарская', 'Савёловский']).then(function (route) {
                 CardSvc.setRoute($scope, route);
             });
 
-
-
-            $scope.setTypes('ла-ла-ла')
-
-            $scope.createROM()
+            $scope.createROM();
 
             var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
             var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}})
@@ -79,11 +93,10 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
             map.controls.add(geolocationControl);
             map.controls.add(searchControl);
             map.controls.add(routeEditor);
-
-        }
+        };
 
         $scope.placeUpdate = function(){
-            $scope.places = []
+            $scope.places = [];
             $scope.rom.objects.each(function(place){ $scope.places.push(place.fields)})
         }
 
