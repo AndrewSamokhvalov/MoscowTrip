@@ -465,14 +465,16 @@ li.show-btn-right
 }
 #popup {
     z-index: 111;
-    width:auto;
+    width:800px;
     height:80%;
     background: #dfdfdf;
     padding: 10px;
-    position: absolute;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     display: none;
-    min-width: 800px;
-    max-width: 800px;
 }
 .popup-main
 {
