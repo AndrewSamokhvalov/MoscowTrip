@@ -472,6 +472,7 @@ li.show-btn-right
     position: absolute;
     display: none;
     min-width: 800px;
+    max-width: 800px;
 }
 .popup-main
 {
