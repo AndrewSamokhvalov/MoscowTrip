@@ -214,7 +214,16 @@
         });
     });
 </script>
+<script>
+    $(window).resize(function(){
+        $('#popup').css({
+            left: ($(document).width() - $('#popup').outerWidth())/2,
+            top: ($(document).height() - $('#popup').outerHeight())/2
+        });
 
+        });
+    $(window).resize();
+</script>
 
 </body>
 </html>

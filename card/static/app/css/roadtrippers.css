@@ -469,12 +469,9 @@ li.show-btn-right
     height:80%;
     background: #dfdfdf;
     padding: 10px;
-    position: fixed;
+    position: absolute;
     display: none;
-    top: 4em;
     min-width: 800px;
-    right: 21em;
-    left: 21em;
 }
 .popup-main
 {
