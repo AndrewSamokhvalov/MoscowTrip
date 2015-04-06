@@ -19,7 +19,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
             });
 
             var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
-            var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}})
+            var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}});
             var searchControl = new ymaps.control.SearchControl({options: { position: { right: 1, top: 10 }}});
             var routeEditor = new ymaps.control.RouteEditor({options: { position: { left: 40, top: 105 }}});
 
@@ -231,7 +231,7 @@ function ROM($scope)
             console.log(child);
         });
 
-        this.map.geoObjects.add(this.rom);
+        $scope.map.geoObjects.add(rom);
 
     };
 
