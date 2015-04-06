@@ -161,7 +161,7 @@ function ROM($scope)
                 applyElementOffset: function () {
                     this._$element.css({
                         left: -(this._$element[0].offsetWidth / 2),
-                        top: -(this._$element[0].offsetHeight + this._$element.find('.arrow')[0].offsetHeight)
+                        top: -(this._$element[0].offsetHeight + 30)
                     });
                 },
 
@@ -215,7 +215,7 @@ function ROM($scope)
             geoObjectBalloonContentLayout: MyBalloonContentLayout,
             geoObjectBalloonPanelMaxMapArea: 0,
             geoObjectHideIconOnBalloonOpen: false,
-            geoObjectBalloonOffset: [3, -40]
+            geoObjectBalloonOffset: [3, 0]
         });
 
 
