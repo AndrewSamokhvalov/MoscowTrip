@@ -2,7 +2,7 @@
 
 /* App Module */
 
-var roadtrippersApp = angular.module('roadtrippersApp', ['yaMap',]);
+var roadtrippersApp = angular.module('roadtrippersApp', ['yaMap']);
 
 
 roadtrippersApp.config(['$interpolateProvider','yaMapSettingsProvider',
