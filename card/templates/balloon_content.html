@@ -1,15 +1,12 @@
 <div class="modal-content popover top">
-    <div class="modal-body">
-        <button type="button" class="close arrow" data-dismiss="modal" aria-label="Close"><span
-                aria-hidden="true">&times;</span></button>
+    <div class="modal-body" style="padding: 5px">
         <div class="media">
-            <div class="media-left">
-                <a href="#">
-                    <img class="media-object" src={{ image }} alt="img" height="70px" width="70px">
-                </a>
+            <div class="media-left arrow">
+               <img class="media-object" src={{ image }} alt="img" height="70px" width="70px" onclick="$('#detailPlaceInfo').modal('show')">
             </div>
+
             <div class="media-body">
-                <h5 class="media-heading"> {{ name }}</h5>
+                <h5> {{ name }}</h5>
 
                 <div class="like-balloon">
                     <span class="icon icon-heart"></span>
@@ -17,7 +14,6 @@
                 <div class="trip-balloon">
                     <span class="icon icon-cab"></span>
                 </div>
-                <br/>
 
                 <div class="progress">
                     <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
@@ -28,5 +24,4 @@
             </div>
         </div>
     </div>
-</div>
 </div>

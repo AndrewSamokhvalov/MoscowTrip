@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html >
+<html>
 
 <head>
     <meta charset="utf-8">
@@ -11,8 +11,9 @@
 
     <link href={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.css" %} rel="stylesheet">
     <link href={% static "app/bower_components/bootstrap/dist/css/bootstrap.css" %} rel="stylesheet">
-
     <link href={% static "app/css/roadtrippers.css" %} rel="stylesheet">
+
+
     <script src={% static "app/bower_components/jquery/dist/jquery.js" %}></script>
     <script src={% static "app/bower_components/angular/angular.js" %}></script>
     <script src={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.js" %}></script>
@@ -27,153 +28,251 @@
 
 <body ng-app="roadtrippersApp" ng-controller="CardCtrl">
 
-    <header>
-        <div class="logotype">
-            <img src="{% static "app/images/logotype.gif" %}" alt="Путеводитель"/>
+<header>
+    <div class="logotype">
+        <img src="{% static "app/images/logotype.gif" %}" alt="Путеводитель"/>
+    </div>
+</header>
+
+<section class="filters">
+    <ul>
+        <input type="checkbox" ng-click="filters.switchFilter(1)" name="filter-1" id="filter_place_of_interests">
+        <li class="filter-place_of_interests">
+            <div class="">
+                <label for="filter_place_of_interests">
+                    <div class="">
+                        <span class="icon icon-cat-attractions"></span>
+                    </div>
+                </label>
+            </div>
+        </li>
+        <input type="checkbox" ng-click="filters.switchFilter(2)" name="filter-2" id="filter_food">
+        <li class="filter-food">
+            <div class="">
+                <label for="filter_food">
+                    <div class="">
+                        <span class="icon icon-cat-food-drink"></span>
+                    </div>
+                </label>
+            </div>
+        </li>
+        <input type="checkbox" ng-click="filters.switchFilter(3)" name="filter-3" id="filter_park">
+        <li class="filter-park">
+            <div class="">
+                <label for="filter_park">
+                    <div class="">
+                        <span class="icon icon-cat-nature"></span>
+                    </div>
+                </label>
+            </div>
+        </li>
+    </ul>
+</section>
+
+<section class="radius">
+    <input class="scroll_area" type="range" id="radius">
+</section>
+
+<main>
+    <ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="init($target)" ya-controls=""></ya-map>
+</main>
+
+<section id="right-bar">
+    <nav class="list_of_nav_buttons_right">
+        <div class="up-chk-right" id="show-on-right">
+            <span class="icon icon-up-micro"></span>
         </div>
-    </header>
+        <div class="up-unchk-right" id="show-off-right">
+            <span class="icon icon-down-micro"></span>
+        </div>
+    </nav>
+    <main class="main-info-right">
+        <img src="{% static "app/images/0002.jpg" %}" alt="Маршрут">
 
-    <section class="filters">
-        <ul>
-            <input type="checkbox" ng-click="filters.switchFilter(1)" name="filter-1" id="filter_place_of_interests">
-            <li class="filter-place_of_interests">
-                <div class="">
-                    <label for="filter_place_of_interests">
-                        <div class="">
-                            <span class="icon icon-cat-attractions"></span>
-                        </div>
-                    </label>
-                </div>
-            </li>
-            <input type="checkbox" ng-click="filters.switchFilter(2)" name="filter-2" id="filter_food">
-            <li class="filter-food">
-                <div class="">
-                    <label for="filter_food">
-                        <div class="">
-                            <span class="icon icon-cat-food-drink"></span>
-                        </div>
-                    </label>
-                </div>
-            </li>
-            <input type="checkbox" ng-click="filters.switchFilter(3)" name="filter-3" id="filter_park">
-            <li class="filter-park">
-                <div class="">
-                    <label for="filter_park">
-                        <div class="">
-                            <span class="icon icon-cat-nature"></span>
-                        </div>
-                    </label>
-                </div>
-            </li>
-        </ul>
-    </section>
-
-    <section class="radius">
-        <input class="scroll_area" type="range" id="radius">
-    </section>
-
-    <main>
-        <ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="init($target)" ya-controls=""></ya-map>
+        <div class="make-trip">
+            <div class="form-A">
+                <span class="icon-A">A:</span>
+                <input class="form-a-inp" type="text" placeholder="Введите пункт А"/>
+            </div>
+            <div class="form-B">
+                <span class="icon-B">B:</span>
+                <input class="form-b-inp" type="text" placeholder="Введите пункт В"/>
+            </div>
+            <input id="find-trip-btn" type="submit" value="Построить маршрут">
+        </div>
     </main>
+</section>
 
-    <section id="right-bar">
-        <nav class="list_of_nav_buttons_right">
-            <div class="up-chk-right" id="show-on-right">
-                <span class="icon icon-up-micro"></span>
-            </div>
-            <div class="up-unchk-right"id="show-off-right">
-                <span class="icon icon-down-micro"></span>
-            </div>
-        </nav>
-        <main class="main-info-right">
-            <img src="{% static "app/images/0002.jpg" %}" alt="Маршрут">
-            <div class="make-trip">
-                <div class="form-A">
-                    <span class="icon-A">A:</span>
-                    <input class="form-a-inp" type="text" placeholder="Введите пункт А"/>
-                </div>
-                <div class="form-B">
-                    <span class="icon-B">B:</span>
-                    <input class="form-b-inp" type="text" placeholder="Введите пункт В"/>
-                </div>
-                <input id="find-trip-btn" type="submit" value="Построить маршрут">
-            </div>
-        </main>
-    </section>
 
-    <div id="popup">
-        <div class="popup-main">
-            <div class="close-btn" style="cursor: pointer;" onclick="document.getElementById('parent_popup').style.display='none',document.getElementById('popup').style.display='none';">
-                <div class="x-btn"><b>X</b></div>
-            </div>
-            <div id="heady">
-                <img src="{% static "app/images/0003.jpg" %}" alt="Picture">
-                <h2>Ресторан "Панучи"</h2>
-                <div id="list-of-p">
-                    <p>Адрес - г.Москва, ул. Ленина, д.9, к.3. </p>
-                    <p>Время работы - круглосуточно.</p>
-                    <p>Плата - до 20:00 вход беслпатный.</p>
-                </div>
-            </div>
-            <div id="scrl">
-                <div id="footy">
-                    <div class="add-like-place">
-                        <span class="icon icon-heart"> НРАВИТСЯ</span>
-                    </div>
-                    <div class="add-to-trip">
-                        <span class="icon icon-cab"> В МАРШРУТ</span>
-                    </div>
+<!-- Popup window -->
+<div class="modal fade bs-example-modal-lg" id="detailPlaceInfo" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
 
-                    <div class="options">
-                        <h3>Описание места:</h3>
-                        <p>Ресторан «Панучи» - это классический европейский ресторан.
-                        Дизайн интерьера в точности отражает его название.
-                        Все элементы выдержаны в едином, тонком, современном минималистичном, но при этом дорогом стиле.
-                        Цветовая гамма заведения подобрана таким образом, чтобы гости могли расслабиться и спокойно насладиться превосходными блюдами.
-                        Просторное светлое помещение, хорошо подобранные предметы декора, изящность и красота линий.
-                        Яблочная тема, проскальзывая во всем, превосходно поднимает тонус и заряжает энергией: подсвечники, выполненные в форме яблока, шторы, цвета насыщенной яблочной листвы и даже посуда ярко-зеленого цвета.
-                        В ресторане царит удивительная атмосфера легкости, элегантности и хорошего настроения.</p>
-                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                        Долистали
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel">Ресторан «Панучи» - это классический европейский
+                    ресторан</h4>
+            </div>
+
+
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            </ol>
+
+                            <div class="carousel-inner" role="listbox">
+                                <div class="item active">
+                                    <img src="{% static "app/images/0003.jpg" %}" alt="Picture">
+                                </div>
+
+                                <div class="item">
+                                    <img src="{% static "app/images/0003.jpg" %}" alt="Picture">
+                                </div>
+                            </div>
+
+
+                            <!-- Controls -->
+                            <a class="left carousel-control" href="#carousel-example-generic" role="button"
+                               data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="right carousel-control" href="#carousel-example-generic" role="button"
+                               data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+
                     </div>
-                    <div class="contacts">
-                        <h3>Контакты:</h3>
-                        <p>Резервация столика - 8-987-654-32-10</p>
-                        <p>Книга отзывов и предложений - 8-898-939-52-31.</p>
-                        <br>
-                        <p>Сайретдинов У.Т.- владелец ресторана.</p>
-                        <p>Контактный телефон - 8-888-999-55-33.</p>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h3>Описание места:</h3>
+
+                            <p>Ресторан «Панучи» - это классический европейский ресторан.
+                                Дизайн интерьера в точности отражает его название.
+                                Все элементы выдержаны в едином, тонком, современном минималистичном, но при этом
+                                дорогом стиле.
+                                Цветовая гамма заведения подобрана таким образом, чтобы гости могли расслабиться и
+                                спокойно насладиться превосходными блюдами.
+                                Просторное светлое помещение, хорошо подобранные предметы декора, изящность и красота
+                                линий.
+                                Яблочная тема, проскальзывая во всем, превосходно поднимает тонус и заряжает энергией:
+                                подсвечники, выполненные в форме яблока, шторы, цвета насыщенной яблочной листвы и даже
+                                посуда ярко-зеленого цвета.
+                                В ресторане царит удивительная атмосфера легкости, элегантности и хорошего
+                                настроения.</p>
+
+                        </div>
+
+                        <div class="col-md-5">
+                            </br>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item disabled">
+                                    Контакты
+                                </a>
+                                <a href="#" class="list-group-item"><p>Резервация столика: 8-987-654-32-10</p></a>
+                                <a href="#" class="list-group-item"><p>Отзывы: 8-898-939-52-31.</p></a>
+                                <a href="#" class="list-group-item"><p>Контактный телефон: 8-888-999-55-33.</p></a>
+                            </div>
+
+
+                        </div>
                     </div>
                 </div>
             </div>
+
+
+            {##}
+            {##}
+            {#                <div class="x-btn"><b>X</b></div>#}
+            {#            </div>#}
+            {#            <div id="heady">#}
+            {#                <img src="{% static "app/images/0003.jpg" %}" alt="Picture">#}
+            {#                <h2>Ресторан "Панучи"</h2>#}
+            {#                <div id="list-of-p">#}
+            {#                    <p>Адрес - г.Москва, ул. Ленина, д.9, к.3. </p>#}
+            {#                    <p>Время работы - круглосуточно.</p>#}
+            {#                    <p>Плата - до 20:00 вход беслпатный.</p>#}
+            {#                </div>#}
+            {#            </div>#}
+            {#            <div id="scrl">#}
+            {#                <div id="footy">#}
+            {#                    <div class="add-like-place">#}
+            {#                        <span class="icon icon-heart"> НРАВИТСЯ</span>#}
+            {#                    </div>#}
+            {#                    <div class="add-to-trip">#}
+            {#                        <span class="icon icon-cab"> В МАРШРУТ</span>#}
+            {#                    </div>#}
+            {##}
+            {#                    <div class="options">#}
+            {#                        <h3>Описание места:</h3>#}
+            {#                        <p>Ресторан «Панучи» - это классический европейский ресторан.#}
+            {#                        Дизайн интерьера в точности отражает его название.#}
+            {#                        Все элементы выдержаны в едином, тонком, современном минималистичном, но при этом дорогом стиле.#}
+            {#                        Цветовая гамма заведения подобрана таким образом, чтобы гости могли расслабиться и спокойно насладиться превосходными блюдами.#}
+            {#                        Просторное светлое помещение, хорошо подобранные предметы декора, изящность и красота линий.#}
+            {#                        Яблочная тема, проскальзывая во всем, превосходно поднимает тонус и заряжает энергией: подсвечники, выполненные в форме яблока, шторы, цвета насыщенной яблочной листвы и даже посуда ярко-зеленого цвета.#}
+            {#                        В ресторане царит удивительная атмосфера легкости, элегантности и хорошего настроения.</p>#}
+            {#                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>#}
+            {#                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>#}
+            {#                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>#}
+            {#                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>#}
+            {#                        Долистали#}
+            {#                    </div>#}
+            {#                    <div class="contacts">#}
+            {#                        <h3>Контакты:</h3>#}
+            {#                        <p>Резервация столика - 8-987-654-32-10</p>#}
+            {#                        <p>Книга отзывов и предложений - 8-898-939-52-31.</p>#}
+            {#                        <br>#}
+            {#                        <p>Сайретдинов У.Т.- владелец ресторана.</p>#}
+            {#                        <p>Контактный телефон - 8-888-999-55-33.</p>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
+            {#        </div>#}
+            {#      <div class="modal-header">#}
+            {#        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
+            {#        <h4 class="modal-title" id="myModalLabel">Modal title</h4>#}
+            {#      </div>#}
+            {#      <div class="modal-body">#}
+            {#        ...#}
+            {#      </div>#}
+            {#      <div class="modal-footer">#}
+            {#        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+            {#        <button type="button" class="btn btn-primary">Save changes</button>#}
+            {#      </div>#}
+
+
         </div>
     </div>
-    <div id="parent_popup"></div>
+</div>
 
-    <section id="bottom-bar">
-        <nav class="list_of_nav_buttons">
-            <div class="up-chk" id="show-on">
-                <span class="icon icon-up-micro"></span>
+<section id="bottom-bar">
+    <nav class="list_of_nav_buttons">
+        <div class="up-chk" id="show-on">
+            <span class="icon icon-up-micro"></span>
+        </div>
+        <div class="up-unchk" id="show-off">
+            <span class="icon icon-down-micro"></span>
+        </div>
+    </nav>
+    <main class="main-info">
+        <div>
+            <div class="slider1" slideit>
             </div>
-            <div class="up-unchk"id="show-off">
-                <span class="icon icon-down-micro"></span>
-            </div>
-        </nav>
-        <main class="main-info" >
-            <div>
-                <div class="slider1" slideit >
-                </div>
-            </div>
-        </main>
-
-    </section>
-
-
-
-
+        </div>
+    </main>
+</section>
 
 
 <script type="text/javascript">
@@ -217,13 +316,13 @@
     });
 </script>
 <script>
-    $(window).resize(function(){
+    $(window).resize(function () {
         $('#popup').css({
-            left: ($(document).width() - $('#popup').outerWidth())/2,
-            top: ($(document).height() - $('#popup').outerHeight())/2
+            left: ($(document).width() - $('#popup').outerWidth()) / 2,
+            top: ($(document).height() - $('#popup').outerHeight()) / 2
         });
 
-        });
+    });
     $(window).resize();
 </script>
 
