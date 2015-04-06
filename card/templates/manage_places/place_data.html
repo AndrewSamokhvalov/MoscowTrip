@@ -1,0 +1,108 @@
+{% extends "manage_places/base.html" %}
+{% load static %}
+
+{% block head_content %}<script scr={% static "app/js/manage_places/validator.js" %}></script>{% endblock %}
+
+{% block body_content %}
+
+    <form data-toggle="validator" role="form" method="post">
+        <div style="width: 50%">
+            <div class="form-group">
+                <label for="name" class="control-label">Название</label>
+                <input type="text" class="form-control" id="name" maxlength="100"
+                       {% if place %}value="{{ place.name }}"{% endif %} required>
+                <div class="help-block with-errors">Максимальная длина 100 символов</div>
+            </div>
+
+            <div class="form-group">
+                <label for="type">Категория места</label>
+                <select class="form-control" id="type">
+                    {% if types %}
+                        {% for type in types %}
+                            <option id="{{ forloop.counter0 }}"
+                                    {% if place.type == type %}selected="selected"{% endif %}>{{ type }}
+                            </option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="address" class="control-label">Адрес</label>
+                <input type="text" class="form-control" id="address" maxlength="200"
+                       {% if place %}value="{{ place.address }}"{% endif %} required>
+                <div class="help-block with-errors">Максимальная длина 200 символов</div>
+            </div>
+
+            <div class="form-group">
+                <label for="description" class="control-label">Описание</label>
+                <textarea class="form-control" id="description" rows="5" maxlength="1500"
+                          {% if place %}value="{{ place.description }}"{% endif %} required></textarea>
+                <div class="help-block with-errors">Максимальная длина 1500 символов</div>
+            </div>
+
+            <div class="form-group">
+                <label for="working_hours" class="control-label">Часы работы</label>
+                <textarea class="form-control" id="working_hours" rows="3" maxlength="200"
+                        {% if place %}value="{{ place.working_hours }}"{% endif %}></textarea>
+                <div class="help-block with-errors">Максимальная длина 200 символов</div>
+            </div>
+
+            <div class="form-group">
+                <label for="cost" class="control-label">Стоимость (необязательно)</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
+                    <input type="text" pattern="^\d+(\.\d{1,2})?" class="form-control" id="cost"
+                           data-error="Некорректный формат стоимости"
+                           {% if place %}value="{{ place.cost }}"{% endif %}>
+                </div>
+                <div class="help-block with-errors"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="control-label">E-mail (необязательно)</label>
+                <input type="email" class="form-control" id="email"
+                       data-error="Некорректный формат e-mail"
+                       {% if place %}value="{{ place.email }}"{% endif %}>
+                <div class="help-block with-errors">Максимальная длина 100 символов</div>
+            </div>
+
+            <div class="form-group">
+                <label for="website" class="control-label">Сайт (необязательно)</label>
+                <input type="url" class="form-control" id="website" maxlength="100"
+                       data-error="Некорректный формат url"
+                       {% if place %}value="{{ place.website }}"{% endif %}>
+                <div class="help-block with-errors">Максимальная длина 100 символов</div>
+            </div>
+
+            <div class="form-group">
+                <label for="vk_link" class="control-label">Ссылка VK (необязательно)</label>
+                <input type="url" class="form-control" id="vk_link" maxlength="100"
+                       data-error="Некорректный формат url"
+                       {% if place %}value="{{ place.vk_link }}"{% endif %}>
+                <div class="help-block with-errors">Максимальная длина 100 символов</div>
+            </div>
+
+            <div class="form-group">
+                <label for="tags" class="control-label">Теги, относящиеся к месту (необязательно)</label>
+                <input type="text" class="form-control" id="tags" maxlength="100"
+                       {% if place %}value="{{ place.tags }}"{% endif %}>
+                <div class="help-block with-errors">Максимальная длина одного тега 100 символов. Разделитель - запятая</div>
+                <input type="text" value="#hacking">
+            </div>
+
+        <div class="fileupload fileupload-new" data-provides="fileupload">
+          <div class="fileupload-preview thumbnail" style="width: 200px; height: 150px;"></div>
+          <div>
+            <span class="btn btn-file"><span class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span><input type="file" /></span>
+            <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+          </div>
+        </div>
+
+        </div>
+
+        {% block form_additional_content %}{% endblock %}
+
+    </form>
+
+{% endblock %}

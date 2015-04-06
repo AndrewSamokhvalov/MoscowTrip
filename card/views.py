@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render_to_response
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from card.models import *
-from django.core.cache import cache
+from django.contrib.auth.decorators import login_required
 
 from card.polygon import *
 import json
@@ -239,5 +239,24 @@ def get_place_info(request):
             print(inst)  # __str__ allows args to be printed directly
             return HttpResponse("error!")
 
+
+@login_required
+def manage_places(request):
+    return render_to_response('manage_places/manage_places.html',
+                              RequestContext(request))
+
+
+@login_required
+def add_place(request):
+    return render_to_response('manage_places/add_place.html')
+
+
+@login_required
+def edit_place(request):
+    places = Place.objects.select_related().filter(id=1)
+    p = None
+    for place in places:
+        p = place
+    return render_to_response('manage_places/edit_place.html', {'place': p})
 
 
