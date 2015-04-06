@@ -8,12 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href={% static "images/favicon.ico" %} type="image/x-icon">
 
-    <link href={% static "app/css/roadtrippers.css" %} rel="stylesheet">
-    <link href={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.css" %} rel="stylesheet">
 
+    <link href={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.css" %} rel="stylesheet">
+    <link href={% static "app/bower_components/bootstrap/dist/css/bootstrap.css" %} rel="stylesheet">
+
+    <link href={% static "app/css/roadtrippers.css" %} rel="stylesheet">
     <script src={% static "app/bower_components/jquery/dist/jquery.js" %}></script>
     <script src={% static "app/bower_components/angular/angular.js" %}></script>
     <script src={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.js" %}></script>
+    <script src={% static "app/bower_components/bootstrap/dist/js/bootstrap.js" %}></script>
 
     <script src={% static "app/js/ya-map-2.1.js" %}></script>
     <script src={% static "app/js/app.js" %}></script>
@@ -165,7 +168,6 @@
                 </div>
             </div>
         </main>
-        <h1>[[places().length]]</h1>
 
     </section>
 
