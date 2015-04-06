@@ -6,31 +6,6 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
     {
         $scope.places = function(){ return $scope.rom.objects.getAll() };
 
-        function Filters()
-        {
-            var filterArray = [];
-
-            function switchFilter(filter)
-            {
-                var indx = filter;
-                if (indx)
-                {
-                    var i = filterArray.indexOf(indx);
-                    console.log(i);
-                    if (i >= 0)
-                        filterArray.splice(i, 1);
-                    else
-                        filterArray.push(indx);
-                    CardSvc.setTypes($scope, filterArray);
-                }
-            }
-
-            return{
-                filters: filterArray,
-                switchFilter: function(i){switchFilter(i)}
-            }
-        };
-
         $scope.init = function(map)
         {
             $scope.map = map;
@@ -234,7 +209,14 @@ roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
         }
 
     }
-]);
+])
+.controller('AdminCtrl', ['$scope', 'CardSvc',
+function ($scope, CardSvc) {
+
+
+    $scope.name = "Kostya";
+
+}]);
 
 function MapObjectFilter($scope,CardSvc)
 {
@@ -326,10 +308,4 @@ function ROM($scope)
         if (!rom) this.createROM();
         return rom
     };
-}    .controller('AdminCtrl', ['$scope', 'CardSvc',
-        function ($scope, CardSvc) {
-
-
-            $scope.name = "Kostya";
-
-        }]);
+}
