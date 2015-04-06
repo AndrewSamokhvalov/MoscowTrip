@@ -679,16 +679,15 @@ li.show-btn-right
 {
     position: absolute;
     font-size: 1.8em;
-    top: 6px;
-    left:4px;
+    /*top: 6px;*/
+    left:3px;
     color: #00cc99;
 }
 .like-balloon .icon-heart
 {
     position: absolute;
     font-size: 1.8em;
-    top: 6px;
-    left:5px;
+    left:4px;
     color: #ff3366;
 }
 .like-balloon .icon-heart:hover
@@ -806,4 +805,14 @@ ul div{
 
 .icon-cat-food-drink:before{
  content:"\f1e2"
+}
+
+.popover {
+    display: block;
+    width: 400px;
+}
+.popover .close {
+    position: absolute;
+    right: 5px;
+    top: 1px;
 }
