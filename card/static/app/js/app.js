@@ -13,52 +13,33 @@ roadtrippersApp.config(['$interpolateProvider','yaMapSettingsProvider',
     }
 ]);
 
-/*
-roadtrippersApp.directive('slideit', [function () {
+
+roadtrippersApp.directive('slideit', ['$interval' , function ($interval) {
     return {
         restrict: 'A',
-         scope: true,
+        scope: true,
         replace: false,
-        template: '<div class="slide" ng-repeat="place in places()"  notify-when-repeat-finished>'+
-                      '<div class="rang">[[place.fields.rating]]</div>'+
-                      '<img width="150px" height="150px" src=[[place.fields.image]]>'+
-                '</div>',
+        template: '<div class="slide" ng-repeat="place in places() | limitTo: 20"  notify-when-repeat-finished>' +
+        '<div class="rang">[[place.fields.rating]]</div>' +
+        '<img width="150px" height="150px" src=[[place.fields.image]]>' +
+        '</div>',
         link: function (scope, element, attrs) {
+            element.bxSlider({
+                                 slideWidth: 145,
+                                 adaptiveHeight: true,
+                                 minSlides: 2,
+                                 maxSlides: 10,
+                                 slideMargin: 10
+                             });
 
-
-            scope.$on('repeatFinished', function () {
-                console.log("ngRepeat has finished");
-
-                if(element.reloadSlider){
-                    element.reloadSlider();
-                }
-                else{
-                    element.bxSlider({
-                    slideWidth: 145,
-                    adaptiveHeight: true,
-                    minSlides: 2,
-                    maxSlides: 10,
-                    slideMargin: 10
-                    });
-                }
-//watch пока криво работает
-                scope.$watch("places",function(newValue,oldValue) {
-
-                });
+            scope.$watch('UpdateObject', function(newValue, oldValue) {
+                $interval(function() {
+                    if (newValue != oldValue ){
+                        element.reloadSlider();
+                    }
+                }, 3000);
             });
         }
     }
 }])
-.directive('notifyWhenRepeatFinished', ['$timeout', function ($timeout) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attr) {
-            if (scope.$last === true) {
-                $timeout(function () {
-                    console.log('notifyWhenRepeatFinished');
-                    scope.$emit('repeatFinished');
-                });
-            }
-        }
-    }
-}]);*/
+

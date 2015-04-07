@@ -1,14 +1,17 @@
 'use strict';
 
 
-roadtrippersApp.controller('CardCtrl', ['$scope', 'CardSvc',
-    function ($scope, CardSvc)
+roadtrippersApp.controller('CardCtrl', ['$scope','$timeout', 'CardSvc',
+    function ($scope, $timeout, CardSvc)
     {
         $scope.filters = new MapObjectFilter($scope,CardSvc);
 
         $scope.rom = new ROM($scope);
-
-        $scope.places = function(){ return $scope.rom.rom.objects.getAll() };
+        $scope.UpdateObject = false;
+        $scope.wcount = function() {
+            $scope.places = function(){ return $scope.rom.rom().objects.getAll() };
+            $scope.UpdateObject = true;
+        };
 
         $scope.init = function(map)
         {
@@ -248,6 +251,7 @@ function ROM($scope)
     {
         deleteROM();
         this.createROM();
+        $scope.wcount();
     };
 
     this.rom = function()
