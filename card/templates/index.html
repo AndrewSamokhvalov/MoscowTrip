@@ -36,7 +36,7 @@
 
 <section class="filters">
     <ul>
-        <input type="checkbox" ng-click="filters.switchFilter(1)" name="filter-1" id="filter_place_of_interests">
+        <input type="checkbox" ng-click="filters.switchFilter(1)" ng-checked="filters.isChecked(1)" name="filter-1" id="filter_place_of_interests">
         <li class="filter-place_of_interests">
             <div class="">
                 <label for="filter_place_of_interests">
@@ -46,7 +46,7 @@
                 </label>
             </div>
         </li>
-        <input type="checkbox" ng-click="filters.switchFilter(2)" name="filter-2" id="filter_food">
+        <input type="checkbox" ng-click="filters.switchFilter(2)" ng-checked="filters.isChecked(2)" name="filter-2" id="filter_food">
         <li class="filter-food">
             <div class="">
                 <label for="filter_food">
@@ -56,7 +56,7 @@
                 </label>
             </div>
         </li>
-        <input type="checkbox" ng-click="filters.switchFilter(3)" name="filter-3" id="filter_park">
+        <input type="checkbox" ng-click="filters.switchFilter(3)" ng-checked="filters.isChecked(3)" name="filter-3" id="filter_park">
         <li class="filter-park">
             <div class="">
                 <label for="filter_park">
@@ -70,7 +70,10 @@
 </section>
 
 <section class="radius">
-    <input class="scroll_area" type="range" id="radius">
+    <div class="input-group">
+        <input  class="form-control" type="range" ng-model="route.radius" min="500" max="5500" step="1000" id="radius">
+        <span class="input-group-addon">[[route.radius]]</span>
+    </div>
 </section>
 
 <main>
