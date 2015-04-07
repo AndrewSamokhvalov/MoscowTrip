@@ -5,13 +5,15 @@ roadtrippersApp.controller('CardCtrl', ['$scope','$timeout', 'CardSvc',
     function ($scope, $timeout, CardSvc)
     {
         $scope.filters = new MapObjectFilter($scope,CardSvc);
+        $scope.rom = new ROM($scope, CardSvc);
 
-        $scope.rom = new ROM($scope);
         $scope.UpdateObject = false;
         $scope.wcount = function() {
             $scope.places = function(){ return $scope.rom.rom().objects.getAll() };
             $scope.UpdateObject = true;
         };
+
+        $scope.currentPlace = new Place();
 
         $scope.init = function(map)
         {
@@ -104,7 +106,7 @@ function MapObjectFilter($scope,CardSvc)
     }
 }
 
-function ROM($scope)
+function ROM($scope, CardSvc)
 {
     var rom;
 
@@ -230,8 +232,10 @@ function ROM($scope)
             $scope.$apply();
         });
 
-        rom.events.add('click', function (child) {
-            console.log(child);
+        rom.events.add('click', function (event)
+        {
+            var id = event.get('objectId');
+            CardSvc.getPlaceInfo($scope, id);
         });
 
         $scope.map.geoObjects.add(rom);
@@ -259,4 +263,19 @@ function ROM($scope)
         if (!rom) this.createROM();
         return rom
     };
+}
+
+function Place()
+{
+    var info = {};
+
+    this.info = info;
+
+    this.update = function update(data)
+    {
+        for(var i in data[0].fields)
+        {
+            info[i] = data[0].fields[i];
+        }
+    }
 }
