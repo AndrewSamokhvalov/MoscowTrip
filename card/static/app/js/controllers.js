@@ -1,22 +1,21 @@
 'use strict';
 
 
-roadtrippersApp.controller('CardCtrl', ['$scope','$timeout', 'CardSvc',
-    function ($scope, $timeout, CardSvc)
-    {
-        $scope.filters = new MapObjectFilter($scope,CardSvc);
+roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', 'CardSvc',
+    function ($scope, $timeout, CardSvc) {
+        $scope.filters = new MapObjectFilter($scope, CardSvc);
         $scope.rom = new ROM($scope, CardSvc);
 
-        $scope.UpdateObject = false;
-        $scope.wcount = function() {
-            $scope.places = function(){ return $scope.rom.rom().objects.getAll() };
-            $scope.UpdateObject = true;
-        };
+        $scope.places = [];
+//        $scope.UpdateObject = false;
+//        $scope.wcount = function() {
+//            $scope.places = function(){ return $scope.rom.rom().objects.getAll() };
+//            $scope.UpdateObject = true;
+//        };
 
         $scope.currentPlace = new Place();
 
-        $scope.init = function(map)
-        {
+        $scope.init = function (map) {
             $scope.map = map;
 
             ymaps.route(['москва метро пролетарская', 'Савёловский']).then(function (route) {
@@ -47,49 +46,38 @@ roadtrippersApp.controller('CardCtrl', ['$scope','$timeout', 'CardSvc',
                 });
             });
         };
-        $scope.placeUpdate = function()
-        {
-            $scope.places = [];
-            $scope.rom.rom.objects.each(function(place){ $scope.places.push(place.fields)})
-        }
 
     }
 ])
-.controller('AdminCtrl', ['$scope', 'CardSvc',
-function ($scope, CardSvc) {
+    .controller('AdminCtrl', ['$scope', 'CardSvc',
+        function ($scope, CardSvc) {
 
 
-    $scope.name = "Kostya";
+            $scope.name = "Kostya";
 
-}]);
+        }]);
 
-function MapObjectFilter($scope,CardSvc)
-{
+function MapObjectFilter($scope, CardSvc) {
     var filterArray = [];
 
-    function getFilterFromServer()
-    {
+    function getFilterFromServer() {
         $.get('/getFilters')
-         .success( function (data)
-         {
-             filterArray = data;
-         });
+            .success(function (data) {
+                filterArray = data;
+            });
 
     }
 
-    function isChecked(indx)
-    {
+    function isChecked(indx) {
         var i = filterArray.indexOf(indx);
         if (i >= 0)
             return true;
         return false;
     }
 
-    function switchFilter(filter)
-    {
+    function switchFilter(filter) {
         var indx = filter;
-        if (indx)
-        {
+        if (indx) {
             var i = filterArray.indexOf(indx);
             if (i >= 0)
                 filterArray.splice(i, 1);
@@ -101,17 +89,19 @@ function MapObjectFilter($scope,CardSvc)
 
     return{
         filters: filterArray,
-        switchFilter: function(i){switchFilter(i)},
-        isChecked: function(i){isChecked(i)}
+        switchFilter: function (i) {
+            switchFilter(i)
+        },
+        isChecked: function (i) {
+            isChecked(i)
+        }
     }
 }
 
-function ROM($scope, CardSvc)
-{
+function ROM($scope, CardSvc) {
     var rom;
 
-    this.createROM = function ()
-    {
+    this.createROM = function () {
         var MyBalloonLayout = ymaps.templateLayoutFactory.createClass
         (
             '$[[options.contentLayout]]',
@@ -213,27 +203,42 @@ function ROM($scope, CardSvc)
         );
 
         rom = new ymaps.RemoteObjectManager('getPlaces?bbox=%b',
-        {
-            clusterHasBalloon: false,
-            geoObjectBalloonShadow: false,
-            geoObjectBalloonLayout: MyBalloonLayout,
-            geoObjectBalloonContentLayout: MyBalloonContentLayout,
-            geoObjectBalloonPanelMaxMapArea: 0,
-            geoObjectHideIconOnBalloonOpen: false,
-            geoObjectBalloonOffset: [3, 0]
+            {
+                clusterHasBalloon: false,
+                geoObjectBalloonShadow: false,
+                geoObjectBalloonLayout: MyBalloonLayout,
+                geoObjectBalloonContentLayout: MyBalloonContentLayout,
+                geoObjectBalloonPanelMaxMapArea: 0,
+                geoObjectHideIconOnBalloonOpen: false,
+                geoObjectBalloonOffset: [3, 0]
+            });
+
+
+        rom.objects.events.add('add', function (event) {
+            var isSegmentLoaded = event.get('objectId') == -1;
+            if (isSegmentLoaded) {
+                $scope.$apply(function () {
+                        $scope.places = rom.objects.getAll();
+//                        console.log('Segment Added');
+//                        console.log($scope.places);
+                    }
+                )
+            }
         });
 
-
-        rom.objects.events.add('add', function (child) {
-            $scope.$apply();
+        rom.objects.events.add('remove', function (event) {
+            var isSegmentRemoved = event.get('objectId') == -1;
+            if (isSegmentRemoved) {
+                $scope.$apply(function () {
+                        $scope.places = rom.objects.getAll();
+//                        console.log('Segment Removed');
+//                        console.log($scope.places);
+                    }
+                )
+            }
         });
 
-        rom.objects.events.add('remove', function (child) {
-            $scope.$apply();
-        });
-
-        rom.events.add('click', function (event)
-        {
+        rom.events.add('click', function (event) {
             var id = event.get('objectId');
             CardSvc.getPlaceInfo($scope, id);
         });
@@ -242,39 +247,33 @@ function ROM($scope, CardSvc)
 
     };
 
-    var deleteROM = function deleteROM()
-    {
-        if(rom != null) {
+    var deleteROM = function deleteROM() {
+        if (rom != null) {
             $scope.map.geoObjects.remove(rom);
 //                $scope.$apply()
         }
 
     };
 
-    this.updateROM = function()
-    {
+    this.updateROM = function () {
         deleteROM();
         this.createROM();
-        $scope.wcount();
+//        $scope.wcount();
     };
 
-    this.rom = function()
-    {
+    this.rom = function () {
         if (!rom) this.createROM();
         return rom
     };
 }
 
-function Place()
-{
+function Place() {
     var info = {};
 
     this.info = info;
 
-    this.update = function update(data)
-    {
-        for(var i in data[0].fields)
-        {
+    this.update = function update(data) {
+        for (var i in data[0].fields) {
             info[i] = data[0].fields[i];
         }
     }

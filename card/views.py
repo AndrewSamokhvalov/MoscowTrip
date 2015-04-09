@@ -11,6 +11,7 @@ from django.core.cache import cache
 from card.polygon import *
 import json
 
+
 def card(request):
     return render_to_response('index.html')
 
@@ -41,7 +42,7 @@ def get_places(request):
 
             # if not places:
             places = filter_places(route, types, bbox)
-            #cache.set(bbox, list(places))
+            # cache.set(bbox, list(places))
 
             # if route not None:
             #     filter_by_route()
@@ -93,7 +94,7 @@ def filter_places(route, types, bbox):
         # condition = []
         # for point in route:
         # x = point[0]
-        #     y = point[1]
+        # y = point[1]
         #
         #     condition += ["          acos(   sin(t.lat * 0.0175) * sin(%s * 0.0175)                     " \
         #                  "                + cos(t.lat * 0.0175) * cos(%s * 0.0175)                      " \
@@ -105,7 +106,6 @@ def filter_places(route, types, bbox):
         # condition = 'OR'.join(condition)
         # places = places.raw("SELECT * FROM card_place WHERE (" + condition + " )", parameters)
 
-
     return places
 
 
@@ -113,7 +113,6 @@ def serialize_places(places, callback):
     features = []
     idplaces = set(place.id for place in places)
     images = Image.objects.all().filter(id_place__in=idplaces).values('id', 'url_image')
-
 
     for place in places:
 
@@ -155,6 +154,16 @@ def serialize_places(places, callback):
         }
 
         features.append(feature)
+
+    feature = {
+        "type": 'Feature',
+        "geometry": {
+            "type": "Point",
+            "coordinates": [0, 0]
+        },
+        "id": -1
+    }
+    features.append(feature)
 
     data = {
         "error": None,

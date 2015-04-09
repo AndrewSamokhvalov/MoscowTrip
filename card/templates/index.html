@@ -9,20 +9,38 @@
     <link rel="shortcut icon" href={% static "images/favicon.ico" %} type="image/x-icon">
 
 
-    <link href={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.css" %} rel="stylesheet">
-    <link href={% static "app/bower_components/bootstrap/dist/css/bootstrap.css" %} rel="stylesheet">
-    <link href={% static "app/css/roadtrippers.css" %} rel="stylesheet">
-
-
+    {#   Angular and Jqueru must be first #}
     <script src={% static "app/bower_components/jquery/dist/jquery.js" %}></script>
     <script src={% static "app/bower_components/angular/angular.js" %}></script>
-    <script src={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.js" %}></script>
-    <script src={% static "app/bower_components/bootstrap/dist/js/bootstrap.js" %}></script>
 
+    {#   Bootstrap #}
+    <script src={% static "app/bower_components/bootstrap/dist/js/bootstrap.js" %}></script>
+    <link href={% static "app/bower_components/bootstrap/dist/css/bootstrap.css" %} rel="stylesheet">
+
+    {#   Radius slider #}
+    <script src={% static "app/bower_components/angular-slider/angular-slider.js" %}></script>
+    <link href={% static "app/bower_components/angular-slider/angular-slider.css" %} rel="stylesheet">
+
+    {#   Angular image carousel #}
+    <link href={% static "app/bower_components/slick-carousel/slick/slick.css" %} rel="stylesheet">
+    <script src={% static "app/bower_components/slick-carousel/slick/slick.js" %}></script>
+    <script src={% static "app/bower_components/angular-slick/dist/slick.js" %}></script>
+
+
+
+
+    {#   Yandex map #}
     <script src={% static "app/js/ya-map-2.1.js" %}></script>
+
+    {#   BXSlider - image carousel #}
+{#    <script src={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.js" %}></script>#}
+{#    <link href={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.css" %} rel="stylesheet">#}
+
+    {#   Roadtrippers api #}
     <script src={% static "app/js/app.js" %}></script>
     <script src={% static "app/js/services.js" %}></script>
     <script src={% static "app/js/controllers.js" %}></script>
+    <link href={% static "app/css/roadtrippers.css" %} rel="stylesheet">
 
 </head>
 
@@ -36,7 +54,8 @@
 
 <section class="filters">
     <ul>
-        <input type="checkbox" ng-click="filters.switchFilter(1)" ng-checked="filters.isChecked(1)" name="filter-1" id="filter_place_of_interests">
+        <input type="checkbox" ng-click="filters.switchFilter(1)" ng-checked="filters.isChecked(1)" name="filter-1"
+               id="filter_place_of_interests">
         <li class="filter-place_of_interests">
             <div class="">
                 <label for="filter_place_of_interests">
@@ -46,7 +65,8 @@
                 </label>
             </div>
         </li>
-        <input type="checkbox" ng-click="filters.switchFilter(2)" ng-checked="filters.isChecked(2)" name="filter-2" id="filter_food">
+        <input type="checkbox" ng-click="filters.switchFilter(2)" ng-checked="filters.isChecked(2)" name="filter-2"
+               id="filter_food">
         <li class="filter-food">
             <div class="">
                 <label for="filter_food">
@@ -56,7 +76,8 @@
                 </label>
             </div>
         </li>
-        <input type="checkbox" ng-click="filters.switchFilter(3)" ng-checked="filters.isChecked(3)" name="filter-3" id="filter_park">
+        <input type="checkbox" ng-click="filters.switchFilter(3)" ng-checked="filters.isChecked(3)" name="filter-3"
+               id="filter_park">
         <li class="filter-park">
             <div class="">
                 <label for="filter_park">
@@ -69,12 +90,9 @@
     </ul>
 </section>
 
-<section class="radius">
-    <div class="input-group">
-        <input  class="form-control" type="range" ng-model="route.radius" min="500" max="5500" step="1000" id="radius">
-        <span class="input-group-addon">[[route.radius]]</span>
-    </div>
-</section>
+<div class="radius">
+    <slider floor="1000" ceiling="5000" step="1000" precision="3" ng-model="route.radius"></slider>
+</div>
 
 <main>
     <ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="init($target)" ya-controls=""></ya-map>
@@ -212,69 +230,6 @@
                     </div>
                 </div>
             </div>
-
-
-            {##}
-            {##}
-            {#                <div class="x-btn"><b>X</b></div>#}
-            {#            </div>#}
-            {#            <div id="heady">#}
-            {#                <img src="{% static "app/images/0003.jpg" %}" alt="Picture">#}
-            {#                <h2>Ресторан "Панучи"</h2>#}
-            {#                <div id="list-of-p">#}
-            {#                    <p>Адрес - г.Москва, ул. Ленина, д.9, к.3. </p>#}
-            {#                    <p>Время работы - круглосуточно.</p>#}
-            {#                    <p>Плата - до 20:00 вход беслпатный.</p>#}
-            {#                </div>#}
-            {#            </div>#}
-            {#            <div id="scrl">#}
-            {#                <div id="footy">#}
-            {#                    <div class="add-like-place">#}
-            {#                        <span class="icon icon-heart"> НРАВИТСЯ</span>#}
-            {#                    </div>#}
-            {#                    <div class="add-to-trip">#}
-            {#                        <span class="icon icon-cab"> В МАРШРУТ</span>#}
-            {#                    </div>#}
-            {##}
-            {#                    <div class="options">#}
-            {#                        <h3>Описание места:</h3>#}
-            {#                        <p>Ресторан «Панучи» - это классический европейский ресторан.#}
-            {#                        Дизайн интерьера в точности отражает его название.#}
-            {#                        Все элементы выдержаны в едином, тонком, современном минималистичном, но при этом дорогом стиле.#}
-            {#                        Цветовая гамма заведения подобрана таким образом, чтобы гости могли расслабиться и спокойно насладиться превосходными блюдами.#}
-            {#                        Просторное светлое помещение, хорошо подобранные предметы декора, изящность и красота линий.#}
-            {#                        Яблочная тема, проскальзывая во всем, превосходно поднимает тонус и заряжает энергией: подсвечники, выполненные в форме яблока, шторы, цвета насыщенной яблочной листвы и даже посуда ярко-зеленого цвета.#}
-            {#                        В ресторане царит удивительная атмосфера легкости, элегантности и хорошего настроения.</p>#}
-            {#                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>#}
-            {#                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>#}
-            {#                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>#}
-            {#                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>#}
-            {#                        Долистали#}
-            {#                    </div>#}
-            {#                    <div class="contacts">#}
-            {#                        <h3>Контакты:</h3>#}
-            {#                        <p>Резервация столика - 8-987-654-32-10</p>#}
-            {#                        <p>Книга отзывов и предложений - 8-898-939-52-31.</p>#}
-            {#                        <br>#}
-            {#                        <p>Сайретдинов У.Т.- владелец ресторана.</p>#}
-            {#                        <p>Контактный телефон - 8-888-999-55-33.</p>#}
-            {#                    </div>#}
-            {#                </div>#}
-            {#            </div>#}
-            {#        </div>#}
-            {#      <div class="modal-header">#}
-            {#        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
-            {#        <h4 class="modal-title" id="myModalLabel">Modal title</h4>#}
-            {#      </div>#}
-            {#      <div class="modal-body">#}
-            {#        ...#}
-            {#      </div>#}
-            {#      <div class="modal-footer">#}
-            {#        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
-            {#        <button type="button" class="btn btn-primary">Save changes</button>#}
-            {#      </div>#}
-
-
         </div>
     </div>
 </div>
@@ -290,8 +245,15 @@
     </nav>
     <main class="main-info">
         <div>
-            <div class="slider1" slideit>
-            </div>
+            <slick init-onload=true  infinite="true" slides-to-show="12" slides-to-scroll="[[places.length]]" data="places">
+                <div ng-repeat="place in places">
+                    <span>
+                        <img ng-src="[[place.fields.image]]" width="150px" height="150px">
+                    </span>
+                </div>
+            </slick>
+            {#            <div class="slider1" slideit>#}
+        </div>
         </div>
     </main>
 </section>
