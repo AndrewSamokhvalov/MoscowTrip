@@ -246,12 +246,17 @@
     </nav>
     <main class="main-info">
         <div>
-            <slick init-onload=true infinite="true" slides-to-show="9" slides-to-scroll="5" data="places"
+            <slick init-onload=true infinite="true" slides-to-show="1" slides-to-scroll="5" data="places"
                    variable-width="true">
                 <div ng-repeat="place in places">
                     <div class="rating">
                         <div class="value-rating">
-                            3.3
+                            [[place.fields.rating]]
+                        </div>
+                    </div>
+                    <div class="slick-place">
+                        <div class="slick-filter slick-filter-[[place.fields.type]]">
+                            <span class="slick-filter-icon"></span>
                         </div>
                     </div>
                     <span>
@@ -271,7 +276,7 @@
         $("#show-off").click(function () {
             $(".up-unchk").css("display", "none");
             $(".up-chk").css("display", "inline");
-            $(".main-info").css("bottom", "-155px");
+            $(".main-info").css("bottom", "-160px");
             $(".list_of_nav_buttons").css("bottom", "0");
         });
     });
@@ -282,7 +287,7 @@
             $(".up-unchk").css("display", "inline");
             $(".up-chk").css("display", "none");
             $(".main-info").css("bottom", "0");
-            $(".list_of_nav_buttons").css("bottom", "155px");
+            $(".list_of_nav_buttons").css("bottom", "160px");
         });
     });
 </script>

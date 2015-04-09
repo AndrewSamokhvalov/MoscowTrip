@@ -133,10 +133,12 @@ def serialize_places(places, callback):
                 "iconImageSize": [30, 40],
             },
             "fields": {
-                "rating": place.rating * 10,
+                "rating": str(float(place.rating)),
                 "name": place.name,
-                "image": url
+                "image": url,
+                "type": place.id_type_id
             }
+
         }
 
         features.append(feature)

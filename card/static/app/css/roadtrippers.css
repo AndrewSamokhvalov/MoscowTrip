@@ -193,8 +193,8 @@ header
     background-color: #f5f5f5;
     width:100%;
     box-shadow: 0 0 0.05em ;
-    bottom:-155px;
-    height: 155px;
+    bottom:-160px;
+    height: 160px;
 }
 .main-info-right img
 {
@@ -485,31 +485,72 @@ li.show-btn-right
 
 .slick-slide
 {
-    margin: 3px 3px 0 0;
+    margin: 6px 6px 0 0;
 }
 .slick-slide img
 {
     position: relative;
-    top:-28px;
-
+    border-radius: 5px;
+    top:-56px;
 }
 .slick-slide .rating
 {
     position: relative;
-    top:0px;
+    top:0;
     z-index: 20;
     width:2em;
     height:2em;
+    margin: 0 !important;
     background-color: #5bb765;
     border-radius: 0 0 3px 3px;
     left:5px;
-    vertical-align: middle;
 }
 .slick-slide .value-rating
 {
+    position: relative;
+    top:5px;
     margin-left: 4px;
-    vertical-align: middle;
     height: 100%;
+    color: #fff;
+}
+
+.slick-place
+{
+    position: relative;
+    top:-28px;
+    z-index: 20;
+    width:2em;
+    height:2em;
+    background-color: #fff;
+    border-radius: 1em;
+    left: 40px;
+}
+.slick-filter
+{
+    position: relative;
+    top:3px;
+    left:3px;
+    width:1.6em;
+    height:1.6em;
+    border-radius: 0.8em;
+}
+.slick-filter-1
+{
+    background-color: #0099cc;
+}
+.slick-filter-2
+{
+    background-color: #00cccc;
+}
+.slick-filter-3
+{
+    background-color: #009966;
+}
+.slick-filter-icon
+{
+    position: relative;
+    left:-2px;
+    color: #fff;
 }
 
 /*-----------------------end slick slide----------------------*/
