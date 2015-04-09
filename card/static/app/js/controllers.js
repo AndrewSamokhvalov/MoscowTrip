@@ -5,15 +5,18 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', 'CardSvc',
     function ($scope, $timeout, CardSvc) {
         $scope.filters = new MapObjectFilter($scope, CardSvc);
         $scope.rom = new ROM($scope, CardSvc);
+        $scope.currentPlace = new Place();
 
         $scope.places = [];
-//        $scope.UpdateObject = false;
-//        $scope.wcount = function() {
-//            $scope.places = function(){ return $scope.rom.rom().objects.getAll() };
-//            $scope.UpdateObject = true;
-//        };
+        $scope.radius = 1000;
+        CardSvc.setRadius($scope, 1000);
 
-        $scope.currentPlace = new Place();
+        $scope.$watch('radius', function (newVal, oldVal) {
+            CardSvc.setRadius($scope, newVal);
+        });
+
+
+
 
         $scope.init = function (map) {
             $scope.map = map;
@@ -215,11 +218,12 @@ function ROM($scope, CardSvc) {
 
 
         rom.objects.events.add('add', function (event) {
-            var isSegmentLoaded = event.get('objectId') == -1;
+            var isSegmentLoaded = event.get('objectId') < 0;
+//            console.log(event.get('objectId'))
             if (isSegmentLoaded) {
                 $scope.$apply(function () {
                         $scope.places = rom.objects.getAll();
-//                        console.log('Segment Added');
+                        console.log('Segment Added');
 //                        console.log($scope.places);
                     }
                 )
@@ -227,12 +231,11 @@ function ROM($scope, CardSvc) {
         });
 
         rom.objects.events.add('remove', function (event) {
-            var isSegmentRemoved = event.get('objectId') == -1;
+            var isSegmentRemoved = event.get('objectId') < 0;
             if (isSegmentRemoved) {
                 $scope.$apply(function () {
                         $scope.places = rom.objects.getAll();
-//                        console.log('Segment Removed');
-//                        console.log($scope.places);
+                        console.log('Segment Removed');
                     }
                 )
             }
@@ -247,7 +250,7 @@ function ROM($scope, CardSvc) {
 
     };
 
-    var deleteROM = function deleteROM() {
+    this.deleteROM = function deleteROM() {
         if (rom != null) {
             $scope.map.geoObjects.remove(rom);
 //                $scope.$apply()
@@ -256,9 +259,8 @@ function ROM($scope, CardSvc) {
     };
 
     this.updateROM = function () {
-        deleteROM();
+        this.deleteROM();
         this.createROM();
-//        $scope.wcount();
     };
 
     this.rom = function () {

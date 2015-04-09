@@ -3,10 +3,10 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.template import RequestContext
 from django.core import serializers
 from card.models import *
 from django.core.cache import cache
+import random
 
 from card.polygon import *
 import json
@@ -21,9 +21,11 @@ def get_places(request):
     if request.method == 'GET':
         try:
             types = request.session.get('types')
+            radius = request.session.get('radius')
+            route = request.session.get('route')
             callback = request.GET.get('callback')
             bbox = request.GET.get('bbox')
-            route = request.session.get('route')
+
 
             if types == None:
                 print("ERROR: Types is none!")
@@ -41,7 +43,7 @@ def get_places(request):
             # places = cache.get(bbox)
 
             # if not places:
-            places = filter_places(route, types, bbox)
+            places = filter_places(route, types, radius, bbox)
             # cache.set(bbox, list(places))
 
             # if route not None:
@@ -57,7 +59,7 @@ def get_places(request):
             return HttpResponse("error!")
 
 
-def filter_places(route, types, bbox):
+def filter_places(route, types, radius, bbox):
     bbox = list(map(lambda x: float(x), bbox.split(',')))
 
     lat_left_down = bbox[0]
@@ -74,7 +76,6 @@ def filter_places(route, types, bbox):
     if route is not None:
 
         # worst method which can only be
-        R = 0.02
         idplaces = []
         for place in places:
 
@@ -85,28 +86,13 @@ def filter_places(route, types, bbox):
                 lon2 = point[1]
 
                 d = math.sqrt((lat1 - lat2) ** 2 + (lon1 - lon2) ** 2)
-                if d < R:
+                if d < radius:
                     idplaces.append(place.id)
                     break
 
         places = places.filter(id__in=idplaces)
-        # parameters = []
-        # condition = []
-        # for point in route:
-        # x = point[0]
-        # y = point[1]
-        #
-        #     condition += ["          acos(   sin(t.lat * 0.0175) * sin(%s * 0.0175)                     " \
-        #                  "                + cos(t.lat * 0.0175) * cos(%s * 0.0175)                      " \
-        #                  "                * cos((%s * 0.0175) - (t.lon * 0.0175))                       " \
-        #                  "              ) * 3959 <= %s                                                  "]
-        #
-        #     parameters += [x, y, 0.02]
-        #
-        # condition = 'OR'.join(condition)
-        # places = places.raw("SELECT * FROM card_place WHERE (" + condition + " )", parameters)
 
-    return places
+    return places.order_by('-rating')[:20]
 
 
 def serialize_places(places, callback):
@@ -161,7 +147,7 @@ def serialize_places(places, callback):
             "type": "Point",
             "coordinates": [0, 0]
         },
-        "id": -1
+        "id": (-1) * random.randint(1, math.pow(10,10))
     }
     features.append(feature)
 
@@ -202,6 +188,59 @@ def set_types(request):
 
     return HttpResponse("Not POST request!")
 
+@csrf_exempt
+def get_area(request):
+    if request.method == 'POST':
+        try:
+            str_response = request.body.decode('utf-8')
+            received_json_data = json.loads(str_response)
+
+
+
+            if radius == None:
+                print("ERROR: Types is none!")
+                return HttpResponse("ERROR: Types is none!")
+
+            request.session['radius'] = radius / 50000
+            print('Radius %s ' % str(radius))
+
+            return HttpResponse("Good!")
+
+        except Exception as inst:
+            print("=" * 150)
+            print(type(inst))  # the exception instance
+            print(inst.args)  # arguments stored in .args
+            print(inst)  # __str__ allows args to be printed directly
+            return HttpResponse("error!")
+
+    return HttpResponse("Not POST request!")
+
+
+@csrf_exempt
+def set_radius(request):
+    if request.method == 'POST':
+        try:
+            str_response = request.body.decode('utf-8')
+            received_json_data = json.loads(str_response)
+            radius = float(json.loads(received_json_data['radius']))
+
+            if radius == None:
+                print("ERROR: Types is none!")
+                return HttpResponse("ERROR: Types is none!")
+
+            request.session['radius'] = radius / 50000
+            print('Radius %s ' % str(radius))
+
+            return HttpResponse("Good!")
+
+        except Exception as inst:
+            print("=" * 150)
+            print(type(inst))  # the exception instance
+            print(inst.args)  # arguments stored in .args
+            print(inst)  # __str__ allows args to be printed directly
+            return HttpResponse("error!")
+
+    return HttpResponse("Not POST request!")
 
 @csrf_exempt
 def set_route(request):
@@ -210,6 +249,7 @@ def set_route(request):
             str_response = request.body.decode('utf-8')
             received_json_data = json.loads(str_response)
 
+            radius = request.session.get('radius')
             route = json.loads(received_json_data['points'])
 
             if route == None:
@@ -220,7 +260,7 @@ def set_route(request):
             request.session['route'] = route
             print('Route %s ' % str(route))
 
-            return HttpResponse(get_polygons(0.02, route))
+            return HttpResponse(get_polygons(radius, route))
 
         except Exception as inst:
             print("=" * 150)

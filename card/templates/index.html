@@ -40,7 +40,10 @@
     <script src={% static "app/js/app.js" %}></script>
     <script src={% static "app/js/services.js" %}></script>
     <script src={% static "app/js/controllers.js" %}></script>
+
     <link href={% static "app/css/roadtrippers.css" %} rel="stylesheet">
+    <link href={% static "app/css/rt_ballon_content.css" %} rel="stylesheet">
+    <link href={% static "app/css/rt_filters.css" %} rel="stylesheet">
 
 </head>
 
@@ -91,7 +94,7 @@
 </section>
 
 <div class="radius">
-    <slider floor="1000" ceiling="5000" step="1000" precision="3" ng-model="route.radius"></slider>
+    <slider floor="1000" ceiling="5000" step="1000" precision="3" ng-model="radius"></slider>
 </div>
 
 <main>
