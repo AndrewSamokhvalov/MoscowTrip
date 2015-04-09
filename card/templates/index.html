@@ -27,14 +27,12 @@
     <script src={% static "app/bower_components/angular-slick/dist/slick.js" %}></script>
 
 
-
-
     {#   Yandex map #}
     <script src={% static "app/js/ya-map-2.1.js" %}></script>
 
     {#   BXSlider - image carousel #}
-{#    <script src={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.js" %}></script>#}
-{#    <link href={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.css" %} rel="stylesheet">#}
+    {#    <script src={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.js" %}></script>#}
+    {#    <link href={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.css" %} rel="stylesheet">#}
 
     {#   Roadtrippers api #}
     <script src={% static "app/js/app.js" %}></script>
@@ -248,8 +246,14 @@
     </nav>
     <main class="main-info">
         <div>
-            <slick init-onload=true  infinite="true" slides-to-show="12" slides-to-scroll="[[places.length]]" data="places">
+            <slick init-onload=true infinite="true" slides-to-show="9" slides-to-scroll="5" data="places"
+                   variable-width="true">
                 <div ng-repeat="place in places">
+                    <div class="rating">
+                        <div class="value-rating">
+                            3.3
+                        </div>
+                    </div>
                     <span>
                         <img ng-src="[[place.fields.image]]" width="150px" height="150px">
                     </span>
@@ -257,7 +261,7 @@
             </slick>
             {#            <div class="slider1" slideit>#}
         </div>
-        </div>
+        {% comment %}    </div>{% endcomment %}
     </main>
 </section>
 

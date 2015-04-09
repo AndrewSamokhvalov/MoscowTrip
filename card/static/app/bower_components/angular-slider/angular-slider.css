@@ -3,7 +3,7 @@ slider {
   position: relative;
   height: 7px;
   width: 100%;
-  margin: 25px 5px 25px 5px;
+  margin: 0;
   vertical-align: middle;
 }
 slider span {
@@ -47,7 +47,7 @@ slider span.pointer {
   cursor: pointer;
   width: 20px;
   height: 20px;
-  top: -8px;
+  top: -7px;
   background-color: #fff;
   border: 1px solid #000;
   z-index: 2;
@@ -60,8 +60,8 @@ slider span.pointer:after {
   width: 8px;
   height: 8px;
   position: absolute;
-  top: 6px;
-  left: 6px;
+  top: 28%;
+  left: 28%;
   -webkit-border-radius: 1em/1em;
   border-radius: 1em/1em;
 }
