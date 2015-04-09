@@ -326,20 +326,25 @@ li.show-btn-right
 {
     position: fixed;
     z-index: 2;
-    top: 2.6em;
+    top: 2.8em;
     left: 0.25em;
     width: auto;
     height: auto;
+    margin: 0;
     font-size: 1.5em;
     box-shadow: 0 0 0.05em ;
     background: #f5f5f5;
     list-style-type: none;
-    margin:0 0 0 0;
-    padding: 0 0 0 0;
+    line-height: 1em;
+    padding: 0;
     -webkit-border-radius: 0.4em;
     -moz-border-radius: 0.4em;
     border-radius: 0.4em;
     cursor: pointer;
+}
+.filters label
+{
+    margin:0;
 }
 .filters>ul>.filter-place_of_interests:hover {
     background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
@@ -378,8 +383,10 @@ li.show-btn-right
 }
 .filters li
 {
-    display: table-cell;
+    display: table-cell !important;
     vertical-align: middle;
+    width: 2em;
+    height: auto;
     border-right: 0.05em solid grey;
 }
 .filters li:last-child
@@ -402,6 +409,7 @@ li.show-btn-right
 {
     color: #009966;
     text-shadow: 0 0 0.2em rgba(0,0,0,0);
+
     cursor: pointer;
 }
 .filters input[type="checkbox"],
@@ -715,6 +723,10 @@ li.show-btn-right
     width:20px;
     height: 20px;
 }
+.media-left img
+{
+    cursor: pointer;
+}
 /*---------------------------end-balloon_balloon-elements-------------------------------*/
 
 .radius
@@ -781,7 +793,7 @@ li.show-btn-right
     font-family:"roadtrippers-icons";
     display: inline-block;
     text-decoration: inherit;
-    width: 0.7em;
+    width: 1em;
     padding-top:0.2em;
     padding-left: 0.2em;
     padding-right: 0.2em;
