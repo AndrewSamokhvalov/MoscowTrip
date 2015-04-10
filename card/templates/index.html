@@ -262,11 +262,14 @@
                     <span>
                         <img ng-src="[[place.fields.image]]" width="150px" height="150px">
                     </span>
+                    <span class="place-name" onclick="$('#detailPlaceInfo').modal('show')">
+                        [[ place.fields.name ]]
+                    </span>
                 </div>
             </slick>
             {#            <div class="slider1" slideit>#}
         </div>
-        {% comment %}    </div>{% endcomment %}
+            </div>
     </main>
 </section>
 

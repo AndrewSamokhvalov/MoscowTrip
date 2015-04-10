@@ -321,115 +321,6 @@ li.show-btn-right
 
 /*---------------------------end-footer_rightbar-------------------------------*/
 
-
-
-/*---------------------------balloon_balloon-elements-------------------------------*/
-
-.ymaps-2-1-22-balloon__close
-{
-    margin: 0 0 0 0 !important;
-    right:41px !important;
-    top:3px !important;
-}
-.ymaps-2-1-22-balloon__content
-{
-    width: 290px !important;
-    height:80px !important;
-    margin:0 0 0 0 !important;
-    padding:0 0 0 0 !important;
-    background: rgba(0,0,0,0.5) !important;
-}
-.ymaps-2-1-22-balloon__content .balloon-info
-{
-    position: absolute;
-    border-radius: 5px;
-    top:5px;
-    left:5px;
-    right:41px;
-    bottom:5px;
-    background: #fff;
-}
-.ymaps-2-1-22-balloon__tail:after
-{
-    background: rgba(0,0,0,0.5) !important;
-}
-.balloon-img > img
-{
-    top:5px;
-    left:5px;
-    width: 70px;
-    height: 70px;
-    border-radius: 5px 0 0 5px;
-
-}
-.like-balloon
-{
-    position: absolute;
-    right: -36px;
-    top:0;
-    border-radius: 5px;
-    width: 34px;
-    height: 34px;
-    background: #fff;
-    cursor: pointer;
-}
-.trip-balloon
-{
-    position: absolute;
-    cursor: pointer;
-    right: -36px;
-    bottom:0;
-    border-radius: 5px;
-    width: 34px;
-    height: 34px;
-    background: #fff;
-}
-.trip-balloon .icon-cab
-{
-    position: absolute;
-    font-size: 1.8em;
-    /*top: 6px;*/
-    left:3px;
-    color: #00cc99;
-}
-.like-balloon .icon-heart
-{
-    position: absolute;
-    font-size: 1.8em;
-    left:4px;
-    color: #ff3366;
-}
-.like-balloon .icon-heart:hover
-{
-    color:#ff0099;
-}
-.trip-balloon .icon-cab:hover
-{
-    color:#00cccc;
-}
-.balloon-info h4
-{
-    cursor: pointer;
-    margin: 0;
-    position: absolute;
-    top:20px;
-    left:75px;
-}
-.balloon-info .balloon-rate
-{
-    position: absolute;
-    top:0;
-    left: 15px;
-    background: #00ff00;
-    width:20px;
-    height: 20px;
-}
-.media-left img
-{
-    cursor: pointer;
-}
-/*---------------------------end-balloon_balloon-elements-------------------------------*/
-
 .radius
 {
     position: fixed;
@@ -552,6 +443,17 @@ li.show-btn-right
     left:-2px;
     color: #fff;
 }
+.slick-slide span.place-name
+{
+    position: absolute;
+    bottom:60px;
+    padding: 0 0 0 8px;
+    width: 150px;
+    white-space: normal;
+    text-shadow: black 1px 0px, black 1px 1px, black 0px 1px, black -1px 1px, black -1px 0px, black -1px -1px, black 0px -1px, black 1px -1px;
+    font-size: 0.95em;
+    color:#fff;
 
+}
 /*-----------------------end slick slide----------------------*/
 
