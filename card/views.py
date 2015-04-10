@@ -114,7 +114,7 @@ def serialize_places(places, callback):
         context = {
             'image': url,
             'name': place.name,
-            'rating': place.rating * 10
+            'rating': place.rating
         }
 
         feature = {
