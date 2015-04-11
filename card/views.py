@@ -124,9 +124,6 @@ def serialize_places(places, callback):
                 "coordinates": [place.lat, place.lon]
             },
             "id": place.id,
-            "properties": {
-                "balloonContent": render_to_response('balloon_content.html', context).content.decode('utf-8'),
-            },
             "options": {
                 "iconLayout": "default#image",
                 "iconImageHref": place.id_type.url_image_marker,

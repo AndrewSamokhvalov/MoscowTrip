@@ -30,10 +30,6 @@
     {#   Yandex map #}
     <script src={% static "app/js/ya-map-2.1.js" %}></script>
 
-    {#   BXSlider - image carousel #}
-    {#    <script src={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.js" %}></script>#}
-    {#    <link href={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.css" %} rel="stylesheet">#}
-
     {#   Roadtrippers api #}
     <script src={% static "app/js/app.js" %}></script>
     <script src={% static "app/js/services.js" %}></script>
@@ -226,9 +222,9 @@
                         </div>
                     </div>
                     <span>
-                        <img ng-src="[[place.fields.image]]" width="150px" height="150px">
+                        <img ng-click="currentPlace.show(919)" ng-src="[[place.fields.image]]" width="150px" height="150px">
                     </span>
-                    <span class="place-name" onclick="$('#detailPlaceInfo').modal('show')">
+                    <span class="place-name">
                         [[ place.fields.name ]]
                     </span>
                 </div>

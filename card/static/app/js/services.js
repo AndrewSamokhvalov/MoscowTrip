@@ -8,8 +8,10 @@ roadtrippersApp.factory('CardSvc', function ($http) {
         },
 
         getPlaceInfo: function ($scope, place_id) {
-            return $http.get('/getPlaceInfo' + '?place_id=' + place_id + '').success(function (response) {
-                $scope.currentPlace.update(response);
+            return $http.get('/getPlaceInfo' + '?place_id=' + place_id + '').success(function (data) {
+                for (var i in data[0].fields) {
+                    $scope.rom.getRom().objects.getById(place_id).fields[i] = data[0].fields[i];
+                }
             });
         },
         setRadius: function ($scope, radius) {

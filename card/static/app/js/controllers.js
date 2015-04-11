@@ -1,11 +1,11 @@
 'use strict';
 
 
-roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', 'CardSvc',
-    function ($scope, $timeout, CardSvc) {
+roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardSvc',
+    function ($scope, $timeout, $compile, CardSvc) {
         $scope.filters = new MapObjectFilter($scope, CardSvc);
-        $scope.rom = new ROM($scope, CardSvc);
-        $scope.currentPlace = new Place();
+        $scope.rom = new ROM($scope, $compile, CardSvc);
+        $scope.currentPlace = new Place($scope, CardSvc);
 
         $scope.places = [];
         $scope.radius = 1000;
@@ -14,8 +14,6 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', 'CardSvc',
         $scope.$watch('radius', function (newVal, oldVal) {
             CardSvc.setRadius($scope, newVal);
         });
-
-
 
 
         $scope.init = function (map) {
@@ -101,20 +99,24 @@ function MapObjectFilter($scope, CardSvc) {
     }
 }
 
-function ROM($scope, CardSvc) {
+function ROM($scope, $compile, CardSvc) {
     var rom;
 
     this.createROM = function () {
         var MyBalloonLayout = ymaps.templateLayoutFactory.createClass
         (
-            '$[[options.contentLayout]]',
+            '<balloon></balloon>',
             {
 
                 build: function () {
+
+//                    Идите нахуй я не буду это исправлять
                     this.constructor.superclass.build.call(this);
+                    var chart = angular.element(document.createElement('balloon'));
+                    var el = $compile(chart)($scope);
+                    $('balloon').replaceWith(el)
 
                     this._$element = $('.popover', this.getParentElement());
-
                     this.applyElementOffset();
 
                 },
@@ -126,9 +128,6 @@ function ROM($scope, CardSvc) {
                  * @name clear
                  */
                 clear: function () {
-                    this._$element.find('.close')
-                        .off('click');
-
                     this.constructor.superclass.clear.call(this);
                 },
 
@@ -201,16 +200,11 @@ function ROM($scope, CardSvc) {
             }
         );
 
-        var MyBalloonContentLayout = ymaps.templateLayoutFactory.createClass(
-            '$[properties.balloonContent]'
-        );
-
         rom = new ymaps.RemoteObjectManager('getPlaces?bbox=%b',
             {
                 clusterHasBalloon: false,
                 geoObjectBalloonShadow: false,
                 geoObjectBalloonLayout: MyBalloonLayout,
-                geoObjectBalloonContentLayout: MyBalloonContentLayout,
                 geoObjectBalloonPanelMaxMapArea: 0,
                 geoObjectHideIconOnBalloonOpen: false,
                 geoObjectBalloonOffset: [3, 0]
@@ -243,7 +237,7 @@ function ROM($scope, CardSvc) {
 
         rom.events.add('click', function (event) {
             var id = event.get('objectId');
-            CardSvc.getPlaceInfo($scope, id);
+            $scope.currentPlace.init(id);
         });
 
         $scope.map.geoObjects.add(rom);
@@ -263,20 +257,26 @@ function ROM($scope, CardSvc) {
         this.createROM();
     };
 
-    this.rom = function () {
+    this.getRom = function () {
         if (!rom) this.createROM();
         return rom
     };
 }
 
-function Place() {
-    var info = {};
+function Place($scope, CardSvc) {
+    this.fields = {};
+    this.init = function (place_id) {
 
-    this.info = info;
+        var object = $scope.rom.getRom().objects.getById(place_id);
+        $scope.$apply(function () {
+            $scope.currentPlace.fields = object.fields;
+            CardSvc.getPlaceInfo($scope, place_id)
 
-    this.update = function update(data) {
-        for (var i in data[0].fields) {
-            info[i] = data[0].fields[i];
-        }
+        })
+
+    }
+
+    this.show = function (place_id) {
+        $('#detailPlaceInfo').modal('show')
     }
 }
