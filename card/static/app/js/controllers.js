@@ -3,35 +3,31 @@
 
 roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardSvc',
     function ($scope, $timeout, $compile, CardSvc) {
-        $scope.filters = new MapObjectFilter($scope, CardSvc);
-        $scope.rom = new ROM($scope, $compile, CardSvc);
-        $scope.currentPlace = new Place($scope, CardSvc);
-
-        $scope.places = [];
-        $scope.radius = 1000;
-        CardSvc.setRadius($scope, 1000);
-
-        $scope.$watch('radius', function (newVal, oldVal) {
-            CardSvc.setRadius($scope, newVal);
-        });
-
-
         $scope.init = function (map) {
-            $scope.map = map;
+            $scope.filters = new MapObjectFilter($scope, CardSvc);
+            $scope.rom = new ROM($scope, $compile, CardSvc);
+            $scope.currentPlace = new Place($scope, CardSvc);
 
-            ymaps.route(['москва метро пролетарская', 'Савёловский']).then(function (route) {
-                CardSvc.setRoute($scope, route);
+            $scope.radius = 1000;
+            CardSvc.setRadius($scope, 1000);
+
+            $scope.$watch('radius', function (newVal, oldVal) {
+                CardSvc.setRadius($scope, newVal);
             });
+
+            $scope.map = map;
 
             var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
             var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}});
             var searchControl = new ymaps.control.SearchControl({options: { position: { right: 1, top: 10 }}});
-            var routeEditor = new ymaps.control.RouteEditor({options: { position: { left: 40, top: 105 }}});
+            var routeEditor = new ymaps.control.RouteEditor({
+                    options: {
+                        position: { left: 40, top: 105 }
+                    }
+                }
+            );
 
-
-            routeEditor.events.add('deselect', function () {
-                CardSvc.setRoute($scope, routeEditor.getRoute())
-            });
+            $scope.route = new Route($scope, routeEditor, CardSvc);
 
             map.controls.add(zoomControl);
             map.controls.add(geolocationControl);
@@ -101,11 +97,18 @@ function MapObjectFilter($scope, CardSvc) {
 
 function ROM($scope, $compile, CardSvc) {
     var rom;
+    this.places = null;
 
     this.createROM = function () {
         var MyBalloonLayout = ymaps.templateLayoutFactory.createClass
         (
-            '<balloon></balloon>',
+            '<div class="modal-dialog">' +
+                '<div class="modal-content popover">' +
+                    '<balloon></balloon>' +
+                '</div>' +
+             '</div>'
+
+            ,
             {
 
                 build: function () {
@@ -157,8 +160,8 @@ function ROM($scope, $compile, CardSvc) {
                  */
                 applyElementOffset: function () {
                     this._$element.css({
-                        left: -(this._$element[0].offsetWidth / 2),
-                        top: -(this._$element[0].offsetHeight + 30)
+                        left: -(this._$element[0].offsetWidth/2 + 75),
+                        top: -(this._$element[0].offsetHeight/2 + 230)
                     });
                 },
 
@@ -213,12 +216,9 @@ function ROM($scope, $compile, CardSvc) {
 
         rom.objects.events.add('add', function (event) {
             var isSegmentLoaded = event.get('objectId') < 0;
-//            console.log(event.get('objectId'))
             if (isSegmentLoaded) {
                 $scope.$apply(function () {
-                        $scope.places = rom.objects.getAll();
-                        console.log('Segment Added');
-//                        console.log($scope.places);
+                        $scope.rom.places = rom.objects.getAll();
                     }
                 )
             }
@@ -228,8 +228,7 @@ function ROM($scope, $compile, CardSvc) {
             var isSegmentRemoved = event.get('objectId') < 0;
             if (isSegmentRemoved) {
                 $scope.$apply(function () {
-                        $scope.places = rom.objects.getAll();
-                        console.log('Segment Removed');
+                        $scope.rom.places = rom.objects.getAll();
                     }
                 )
             }
@@ -237,7 +236,7 @@ function ROM($scope, $compile, CardSvc) {
 
         rom.events.add('click', function (event) {
             var id = event.get('objectId');
-            $scope.currentPlace.init(id);
+            $scope.currentPlace.show(id);
         });
 
         $scope.map.geoObjects.add(rom);
@@ -265,18 +264,34 @@ function ROM($scope, $compile, CardSvc) {
 
 function Place($scope, CardSvc) {
     this.fields = {};
-    this.init = function (place_id) {
-
+    this.show = function (place_id) {
+//        var id = place_id[0][0];
         var object = $scope.rom.getRom().objects.getById(place_id);
         $scope.$apply(function () {
             $scope.currentPlace.fields = object.fields;
-            CardSvc.getPlaceInfo($scope, place_id)
-
+            CardSvc.getPlaceInfo($scope, id)
         })
-
+//        $('#detailPlaceInfo').modal('show')
     }
 
-    this.show = function (place_id) {
-        $('#detailPlaceInfo').modal('show')
-    }
+//    this.show = function (place_id) {
+//        $('#detailPlaceInfo').modal('show')
+//    }
+}
+function Route($scope, routeEditor, CardSvc) {
+
+    this.data = null;
+    this.area = null;
+
+    ymaps.route(['москва метро пролетарская', 'Савёловский']).then(function (route) {
+        CardSvc.setRoute($scope, route);
+        console.log('Route added');
+    });
+
+
+    routeEditor.events.add('deselect', function (route) {
+        CardSvc.setRoute($scope, routeEditor.getRoute());
+    });
+
+
 }

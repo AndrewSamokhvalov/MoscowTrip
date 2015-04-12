@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'compressor',
     'card',
 )
 
@@ -84,8 +85,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
-    os.path.join(BASE_DIR, 'card/templates'),
+    os.path.join(BASE_DIR,  'template'),
+    os.path.join(BASE_DIR, 'card/template'),
 )
 
 CACHES = {

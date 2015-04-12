@@ -13,7 +13,7 @@ import json
 
 
 def card(request):
-    return render_to_response('index.html')
+    return render_to_response('main.html')
 
 
 @csrf_exempt
@@ -133,20 +133,21 @@ def serialize_places(places, callback):
                 "rating": str(float(place.rating)),
                 "name": place.name,
                 "image": url,
-                "type": place.id_type_id
+                "type": place.id_type_id,
+                "id": place.pk
             }
 
         }
 
         features.append(feature)
-
+    # Последний элемент с отрицательныйм id отправляется для того чтобы на клиенте понять что сегмент полностью загрузился
     feature = {
         "type": 'Feature',
         "geometry": {
             "type": "Point",
             "coordinates": [0, 0]
         },
-        "id": (-1) * random.randint(1, math.pow(10,10))
+        "id": (-1) * random.randint(1, math.pow(10, 10))
     }
     features.append(feature)
 

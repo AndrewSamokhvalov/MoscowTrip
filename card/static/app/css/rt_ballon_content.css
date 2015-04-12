@@ -1,11 +1,7 @@
 .popover {
     display: block;
 }
-.popover .close {
-    position: absolute;
-    right: 5px;
-    top: 1px;
-}
+
 .btn {
     margin-top: 10px;
 }

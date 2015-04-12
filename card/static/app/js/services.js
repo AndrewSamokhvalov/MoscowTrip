@@ -8,10 +8,13 @@ roadtrippersApp.factory('CardSvc', function ($http) {
         },
 
         getPlaceInfo: function ($scope, place_id) {
-            return $http.get('/getPlaceInfo' + '?place_id=' + place_id + '').success(function (data) {
-                for (var i in data[0].fields) {
-                    $scope.rom.getRom().objects.getById(place_id).fields[i] = data[0].fields[i];
+            return $http.get('/getPlaceInfo' + '?place_id=' + place_id + '').success(function (response) {
+                var data = response[0];
+                var object = $scope.rom.getRom().objects.getById(place_id);
+                for (var i in data.fields) {
+                    object.fields[i] = data.fields[i];
                 }
+                object.fields.id = place_id;
             });
         },
         setRadius: function ($scope, radius) {
@@ -25,10 +28,10 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                 points.push(path.geometry.getCoordinates())
             });
 
-            $scope.map.geoObjects.remove($scope.route);
-            $scope.map.geoObjects.remove($scope.area);
+            $scope.map.geoObjects.remove($scope.route.data);
+            $scope.map.geoObjects.remove($scope.route.area);
 
-            $scope.route = route;
+            $scope.route.data = route;
             $scope.map.geoObjects.add(route);
 
             return $http.post('/setRoute', { 'points': JSON.stringify(points[0])}).success(function (polyline) {
@@ -59,7 +62,7 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                     });
 
                     // Добавляем линии на карту.
-                    $scope.area = area;
+                    $scope.route.area = area;
                     $scope.map.geoObjects.add(area);
                     $scope.rom.updateROM();
                 }
