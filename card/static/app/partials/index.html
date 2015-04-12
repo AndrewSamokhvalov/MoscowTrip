@@ -151,43 +151,4 @@
     </div>
 </div>
 
-<section id="bottom-bar">
-    <nav class="list_of_nav_buttons">
-        <span class="nav-button-text-bottom">Места</span>
-
-        <div class="up-chk" id="show-on">
-            <span class="icon icon-up-micro"></span>
-        </div>
-        <div class="up-unchk" id="show-off">
-            <span class="icon icon-down-micro"></span>
-        </div>
-    </nav>
-    <main class="main-info">
-        <div>
-            <slick init-onload=true infinite="true" slides-to-show="1" slides-to-scroll="5" data="rom.places"
-                   variable-width="true">
-                <div ng-repeat="place in rom.places">
-                    <div class="rating">
-                        <div class="value-rating">
-                            {{ place.fields.rating }}
-                        </div>
-                    </div>
-                    <div class="slick-place">
-                        <div class="slick-filter slick-filter-{{ place.fields.type }}">
-                            <span class="slick-filter-icon"></span>
-                        </div>
-                    </div>
-                    <span class="balloon-image">
-                        <img ng-click="currentPlace.show('{{ place.fields.id }}');" ng-src="{{ place.fields.image }}"
-                             width="150px" height="150px">
-                    </span>
-                    <span class="place-name">
-                        {{ place.fields.name }}
-                    </span>
-                </div>
-            </slick>
-            {#            <div class="slider1" slideit>#}
-        </div>
-        </div>
-    </main>
-</section>
+<place-slider places="rom.places"> </place-slider>
