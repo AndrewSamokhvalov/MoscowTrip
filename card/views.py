@@ -309,6 +309,8 @@ def get_place_info(request):
                 'vk_link',
                 'website',
                 'phone',
+                'lat',
+                'lon',
                 'id_tag',
             ))
 

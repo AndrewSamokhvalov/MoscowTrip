@@ -9,9 +9,9 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
             // Создадим пользовательский макет редактора маршрута
             var MyRouteEditorLayout = ymaps.templateLayoutFactory.createClass("<div>" +
-                 "<div id='routeEditorButton' class='btn btn-default btn-routeControll {% if state.selected %}my-button-selected{% endif %}'>" +
-                 "<img src='/static/app/images/routeIcon.svg' />" +
-                 "</div>", {
+                "<div id='routeEditorButton' class='btn btn-default btn-routeControll {% if state.selected %}my-button-selected{% endif %}'>" +
+                "<img src='/static/app/images/routeIcon.svg' />" +
+                "</div>", {
 
                 // Переопределяем методы макета, чтобы выполнять дополнительные действия
                 // при построении и очистке макета.
@@ -101,8 +101,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                         }
                     });
 
-                    multiRoute.events.once("activeroutechange",function(event)
-                    {
+                    multiRoute.events.once("activeroutechange", function (event) {
                         console.log('k');
 
                     });
@@ -447,6 +446,7 @@ function Place($scope, CardSvc) {
         });
     }
 
+
     this.load = function (id) {
         $scope.$apply(function () {
             CardSvc.getPlaceInfo($scope, id)
@@ -455,13 +455,18 @@ function Place($scope, CardSvc) {
 }
 function Route($scope, CardSvc) {
 
-    this.data = null;
+    this.multiroute = null;
     this.area = null;
 
-    ymaps.route(['москва метро пролетарская', 'Савёловский']).then(function (route) {
-        CardSvc.setRoute($scope, route);
-        console.log('Route added');
-    });
+    this.addTotTrip = function () {
+        var referencePoints = multiroute.model.getReferencePoints();
+        referencePoints.splice(1, 0, "Москва, ул. Солянка, 7");
+    }
+
+    this.addRoute = function (start, finish) {
+
+    }
+
 
 //    routeEditor.events.add('deselect', function (route) {
 //        var route = routeEditor.getRoute();
