@@ -50,31 +50,7 @@
     <ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="init($target)" ya-controls=""></ya-map>
 </main>
 
-<section id="right-bar">
-    <nav class="list_of_nav_buttons_right">
-        <div class="up-chk-right" id="show-on-right">
-            <span class="icon icon-up-micro"></span>
-        </div>
-        <div class="up-unchk-right" id="show-off-right">
-            <span class="icon icon-down-micro"></span>
-        </div>
-    </nav>
-    <main class="main-info-right">
-        <img src="/static/app/images/0002.jpg" alt="Маршрут">
-
-        <div class="make-trip">
-            <div class="form-A">
-                <span class="icon-A">A:</span>
-                <input class="form-a-inp" type="text" placeholder="Введите пункт А"/>
-            </div>
-            <div class="form-B">
-                <span class="icon-B">B:</span>
-                <input class="form-b-inp" type="text" placeholder="Введите пункт В"/>
-            </div>
-            <input id="find-trip-btn" type="submit" value="Построить маршрут">
-        </div>
-    </main>
-</section>
+<rt-right-collapsible></rt-right-collapsible>
 
 
 <!-- Popup window -->
@@ -153,4 +129,4 @@
     </div>
 </div>
 
-<rt-place-slider places="rom.places" current-place="currentPlace" slidefilter="slidefilter.idfilter"></rt-place-slider>
+<rt-down-collapsible places="rom.places" current-place="currentPlace" slidefilter="slidefilter.idfilter"></rt-down-collapsible>

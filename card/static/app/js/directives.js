@@ -18,7 +18,7 @@ roadtrippersApp
     }
     ])
 
-    .directive('rtPlaceSlider', [ '$filter', function ($filter) {
+    .directive('rtDownCollapsible', [ '$filter', function ($filter) {
         return {
             restrict: 'E',
             replace: true,
@@ -28,7 +28,7 @@ roadtrippersApp
                 slidefilter: '=slidefilter'
 
             },
-            templateUrl: '/static/app/partials/place-slider.html',
+            templateUrl: '/static/app/partials/rt-down-collapsible.html',
 
             link: function ($scope, $element) {
 
@@ -50,6 +50,41 @@ roadtrippersApp
         }
     }
     ])
+
+    .directive('rtRightCollapsible', [ '$filter', function ($filter) {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+//                places: '=places',
+//                currentPlace: '=currentPlace',
+//                slidefilter: '=slidefilter'
+
+            },
+            templateUrl: '/static/app/partials/rt-right-collapsible.html',
+
+            link: function ($scope, $element) {
+                $("#show-off-right").click(function () {
+                    $(".up-unchk-right").css("display", "none");
+                    $(".up-chk-right").css("display", "inline");
+                    $(".main-info-right").css("right", "-350px");
+                    $(".list_of_nav_buttons_right").css("right", "0");
+                });
+
+
+                $("#show-on-right").click(function () {
+                    $(".up-unchk-right").css("display", "inline");
+                    $(".up-chk-right").css("display", "none");
+                    $(".main-info-right").css("right", "0");
+                    $(".list_of_nav_buttons_right").css("right", "350px");
+                });
+
+
+            }
+        }
+    }
+    ])
+
 
     .directive('rtImg', [ function () {
         return {
