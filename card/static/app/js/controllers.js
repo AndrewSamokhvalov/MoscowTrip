@@ -7,17 +7,17 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
         $scope.init = function (map) {
 
-            // Создадим пользовательский макет ползунка масштаба.
-            var ZoomLayout = ymaps.templateLayoutFactory.createClass("<div>" +
-                "<div style='z-index: 20' id='zoom-in' class='btn'><i class='icon-plus'></i></div><br>" +
-                "<div id='zoom-out' class='btn'><i class='icon-minus'></i></div>" +
-                "</div>", {
+            // Создадим пользовательский макет редактора маршрута
+            var MyRouteEditorLayout = ymaps.templateLayoutFactory.createClass("<div>" +
+                 "<div id='routeEditorButton' class='my-button {% if state.selected %}my-button-selected{% endif %}'>" +
+                    "{{data.content}}" +
+                    "</div>", {
 
                 // Переопределяем методы макета, чтобы выполнять дополнительные действия
                 // при построении и очистке макета.
                 build: function () {
                     // Вызываем родительский метод build.
-                    ZoomLayout.superclass.build.call(this);
+                    MyRouteEditorLayout.superclass.build.call(this);
 
                     this.STATES = {
                         START: {value: 0, name: "Start", code: "S"},
@@ -34,7 +34,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     this.initEventsCallback = ymaps.util.bind(this.initEvents, this);
 
                     // Начинаем слушать клики на кнопках макета.
-                    $('#zoom-in').bind('click', this.initEventsCallback);
+                    $('#routeEditorButton').bind('click', this.initEventsCallback);
                 },
 
 
@@ -51,10 +51,10 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
                 clear: function () {
                     // Снимаем обработчики кликов.
-                    $('#zoom-in').unbind('click', this.initEventsCallback);
+                    $('#routeEditorButton').unbind('click', this.initEventsCallback);
 
                     // Вызываем родительский метод clear.
-                    ZoomLayout.superclass.clear.call(this);
+                    MyRouteEditorLayout.superclass.clear.call(this);
                 },
 
                 initEvents: function () {
@@ -109,7 +109,6 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     });
 
 
-
                     this.multiRoute = multiRoute;
                     map.geoObjects.add(multiRoute);
 
@@ -118,29 +117,15 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                 }
             });
 
-            var zoomControl = new ymaps.control.ZoomControl({ options: { layout: ZoomLayout } });
-
-            map.controls.add(zoomControl);
-//            // Дочерний класс
-//            var MyGeoObject = function (e, t) {
-//                MyGeoObject.superclass.constructor.call(this, e, t)
-//            };
-//
-//            ymaps.util.augment(MyGeoObject, ymaps.Balloon, {
-//                initCurrentPlace: function () {
-//                    $scope.$apply(function () {
-//                        $scope.currentPlace = this;
-//                    })
-//                },
-//
-//                dataload: function () {
-//                    $scope.$apply(function () {
-//                        CardSvc.getPlaceInfo($scope, this)
-//                    })
-//
-//                }});
-//
-//            ymaps.Balloon = MyGeoObject;
+            var MyRouteEditor = new ymaps.control.Button({
+                data: {
+                    content: "Жмак-жмак"
+                },
+                options: {
+                    layout: MyRouteEditorLayout,
+                    position: { left: 30, top: 140 }
+                }
+            });
 
             $scope.filters = new MapObjectFilter($scope, CardSvc);
             $scope.slidefilter = new SlideFilter();
@@ -155,30 +140,25 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
             $scope.map = map;
 
-//            var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
+            var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
             var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}});
             var searchControl = new ymaps.control.SearchControl({options: { position: { right: 1, top: 10 }}});
-            var routeEditor = new ymaps.control.RouteEditor({
-                    options: {
-                        position: { left: 40, top: 105 }
-                    }
-                }
-            );
 
-            $scope.route = new Route($scope, routeEditor, CardSvc);
+            $scope.route = new Route($scope, CardSvc);
 
-//            map.controls.add(zoomControl);
+            map.controls.add(zoomControl);
             map.controls.add(geolocationControl);
             map.controls.add(searchControl);
-            map.controls.add(routeEditor);
+            map.controls.add(MyRouteEditor);
+
 
             map.events.add('balloonopen', function (e) {
                 var balloon = e.get('balloon');
-//                map.events.add('click', function (e) {
-//                    if (e.get('target') === map) { // Если клик был на карте, а не на геообъекте
-//                        map.balloon.close();
-//                    }
-//                });
+                map.events.add('click', function (e) {
+                    if (e.get('target') === map) { // Если клик был на карте, а не на геообъекте
+                        map.balloon.close();
+                    }
+                });
             });
         };
     }
@@ -414,7 +394,7 @@ function Place($scope, CardSvc) {
         })
     }
 }
-function Route($scope, routeEditor, CardSvc) {
+function Route($scope, CardSvc) {
 
     this.data = null;
     this.area = null;
@@ -424,7 +404,7 @@ function Route($scope, routeEditor, CardSvc) {
         console.log('Route added');
     });
 
-    routeEditor.events.add('deselect', function (route) {
+//    routeEditor.events.add('deselect', function (route) {
 //        var route = routeEditor.getRoute();
 //        route.then(function () {
 //            var points = route.getWayPoints();
@@ -443,8 +423,8 @@ function Route($scope, routeEditor, CardSvc) {
 //
 //            points.get(lastPoint).properties.set('iconImageHref', '/static/app/images/metka1.png');
 //        })
-        CardSvc.setRoute($scope, routeEditor.getRoute());
-    });
+//        CardSvc.setRoute($scope, routeEditor.getRoute());
+//    });
 
 }
 
