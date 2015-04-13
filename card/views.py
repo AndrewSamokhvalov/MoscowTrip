@@ -278,8 +278,8 @@ def get_place_info(request):
             place_id = json.loads(place_id)
 
             place = Place.objects.select_related().filter(id=place_id)
-            return HttpResponse(serializers.serialize("json", place, fields=(
-                'name',
+            # images = Image.objects.select_related().filter(id_place=place_id)
+            json_place = serializers.serialize("json", place, fields=(
                 'address',
                 'website',
                 'description',
@@ -289,7 +289,22 @@ def get_place_info(request):
                 'vk_link',
                 'website',
                 'phone',
-            )))
+                'id_tag',
+            ))
+
+            place = json.loads(json_place)[0]
+
+            id_tags = place['fields']['id_tag']
+            del place['fields']['id_tag']
+            tags = Tag.objects.select_related().filter(id__in=id_tags)
+            json_tags = serializers.serialize("json", tags)
+            tags = json.loads(json_tags)
+            ltags = []
+            for tag in tags:
+                ltags.append(tag['fields']['tag'])
+            place['fields']['tags'] = ltags
+
+            return HttpResponse(json.dumps(place['fields']))
 
         except Exception as inst:
             print("=" * 150)
