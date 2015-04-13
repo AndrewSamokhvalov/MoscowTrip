@@ -2,7 +2,7 @@
  * Created by andrey on 12.04.15.
  */
 roadtrippersApp
-    .directive('balloon', ['$compile', function ($compile) {
+    .directive('rtBalloon', ['$compile', function ($compile) {
         return {
             restrict: 'E',
             replace: true,
@@ -10,27 +10,22 @@ roadtrippersApp
             templateUrl: '/static/app/partials/balloon.html',
 
             link: function ($scope, $element) {
-                console.log('Link ballone content:')
-                console.log($element)
+//                console.log('Link ballone content:')
+//                console.log($element)
 
-            },
-
-            controller: function ($scope, $element) {
-                console.log('Controller ballone content:')
-                console.log($element)
             }
-
         }
     }
-    ]);
+    ])
 
-roadtrippersApp
-    .directive('placeSlider', [ function () {
+    .directive('rtPlaceSlider', [ function () {
         return {
             restrict: 'E',
             replace: true,
             scope: {
-                places: '=places'
+                places: '=places',
+                currentPlace: '=currentPlace'
+
             },
             templateUrl: '/static/app/partials/place-slider.html',
 
@@ -50,13 +45,32 @@ roadtrippersApp
                     $(".list_of_nav_buttons").css("bottom", "160px");
                 });
 
+            }
+        }
+    }
+    ])
+
+    .directive('rtImg', [ function () {
+        return {
+            restrict: 'E',
+            replace: true,
+            template: '<img ng-src="{{ place.fields.image }}">',
+            scope: {
+                place: '=place',
+                currentPlace: '=currentPlace'
             },
 
-            controller: function ($scope, $element) {
-                console.log('Controller ballone content:')
-                console.log($element)
-            }
+            link: function ($scope, element) {
+                element.bind('click', function () {
+                    console.log($scope.place.fields.id)
+                    $scope.currentPlace.init(parseInt($scope.place.fields.id))
+                    $scope.currentPlace.load(parseInt($scope.place.fields.id))
+                    console.log($scope.currentPlace);
+                    $('#detailPlaceInfo').modal('show');
+                });
 
+            }
         }
     }
     ]);
+

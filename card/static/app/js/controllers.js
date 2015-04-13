@@ -3,7 +3,30 @@
 
 roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardSvc',
     function ($scope, $timeout, $compile, CardSvc) {
+        $scope.filters = [];
+
         $scope.init = function (map) {
+//            // Дочерний класс
+//            var MyGeoObject = function (e, t) {
+//                MyGeoObject.superclass.constructor.call(this, e, t)
+//            };
+//
+//            ymaps.util.augment(MyGeoObject, ymaps.Balloon, {
+//                initCurrentPlace: function () {
+//                    $scope.$apply(function () {
+//                        $scope.currentPlace = this;
+//                    })
+//                },
+//
+//                dataload: function () {
+//                    $scope.$apply(function () {
+//                        CardSvc.getPlaceInfo($scope, this)
+//                    })
+//
+//                }});
+//
+//            ymaps.Balloon = MyGeoObject;
+
             $scope.filters = new MapObjectFilter($scope, CardSvc);
             $scope.rom = new ROM($scope, $compile, CardSvc);
             $scope.currentPlace = new Place($scope, CardSvc);
@@ -43,7 +66,6 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                 });
             });
         };
-
     }
 ])
     .controller('AdminCtrl', ['$scope', 'CardSvc',
@@ -102,11 +124,11 @@ function ROM($scope, $compile, CardSvc) {
     this.createROM = function () {
         var MyBalloonLayout = ymaps.templateLayoutFactory.createClass
         (
-            '<div class="modal-dialog">' +
+                '<div class="modal-dialog">' +
                 '<div class="modal-content popover">' +
-                    '<balloon></balloon>' +
+                '<rt-balloon></rt-balloon>' +
                 '</div>' +
-             '</div>'
+                '</div>'
 
             ,
             {
@@ -115,9 +137,9 @@ function ROM($scope, $compile, CardSvc) {
 
 //                    Идите нахуй я не буду это исправлять
                     this.constructor.superclass.build.call(this);
-                    var chart = angular.element(document.createElement('balloon'));
+                    var chart = angular.element(document.createElement('rt-balloon'));
                     var el = $compile(chart)($scope);
-                    $('balloon').replaceWith(el)
+                    $('rt-balloon').replaceWith(el)
 
                     this._$element = $('.popover', this.getParentElement());
                     this.applyElementOffset();
@@ -160,8 +182,8 @@ function ROM($scope, $compile, CardSvc) {
                  */
                 applyElementOffset: function () {
                     this._$element.css({
-                        left: -(this._$element[0].offsetWidth/2 + 75),
-                        top: -(this._$element[0].offsetHeight/2 + 230)
+                        left: -(this._$element[0].offsetWidth / 2 + 75),
+                        top: -(this._$element[0].offsetHeight / 2 + 230)
                     });
                 },
 
@@ -213,16 +235,26 @@ function ROM($scope, $compile, CardSvc) {
                 geoObjectBalloonOffset: [3, 0]
             });
 
-
+//        rom.setFilter('id > 0');
         rom.objects.events.add('add', function (event) {
-            var isSegmentLoaded = event.get('objectId') < 0;
-            if (isSegmentLoaded) {
-                $scope.$apply(function () {
-                        $scope.rom.places = rom.objects.getAll();
-                    }
-                )
+                var isSegmentLoaded = event.get('objectId') < 0;
+                if (isSegmentLoaded) {
+                    $scope.$apply(function () {
+                            $scope.rom.places = rom.objects.getAll();
+                        }
+                    )
+                }
+
+//            load = function (id) {
+//                var object = $scope.rom.getRom().objects.getById(id);
+//                $scope.$apply(function () {
+//                    $scope.currentPlace.fields = object.fields;
+//                    CardSvc.getPlaceInfo($scope, id)
+//                })
+//            }
             }
-        });
+        )
+        ;
 
         rom.objects.events.add('remove', function (event) {
             var isSegmentRemoved = event.get('objectId') < 0;
@@ -236,7 +268,7 @@ function ROM($scope, $compile, CardSvc) {
 
         rom.events.add('click', function (event) {
             var id = event.get('objectId');
-            $scope.currentPlace.show(id);
+            $scope.currentPlace.init(id);
         });
 
         $scope.map.geoObjects.add(rom);
@@ -264,19 +296,18 @@ function ROM($scope, $compile, CardSvc) {
 
 function Place($scope, CardSvc) {
     this.fields = {};
-    this.show = function (place_id) {
-//        var id = place_id[0][0];
-        var object = $scope.rom.getRom().objects.getById(place_id);
+    this.init = function (id) {
+        var object = $scope.rom.getRom().objects.getById(id);
         $scope.$apply(function () {
             $scope.currentPlace.fields = object.fields;
-            CardSvc.getPlaceInfo($scope, id)
-        })
-//        $('#detailPlaceInfo').modal('show')
+        });
     }
 
-//    this.show = function (place_id) {
-//        $('#detailPlaceInfo').modal('show')
-//    }
+    this.load = function (id) {
+        $scope.$apply(function () {
+            CardSvc.getPlaceInfo($scope, id)
+        })
+    }
 }
 function Route($scope, routeEditor, CardSvc) {
 

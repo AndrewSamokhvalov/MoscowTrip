@@ -14,7 +14,6 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                 for (var i in data.fields) {
                     object.fields[i] = data.fields[i];
                 }
-                object.fields.id = place_id;
             });
         },
         setRadius: function ($scope, radius) {
