@@ -329,7 +329,6 @@ function Route($scope, routeEditor, CardSvc) {
 }
 
 function SlideFilter($scope, routeEditor, CardSvc) {
-
     this.idfilter = function(place) {
         return parseInt(place.fields.id) > 0
     }

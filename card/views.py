@@ -191,22 +191,29 @@ def set_types(request):
 
     return HttpResponse("Not POST request!")
 
-
 @csrf_exempt
-def get_area(request):
-    if request.method == 'POST':
+def radius(request):
+    if request.method == 'PUT':
         try:
             str_response = request.body.decode('utf-8')
             received_json_data = json.loads(str_response)
+            radius = float(json.loads(received_json_data['radius']))
+            route = request.session.get('route')
 
             if radius == None:
-                print("ERROR: Types is none!")
-                return HttpResponse("ERROR: Types is none!")
+                print("ERROR: Radius is none!")
+                return HttpResponse("ERROR: Radius is none!")
 
-            request.session['radius'] = radius / 50000
+            if route == None:
+                print("ERROR: Route is none!")
+                return HttpResponse("ERROR: Route is none!")
+
+
+            radius = radius / 50000;
+            request.session['radius'] = radius
             print('Radius %s ' % str(radius))
 
-            return HttpResponse("Good!")
+            return HttpResponse(get_polygons(radius, route))
 
         except Exception as inst:
             print("=" * 150)
@@ -215,25 +222,15 @@ def get_area(request):
             print(inst)  # __str__ allows args to be printed directly
             return HttpResponse("error!")
 
-    return HttpResponse("Not POST request!")
-
-
-@csrf_exempt
-def set_radius(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         try:
-            str_response = request.body.decode('utf-8')
-            received_json_data = json.loads(str_response)
-            radius = float(json.loads(received_json_data['radius']))
-
+            radius = request.session.get('radius')
             if radius == None:
                 print("ERROR: Types is none!")
-                return HttpResponse("ERROR: Types is none!")
-
-            request.session['radius'] = radius / 50000
+                return HttpResponse("ERROR: Raduis is none!")
             print('Radius %s ' % str(radius))
 
-            return HttpResponse("Good!")
+            return HttpResponse(json.dumps(radius))
 
         except Exception as inst:
             print("=" * 150)
