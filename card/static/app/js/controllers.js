@@ -6,6 +6,128 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
         $scope.filters = [];
 
         $scope.init = function (map) {
+
+            // Создадим пользовательский макет ползунка масштаба.
+            var ZoomLayout = ymaps.templateLayoutFactory.createClass("<div>" +
+                "<div style='z-index: 20' id='zoom-in' class='btn'><i class='icon-plus'></i></div><br>" +
+                "<div id='zoom-out' class='btn'><i class='icon-minus'></i></div>" +
+                "</div>", {
+
+                // Переопределяем методы макета, чтобы выполнять дополнительные действия
+                // при построении и очистке макета.
+                build: function () {
+                    // Вызываем родительский метод build.
+                    ZoomLayout.superclass.build.call(this);
+
+                    this.STATES = {
+                        START: {value: 0, name: "Start", code: "S"},
+                        FINISH: {value: 1, name: "Finish", code: "F"}
+                    };
+
+
+                    this.state = this.STATES.START.value;
+                    this.startPoint = [];
+                    this.finishPoint = [];
+
+                    // Привязываем функции-обработчики к контексту и сохраняем ссылки
+                    // на них, чтобы потом отписаться от событий.
+                    this.initEventsCallback = ymaps.util.bind(this.initEvents, this);
+
+                    // Начинаем слушать клики на кнопках макета.
+                    $('#zoom-in').bind('click', this.initEventsCallback);
+                },
+
+
+//                При клике контрол:
+//                1. становится Активным (изменяется вид)
+//                2. Повести эвенты на клик карты
+
+//                При клике на карту:
+//                1. Сохраняем координаты стартовой точки
+//                2. Сохраняем координаты конечной точки
+//                3. Если вторая точка сохранена, то строим маршрут
+//                4. Делаем кнопку неактивной
+
+
+                clear: function () {
+                    // Снимаем обработчики кликов.
+                    $('#zoom-in').unbind('click', this.initEventsCallback);
+
+                    // Вызываем родительский метод clear.
+                    ZoomLayout.superclass.clear.call(this);
+                },
+
+                initEvents: function () {
+                    this.addPointCallback = this.addPoints(this);
+                    map.events.add('click', this.addPointCallback);
+                },
+
+                addPoints: function (p) {
+                    return function (e) {
+                        switch (p.state) {
+                            case p.STATES.START.value:
+                                p.startPoint = e.get('coords');
+                                console.log('Start:' + p.startPoint);
+                                p.state++;
+                                break;
+
+                            case p.STATES.FINISH.value:
+                                if (p.multiRoute != undefined) {
+                                    map.geoObjects.remove(p.multiRoute);
+                                }
+                                p.finishPoint = e.get('coords');
+                                console.log('Finish:' + p.finishPoint);
+
+                                p.buildRoute();
+
+                                // Очищение
+                                map.events.remove('click', p.addPointCallback);
+                                p.state = p.STATES.START.value;
+                                break;
+                        }
+                    }
+                },
+
+
+                buildRoute: function () {
+                    var multiRoute = new ymaps.multiRouter.MultiRoute({
+                        referencePoints: [
+                            this.startPoint,
+                            this.finishPoint
+                        ],
+                        params: {
+                            // avoidTrafficJams: true,
+                            //routingMode: 'masstransit'
+                        }
+                    });
+
+                    multiRoute.model.events.once("requestsuccess", function (event) {
+                        var multiRouteModel = event.get("target")
+                        var firstroute = multiRouteModel.getRoutes()[0];
+                        var path = firstroute.getPaths()[0];
+                        var segments = path.getSegments();
+                        var points = [];
+
+                        for (var i = 0; i < segments.length; i++) {
+                            var segment = segments[i];
+                            points.push();
+                        }
+
+                    });
+
+//                    CardSvc.setRoute($scope, multiRoute.getRoutes());
+
+                    this.multiRoute = multiRoute;
+                    map.geoObjects.add(multiRoute);
+
+                    this.startPoint = [];
+                    this.finishPoint = [];
+                }
+            });
+
+            var zoomControl = new ymaps.control.ZoomControl({ options: { layout: ZoomLayout } });
+
+            map.controls.add(zoomControl);
 //            // Дочерний класс
 //            var MyGeoObject = function (e, t) {
 //                MyGeoObject.superclass.constructor.call(this, e, t)
@@ -40,7 +162,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
             $scope.map = map;
 
-            var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
+//            var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
             var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}});
             var searchControl = new ymaps.control.SearchControl({options: { position: { right: 1, top: 10 }}});
             var routeEditor = new ymaps.control.RouteEditor({
@@ -52,18 +174,18 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
             $scope.route = new Route($scope, routeEditor, CardSvc);
 
-            map.controls.add(zoomControl);
+//            map.controls.add(zoomControl);
             map.controls.add(geolocationControl);
             map.controls.add(searchControl);
             map.controls.add(routeEditor);
 
             map.events.add('balloonopen', function (e) {
                 var balloon = e.get('balloon');
-                map.events.add('click', function (e) {
-                    if (e.get('target') === map) { // Если клик был на карте, а не на геообъекте
-                        map.balloon.close();
-                    }
-                });
+//                map.events.add('click', function (e) {
+//                    if (e.get('target') === map) { // Если клик был на карте, а не на геообъекте
+//                        map.balloon.close();
+//                    }
+//                });
             });
         };
     }

@@ -14,7 +14,7 @@ roadtrippersApp.factory('CardSvc', function ($http) {
         },
 
         getPlaceInfo: function ($scope, place_id) {
-            return $http.get('/getPlaceInfo' + '?place_id=' + place_id + '').success(function (response) {
+            return $http.get('/getPlaceInfo' + '?place_id=' + place_id).success(function (response) {
                 var object = $scope.rom.getRom().objects.getById(place_id);
                 for (var i in response) {
                     object.fields[i] = response[i];
