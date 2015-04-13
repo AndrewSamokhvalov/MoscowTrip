@@ -9,9 +9,9 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
             // Создадим пользовательский макет редактора маршрута
             var MyRouteEditorLayout = ymaps.templateLayoutFactory.createClass("<div>" +
-                 "<div id='routeEditorButton' class='my-button {% if state.selected %}my-button-selected{% endif %}'>" +
-                    "{{data.content}}" +
-                    "</div>", {
+                 "<div id='routeEditorButton' class='btn btn-default btn-routeControll {% if state.selected %}my-button-selected{% endif %}'>" +
+                 "<img src='/static/app/images/routeIcon.svg' />" +
+                 "</div>", {
 
                 // Переопределяем методы макета, чтобы выполнять дополнительные действия
                 // при построении и очистке макета.
@@ -101,13 +101,18 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                         }
                     });
 
+                    multiRoute.events.once("activeroutechange",function(event)
+                    {
+                        console.log('k');
+
+                    });
+
                     multiRoute.model.events.once("requestsuccess", function (event) {
-                        var multiRouteModel = event.get("target")
+                        var multiRouteModel = event.get("target");
                         var firstroute = multiRouteModel.getRoutes()[0];
 
                         CardSvc.setRoute($scope, firstroute);
                     });
-
 
                     this.multiRoute = multiRoute;
                     map.geoObjects.add(multiRoute);
@@ -119,11 +124,11 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
             var MyRouteEditor = new ymaps.control.Button({
                 data: {
-                    content: "Жмак-жмак"
+                    content: ""
                 },
                 options: {
                     layout: MyRouteEditorLayout,
-                    position: { left: 30, top: 140 }
+                    position: { left: 42, top: 95 }
                 }
             });
 
