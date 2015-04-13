@@ -34,7 +34,6 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
             $scope.radius = 1000;
             CardSvc.setRadius($scope, 1000);
-
             $scope.$watch('radius', function (newVal, oldVal) {
                 CardSvc.setRadius($scope, newVal);
             });
@@ -238,32 +237,22 @@ function ROM($scope, $compile, CardSvc) {
 
 //        rom.setFilter('id > 0');
         rom.objects.events.add('add', function (event) {
-                var isSegmentLoaded = event.get('objectId') < 0;
-                if (isSegmentLoaded) {
-                    $scope.$apply(function () {
-                            $scope.rom.places = rom.objects.getAll();
-                        }
-                    )
-                }
-
-//            load = function (id) {
-//                var object = $scope.rom.getRom().objects.getById(id);
-//                $scope.$apply(function () {
-//                    $scope.currentPlace.fields = object.fields;
-//                    CardSvc.getPlaceInfo($scope, id)
-//                })
-//            }
+            var isSegmentLoaded = event.get('objectId') < 0;
+            if (isSegmentLoaded) {
+                $scope.$apply(function () {
+                    console.log('Add current count - ' + rom.objects.getAll().length)
+                    $scope.rom.places = rom.objects.getAll();
+                })
             }
-        )
-        ;
-
+        });
         rom.objects.events.add('remove', function (event) {
             var isSegmentRemoved = event.get('objectId') < 0;
             if (isSegmentRemoved) {
                 $scope.$apply(function () {
-                        $scope.rom.places = rom.objects.getAll();
-                    }
-                )
+                    console.log('Remove: current count - ' + rom.objects.getAll().length)
+
+                    $scope.rom.places = rom.objects.getAll();
+                })
             }
         });
 
@@ -320,16 +309,32 @@ function Route($scope, routeEditor, CardSvc) {
         console.log('Route added');
     });
 
-
     routeEditor.events.add('deselect', function (route) {
+//        var route = routeEditor.getRoute();
+//        route.then(function () {
+//            var points = route.getWayPoints();
+//            var lastPoint = points.getLength() - 1;
+//
+//            // Задаем контент меток в начальной и конечной точках.
+////        "iconLayout": "default#image",
+////                "iconImageHref": place.id_type.url_image_marker,
+////                "iconImageSize": [30, 40],
+//            points.get(0).properties.set('iconLayout', 'default#image');
+//            points.get(0).properties.set('iconImageHref', '/static/app/images/metka1.png');
+//            points.get(0).properties.set('iconImageSize', '[40, 40]');
+//
+//            points.get(0).properties.set('iconContent', ' ');
+//
+//
+//            points.get(lastPoint).properties.set('iconImageHref', '/static/app/images/metka1.png');
+//        })
         CardSvc.setRoute($scope, routeEditor.getRoute());
     });
-
 
 }
 
 function SlideFilter($scope, routeEditor, CardSvc) {
-    this.idfilter = function(place) {
+    this.idfilter = function (place) {
         return parseInt(place.fields.id) > 0
     }
 }

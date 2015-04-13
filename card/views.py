@@ -91,7 +91,7 @@ def filter_places(route, types, radius, bbox):
 
         places = places.filter(id__in=idplaces)
 
-    return places.order_by('-rating')[:20]
+    return places.order_by('-rating')[:50]
 
 
 def serialize_places(places, callback):
@@ -166,8 +166,8 @@ def serialize_places(places, callback):
 
 
 @csrf_exempt
-def set_types(request):
-    if request.method == 'POST':
+def types(request):
+    if request.method == 'PUT':
         try:
             str_response = request.body.decode('utf-8')
             received_json_data = json.loads(str_response)
@@ -181,6 +181,25 @@ def set_types(request):
             print('Types %s ' % str(types))
 
             return HttpResponse("Good!")
+
+        except Exception as inst:
+            print("=" * 150)
+            print(type(inst))  # the exception instance
+            print(inst.args)  # arguments stored in .args
+            print(inst)  # __str__ allows args to be printed directly
+            return HttpResponse("error!")
+
+    if request.method == 'GET':
+        try:
+            types = request.session.get('types')
+
+            if types == None:
+                print("ERROR: Types is none!")
+                return HttpResponse("ERROR: Types is none!")
+
+            print('Types %s ' % str(types))
+
+            return HttpResponse(json.dumps(types))
 
         except Exception as inst:
             print("=" * 150)

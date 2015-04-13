@@ -6,7 +6,7 @@ urlpatterns = patterns('',
 
     url(r'^getPlaces/?', views.get_places),
     url(r'^getPlaceInfo/?', views.get_place_info),
-    url(r'^setTypes/?', views.set_types),
+    url(r'^types/?', views.types),
     url(r'^setRoute/?', views.set_route),
     url(r'^radius/?', views.radius),
 

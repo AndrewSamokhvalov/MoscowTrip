@@ -63,10 +63,8 @@ roadtrippersApp
 
             link: function ($scope, element) {
                 element.bind('click', function () {
-                    console.log($scope.place.fields.id)
                     $scope.currentPlace.init(parseInt($scope.place.fields.id))
                     $scope.currentPlace.load(parseInt($scope.place.fields.id))
-                    console.log($scope.currentPlace);
                     $('#detailPlaceInfo').modal('show');
                 });
 
