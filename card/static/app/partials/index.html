@@ -105,7 +105,7 @@
                         <slick init-onload=true infinite="true" slides-to-show="2" data="rom.places">
                             <div ng-repeat="place in rom.places">
                                 <span>
-                                        <img  width="410px" height="410px">
+                                        <img width="410px" height="410px">
                                 </span>
                             </div>
                         </slick>
@@ -153,4 +153,4 @@
     </div>
 </div>
 
-<rt-place-slider places="rom.places" current-place="currentPlace"> </rt-place-slider>
+<rt-place-slider places="rom.places" current-place="currentPlace" slidefilter="slidefilter.idfilter"></rt-place-slider>

@@ -18,13 +18,14 @@ roadtrippersApp
     }
     ])
 
-    .directive('rtPlaceSlider', [ function () {
+    .directive('rtPlaceSlider', [ '$filter', function ($filter) {
         return {
             restrict: 'E',
             replace: true,
             scope: {
                 places: '=places',
-                currentPlace: '=currentPlace'
+                currentPlace: '=currentPlace',
+                slidefilter: '=slidefilter'
 
             },
             templateUrl: '/static/app/partials/place-slider.html',

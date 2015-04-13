@@ -14,7 +14,7 @@
         <div>
             <slick init-onload=true infinite="true" slides-to-show="1" slides-to-scroll="5" data="places"
                    variable-width="true">
-                <div ng-repeat="place in places">
+                <div ng-repeat="place in  places | filter: slidefilter">
                     <div class="rating">
                         <div class="value-rating">
                             {{ place.fields.rating }}

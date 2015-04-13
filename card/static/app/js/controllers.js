@@ -28,6 +28,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 //            ymaps.Balloon = MyGeoObject;
 
             $scope.filters = new MapObjectFilter($scope, CardSvc);
+            $scope.slidefilter = new SlideFilter();
             $scope.rom = new ROM($scope, $compile, CardSvc);
             $scope.currentPlace = new Place($scope, CardSvc);
 
@@ -325,4 +326,11 @@ function Route($scope, routeEditor, CardSvc) {
     });
 
 
+}
+
+function SlideFilter($scope, routeEditor, CardSvc) {
+
+    this.idfilter = function(place) {
+        return parseInt(place.fields.id) > 0
+    }
 }

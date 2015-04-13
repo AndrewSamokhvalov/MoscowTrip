@@ -140,13 +140,17 @@ def serialize_places(places, callback):
 
         features.append(feature)
     # Последний элемент с отрицательныйм id отправляется для того чтобы на клиенте понять что сегмент полностью загрузился
+    objectid = (-1) * random.randint(1, math.pow(10, 10))
     feature = {
         "type": 'Feature',
         "geometry": {
             "type": "Point",
             "coordinates": [0, 0]
         },
-        "id": (-1) * random.randint(1, math.pow(10, 10))
+        "id": objectid,
+        "fields": {
+            "id": objectid
+        }
     }
     features.append(feature)
 
