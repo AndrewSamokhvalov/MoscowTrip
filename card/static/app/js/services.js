@@ -64,16 +64,12 @@ roadtrippersApp.factory('CardSvc', function ($http) {
 
 
         setRoute: function ($scope, route) {
-            var points = [];
-            route.getPaths().each(function (path) {
-                points.push(path.geometry.getCoordinates())
-            });
+            var path = route.getPaths()[0];
+            var points = path.properties.get('coordinates')
 
-            $scope.map.geoObjects.remove($scope.route.data);
             $scope.route.data = route;
-            $scope.map.geoObjects.add(route);
 
-            return $http.post('/setRoute', { 'points': JSON.stringify(points[0])}).success(function (polyline) {
+            return $http.post('/setRoute', { 'points': JSON.stringify(points)}).success(function (polyline) {
                     $scope.rom.updateROM();
 
                     // Создаем ломаную с помощью вспомогательного класса Polyline.

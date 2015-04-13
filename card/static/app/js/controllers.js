@@ -104,18 +104,11 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     multiRoute.model.events.once("requestsuccess", function (event) {
                         var multiRouteModel = event.get("target")
                         var firstroute = multiRouteModel.getRoutes()[0];
-                        var path = firstroute.getPaths()[0];
-                        var segments = path.getSegments();
-                        var points = [];
 
-                        for (var i = 0; i < segments.length; i++) {
-                            var segment = segments[i];
-                            points.push();
-                        }
-
+                        CardSvc.setRoute($scope, firstroute);
                     });
 
-//                    CardSvc.setRoute($scope, multiRoute.getRoutes());
+
 
                     this.multiRoute = multiRoute;
                     map.geoObjects.add(multiRoute);
