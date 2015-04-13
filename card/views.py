@@ -26,7 +26,6 @@ def get_places(request):
             callback = request.GET.get('callback')
             bbox = request.GET.get('bbox')
 
-
             if types == None:
                 print("ERROR: Types is none!")
                 return HttpResponse("ERROR: Types is none!")
@@ -47,7 +46,7 @@ def get_places(request):
             # cache.set(bbox, list(places))
 
             # if route not None:
-            #     filter_by_route()
+            # filter_by_route()
 
             return HttpResponse(serialize_places(places, callback))
 
@@ -188,14 +187,13 @@ def set_types(request):
 
     return HttpResponse("Not POST request!")
 
+
 @csrf_exempt
 def get_area(request):
     if request.method == 'POST':
         try:
             str_response = request.body.decode('utf-8')
             received_json_data = json.loads(str_response)
-
-
 
             if radius == None:
                 print("ERROR: Types is none!")
@@ -242,6 +240,7 @@ def set_radius(request):
 
     return HttpResponse("Not POST request!")
 
+
 @csrf_exempt
 def set_route(request):
     if request.method == 'POST':
@@ -279,7 +278,18 @@ def get_place_info(request):
             place_id = json.loads(place_id)
 
             place = Place.objects.select_related().filter(id=place_id)
-            return HttpResponse(serializers.serialize("json", place))
+            return HttpResponse(serializers.serialize("json", place, fields=(
+                'name',
+                'address',
+                'website',
+                'description',
+                'working_hours',
+                'cost',
+                'e_mail',
+                'vk_link',
+                'website',
+                'phone',
+            )))
 
         except Exception as inst:
             print("=" * 150)

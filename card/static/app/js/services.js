@@ -49,9 +49,9 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                     }, {
                         // Описываем опции геообъекта.
                         // Цвет заливки.
-                        fillColor: '#00FFFF',
+                        fillColor: '#65BDE8',
                         // Цвет обводки.
-                        strokeColor: '#0000FF',
+                        strokeColor: '#65BDE8',
                         // Общая прозрачность (как для заливки, так и для обводки).
                         opacity: 0.5,
                         // Ширина обводки.
