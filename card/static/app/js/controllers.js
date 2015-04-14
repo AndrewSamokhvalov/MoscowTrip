@@ -408,16 +408,16 @@ function Place($scope, CardSvc) {
     this.fields = {};
     this.init = function (id) {
         var object = $scope.rom.getRom().objects.getById(id);
-        $scope.$apply(function () {
-            $scope.currentPlace.fields = object.fields;
-        });
-    }
+        $scope.currentPlace.fields = object.fields;
+    };
 
-
+    this.addToTrip = function()
+    {
+        this.load(parseInt(this.fields.id));
+        $scope.route.addPoint(this);
+    };
     this.load = function (id) {
-        $scope.$apply(function () {
             CardSvc.getPlaceInfo($scope, id)
-        })
     }
 }
 function Route($scope, CardSvc)
@@ -425,16 +425,20 @@ function Route($scope, CardSvc)
     var _start;
     var _finish;
     this.area = null;
+    this.multiRoute;
 
-    this.addTotTrip = function () {
-        var referencePoints = multiroute.model.getReferencePoints();
-        referencePoints.splice(1, 0, "Москва, ул. Солянка, 7");
+    this.addPoint = function (place)
+    {
+        var coords = $scope.rom.getRom().objects.getById(place.fields.id).geometry.coordinates;
+        var referencePoints = this.multiRoute.model.getReferencePoints();
+        referencePoints.splice(1, 0, coords);
+        this.multiRoute.model.setReferencePoints(referencePoints, [1]);
     };
 
     this.addRoute = function (start, finish)
     {
 
-        if(!(finish||start)) return;
+        if(!(finish&&start)) return;
         if(this.multiRoute) $scope.map.geoObjects.remove(this.multiRoute);
         var multiRoute = new ymaps.multiRouter.MultiRoute({
             referencePoints: [
