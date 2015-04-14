@@ -64,9 +64,14 @@ roadtrippersApp.factory('CardSvc', function ($http) {
 
 
         setRoute: function ($scope, route) {
-            var path = route.getPaths()[0];
-            var points = path.properties.get('coordinates');
+            var path = route.getPaths();
+            var points = [];
+            for(var i in path)
+            {
+                for(var j in path[i].properties.get("coordinates"))
+                points.push(path[i].properties.get('coordinates')[j]);
 
+            }
             $scope.route.data = route;
 
             return $http.post('/setRoute', { 'points': JSON.stringify(points)}).success(function (polyline) {
