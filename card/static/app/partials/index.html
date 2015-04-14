@@ -1,0 +1,132 @@
+<header>
+    <div class="logotype">
+        <img src="/static/app/images/logotype.gif" alt="Путеводитель"/>
+    </div>
+</header>
+
+<section class="filters">
+    <ul>
+        <input type="checkbox" ng-click="filters.switchFilter(1)" ng-checked="filters.isChecked(1)" name="filter-1"
+               id="filter_place_of_interests">
+        <li class="filter-place_of_interests">
+            <div class="">
+                <label for="filter_place_of_interests">
+                    <div class="">
+                        <span class="icon icon-cat-attractions"></span>
+                    </div>
+                </label>
+            </div>
+        </li>
+        <input type="checkbox" ng-click="filters.switchFilter(2)" ng-checked="filters.isChecked(2)" name="filter-2"
+               id="filter_food">
+        <li class="filter-food">
+            <div class="">
+                <label for="filter_food">
+                    <div class="">
+                        <span class="icon icon-cat-food-drink"></span>
+                    </div>
+                </label>
+            </div>
+        </li>
+        <input type="checkbox" ng-click="filters.switchFilter(3)" ng-checked="filters.isChecked(3)" name="filter-3"
+               id="filter_park">
+        <li class="filter-park">
+            <div class="">
+                <label for="filter_park">
+                    <div class="">
+                        <span class="icon icon-cat-nature"></span>
+                    </div>
+                </label>
+            </div>
+        </li>
+    </ul>
+</section>
+
+<div class="radius">
+    <slider floor="1000" ceiling="5000" step="1000" precision="3" ng-model="radius"></slider>
+</div>
+
+<main>
+    <ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="init($target)" ya-controls=""></ya-map>
+</main>
+
+<rt-right-collapsible></rt-right-collapsible>
+
+
+<!-- Popup window -->
+<div class="modal fade bs-example-modal-lg" id="detailPlaceInfo" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <div class="rating">
+                    <div class="value-rating">
+                        {{ currentPlace.fields.rating }}
+                    </div>
+                </div>
+                <span class="icon-vk"></span>
+                <span class="icon-globe"></span>
+                <span class="icon-email"></span>
+
+                <h2 class="modal-title" id="gridSystemModalLabel">{{ currentPlace.fields.name }}  </h2>
+            </div>
+
+
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <slick init-onload=true infinite="true" slides-to-show="2" data="rom.places">
+                            <div ng-repeat="place in rom.places">
+                                <span>
+                                        <img width="410px" height="410px">
+                                </span>
+                            </div>
+                        </slick>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h3>Описание места:</h3>
+
+                            <p>{{ currentPlace.fields.description }}  </p>
+
+                        </div>
+
+                        <div class="col-md-5">
+                            </br>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <span class="icon-phone"></span>
+                                    Телефон
+                                </div>
+                                <div class="panel-footer">{{ currentPlace.fields.phone }}  </div>
+                            </div>
+                            </br>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <span class="icon-address-book"></span>
+                                    Адрес
+                                </div>
+                                <div class="panel-footer">{{ currentPlace.fields.address }}  </div>
+                            </div>
+                            </br>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <span class="icon-clock"></span>
+                                    Рабочие часы
+                                </div>
+                                <div class="panel-footer">{{ currentPlace.fields.working_hours }}  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<rt-down-collapsible places="rom.places" current-place="currentPlace" slidefilter="slidefilter.idfilter"></rt-down-collapsible>

@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html ng-app="roadtrippersApp">
+<html ng-app="managePlacesApp">
 <head lang="en">
 
     <base href="/managePlaces">
@@ -18,10 +18,9 @@
     <script src={% static "app/bower_components/angular/angular.js" %}></script>
     <script src={% static "app/bower_components/angular/angular-route.js" %}></script>
 
-    <script src={% static "app/js/ya-map-2.1.js" %}></script>
-    <script src={% static "app/js/app.js" %}></script>
-    <script src={% static "app/js/services.js" %}></script>
-    <script src={% static "app/js/controllers.js" %}></script>
+    <script src={% static "app/js/manage_places/app.js" %}></script>
+    <script src={% static "app/js/manage_places/services.js" %}></script>
+    <script src={% static "app/js/manage_places/controllers.js" %}></script>
 
     <script src={% static "app/bower_components/ng-tags-input/ng-tags-input.js" %}></script>
     <script src={% static "app/bower_components/angular-slick/dist/slick.js" %}></script>

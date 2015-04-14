@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.3.14
+ * @license AngularJS v1.3.15
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -54,7 +54,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.14/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.15/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i - 2) + '=' +
@@ -546,6 +546,12 @@ function isString(value) {return typeof value === 'string';}
  * @description
  * Determines if a reference is a `Number`.
  *
+ * This includes the "special" numbers `NaN`, `+Infinity` and `-Infinity`.
+ *
+ * If you wish to exclude these then you can use the native
+ * [`isFinite'](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isFinite)
+ * method.
+ *
  * @param {*} value Reference to check.
  * @returns {boolean} True if `value` is a `Number`.
  */
@@ -914,10 +920,11 @@ function equals(o1, o2) {
       } else if (isDate(o1)) {
         if (!isDate(o2)) return false;
         return equals(o1.getTime(), o2.getTime());
-      } else if (isRegExp(o1) && isRegExp(o2)) {
-        return o1.toString() == o2.toString();
+      } else if (isRegExp(o1)) {
+        return isRegExp(o2) ? o1.toString() == o2.toString() : false;
       } else {
-        if (isScope(o1) || isScope(o2) || isWindow(o1) || isWindow(o2) || isArray(o2)) return false;
+        if (isScope(o1) || isScope(o2) || isWindow(o1) || isWindow(o2) ||
+          isArray(o2) || isDate(o2) || isRegExp(o2)) return false;
         keySet = {};
         for (key in o1) {
           if (key.charAt(0) === '$' || isFunction(o1[key])) continue;
@@ -2121,11 +2128,11 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.14',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.15',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
-  dot: 14,
-  codeName: 'instantaneous-browserification'
+  dot: 15,
+  codeName: 'locality-filtration'
 };
 
 
@@ -2261,6 +2268,17 @@ function publishExternalAPI(angular) {
     }
   ]);
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *     Any commits to this file should be reviewed with security in mind.  *
+ *   Changes to this file can potentially create security vulnerabilities. *
+ *          An approval from 2 Core members with history of modifying      *
+ *                         this file is required.                          *
+ *                                                                         *
+ *  Does the change somehow allow for arbitrary javascript to be executed? *
+ *    Or allows for someone to change the prototype of built-in objects?   *
+ *     Or gives undesired access to variables likes document or window?    *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /* global JQLitePrototype: true,
   addEventListenerFn: true,
@@ -4685,6 +4703,7 @@ var $AnimateProvider = ['$provide', function($provide) {
        * @return {Promise} the animation callback promise
        */
       leave: function(element, options) {
+        applyStyles(element, options);
         element.remove();
         return asyncPromise();
       },
@@ -5089,11 +5108,19 @@ function Browser(window, document, $log, $sniffer) {
     fireUrlChange();
   }
 
+  function getCurrentState() {
+    try {
+      return history.state;
+    } catch (e) {
+      // MSIE can reportedly throw when there is no state (UNCONFIRMED).
+    }
+  }
+
   // This variable should be used *only* inside the cacheState function.
   var lastCachedState = null;
   function cacheState() {
     // This should be the only place in $browser where `history.state` is read.
-    cachedState = window.history.state;
+    cachedState = getCurrentState();
     cachedState = isUndefined(cachedState) ? null : cachedState;
 
     // Prevent callbacks fo fire twice if both hashchange & popstate were fired.
@@ -5424,7 +5451,7 @@ function $CacheFactoryProvider() {
        * @description
        * A cache object used to store and retrieve data, primarily used by
        * {@link $http $http} and the {@link ng.directive:script script} directive to cache
-       * templates and other data.
+       * template and other data.
        *
        * ```js
        *  angular.module('superCache')
@@ -5675,7 +5702,7 @@ function $CacheFactoryProvider() {
  *
  * @description
  * The first time a template is used, it is loaded in the template cache for quick retrieval. You
- * can load templates directly into the cache in a `script` tag, or by consuming the
+ * can load template directly into the cache in a `script` tag, or by consuming the
  * `$templateCache` service directly.
  *
  * Adding via the `script` tag:
@@ -5690,7 +5717,7 @@ function $CacheFactoryProvider() {
  * the document, but it must be a descendent of the {@link ng.$rootElement $rootElement} (IE,
  * element with ng-app attribute), otherwise the template will be ignored.
  *
- * Adding via the $templateCache service:
+ * Adding via the `$templateCache` service:
  *
  * ```js
  * var myApp = angular.module('myApp', []);
@@ -5714,9 +5741,20 @@ function $CacheFactoryProvider() {
  */
 function $TemplateCacheProvider() {
   this.$get = ['$cacheFactory', function($cacheFactory) {
-    return $cacheFactory('templates');
+    return $cacheFactory('template');
   }];
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *     Any commits to this file should be reviewed with security in mind.  *
+ *   Changes to this file can potentially create security vulnerabilities. *
+ *          An approval from 2 Core members with history of modifying      *
+ *                         this file is required.                          *
+ *                                                                         *
+ *  Does the change somehow allow for arbitrary javascript to be executed? *
+ *    Or allows for someone to change the prototype of built-in objects?   *
+ *     Or gives undesired access to variables likes document or window?    *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /* ! VARIABLE/FUNCTION NAMING CONVENTIONS THAT APPLY TO THIS FILE!
  *
@@ -5863,7 +5901,7 @@ function $TemplateCacheProvider() {
  *
  * The 'isolate' scope takes an object hash which defines a set of local scope properties
  * derived from the parent scope. These local properties are useful for aliasing values for
- * templates. Locals definition is a hash of local scope property to its source:
+ * template. Locals definition is a hash of local scope property to its source:
  *
  * * `@` or `@attr` - bind a local scope property to the value of DOM attribute. The result is
  *   always a string since DOM attributes are strings. If no `attr` name is specified  then the
@@ -5929,7 +5967,8 @@ function $TemplateCacheProvider() {
  * Require another directive and inject its controller as the fourth argument to the linking function. The
  * `require` takes a string name (or array of strings) of the directive(s) to pass in. If an array is used, the
  * injected argument will be an array in corresponding order. If no such directive can be
- * found, or if the directive does not have a controller, then an error is raised. The name can be prefixed with:
+ * found, or if the directive does not have a controller, then an error is raised (unless no link function
+ * is specified, in which case error checking is skipped). The name can be prefixed with:
  *
  * * (no prefix) - Locate the required controller on the current element. Throw an error if not found.
  * * `?` - Attempt to locate the required controller or pass `null` to the `link` fn if not found.
@@ -5989,8 +6028,8 @@ function $TemplateCacheProvider() {
  * for later when the template has been resolved.  In the meantime it will continue to compile and link
  * sibling and parent elements as though this element had not contained any directives.
  *
- * The compiler does not suspend the entire compilation to wait for templates to be loaded because this
- * would result in the whole app "stalling" until all templates are loaded asynchronously - even in the
+ * The compiler does not suspend the entire compilation to wait for template to be loaded because this
+ * would result in the whole app "stalling" until all template are loaded asynchronously - even in the
  * case when only one deeply nested directive has `templateUrl`.
  *
  * Template loading is asynchronous even if the template has been preloaded into the {@link $templateCache}
@@ -6055,7 +6094,7 @@ function $TemplateCacheProvider() {
 
  * <div class="alert alert-warning">
  * **Note:** The compile function cannot handle directives that recursively use themselves in their
- * own templates or compile functions. Compiling these directives results in an infinite loop and a
+ * own template or compile functions. Compiling these directives results in an infinite loop and a
  * stack overflow errors.
  *
  * This can be avoided by manually using $compile in the postLink function to imperatively compile
@@ -6123,7 +6162,7 @@ function $TemplateCacheProvider() {
  * compilation and linking has been suspended until that occurs.
  *
  * It is safe to do DOM transformation in the post-linking function on elements that are not waiting
- * for their async templates to be resolved.
+ * for their async template to be resolved.
  *
  *
  * ### Transclusion
@@ -7255,7 +7294,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
     /**
      * Once the directives have been collected, their compile functions are executed. This method
-     * is responsible for inlining directive templates as well as terminating the application
+     * is responsible for inlining directive template as well as terminating the application
      * of the directives if the terminal directive has been reached.
      *
      * @param {Array} directives Array of collected directives to execute their compile function.
@@ -7318,7 +7357,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
         if (directiveValue = directive.scope) {
 
-          // skip the check for directives with async templates, we'll check the derived sync
+          // skip the check for directives with async template, we'll check the derived sync
           // directive when the template arrives
           if (!directive.templateUrl) {
             if (isObject(directiveValue)) {
@@ -7373,7 +7412,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                                         replaceDirective && replaceDirective.name, {
                                           // Don't pass in:
                                           // - controllerDirectives - otherwise we'll create duplicates controllers
-                                          // - newIsolateScopeDirective or templateDirective - combining templates with
+                                          // - newIsolateScopeDirective or templateDirective - combining template with
                                           //   element transclusion doesn't make sense.
                                           //
                                           // We need only nonTlbTranscludeDirective so that we prevent putting transclusion
@@ -10479,7 +10518,15 @@ function $LocaleProvider() {
         mediumDate: 'MMM d, y',
         shortDate: 'M/d/yy',
         mediumTime: 'h:mm:ss a',
-        shortTime: 'h:mm a'
+        shortTime: 'h:mm a',
+        ERANAMES: [
+          "Before Christ",
+          "Anno Domini"
+        ],
+        ERAS: [
+          "BC",
+          "AD"
+        ]
       },
 
       pluralCat: function(num) {
@@ -11487,6 +11534,7 @@ function $LocationProvider() {
          <button ng-click="$log.warn(message)">warn</button>
          <button ng-click="$log.info(message)">info</button>
          <button ng-click="$log.error(message)">error</button>
+         <button ng-click="$log.debug(message)">debug</button>
        </div>
      </file>
    </example>
@@ -11616,6 +11664,17 @@ function $LogProvider() {
     }
   }];
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *     Any commits to this file should be reviewed with security in mind.  *
+ *   Changes to this file can potentially create security vulnerabilities. *
+ *          An approval from 2 Core members with history of modifying      *
+ *                         this file is required.                          *
+ *                                                                         *
+ *  Does the change somehow allow for arbitrary javascript to be executed? *
+ *    Or allows for someone to change the prototype of built-in objects?   *
+ *     Or gives undesired access to variables likes document or window?    *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 var $parseMinErr = minErr('$parse');
 
@@ -13552,8 +13611,26 @@ function $RootScopeProvider() {
     return TTL;
   };
 
+  function createChildScopeClass(parent) {
+    function ChildScope() {
+      this.$$watchers = this.$$nextSibling =
+          this.$$childHead = this.$$childTail = null;
+      this.$$listeners = {};
+      this.$$listenerCount = {};
+      this.$$watchersCount = 0;
+      this.$id = nextUid();
+      this.$$ChildScope = null;
+    }
+    ChildScope.prototype = parent;
+    return ChildScope;
+  }
+
   this.$get = ['$injector', '$exceptionHandler', '$parse', '$browser',
       function($injector, $exceptionHandler, $parse, $browser) {
+
+    function destroyChildScope($event) {
+        $event.currentScope.$$destroyed = true;
+    }
 
     /**
      * @ngdoc type
@@ -13677,15 +13754,7 @@ function $RootScopeProvider() {
           // Only create a child scope class if somebody asks for one,
           // but cache it to allow the VM to optimize lookups.
           if (!this.$$ChildScope) {
-            this.$$ChildScope = function ChildScope() {
-              this.$$watchers = this.$$nextSibling =
-                  this.$$childHead = this.$$childTail = null;
-              this.$$listeners = {};
-              this.$$listenerCount = {};
-              this.$id = nextUid();
-              this.$$ChildScope = null;
-            };
-            this.$$ChildScope.prototype = this;
+            this.$$ChildScope = createChildScopeClass(this);
           }
           child = new this.$$ChildScope();
         }
@@ -13703,13 +13772,9 @@ function $RootScopeProvider() {
         // prototypically. In all other cases, this property needs to be set
         // when the parent scope is destroyed.
         // The listener needs to be added after the parent is set
-        if (isolate || parent != this) child.$on('$destroy', destroyChild);
+        if (isolate || parent != this) child.$on('$destroy', destroyChildScope);
 
         return child;
-
-        function destroyChild() {
-          child.$$destroyed = true;
-        }
       },
 
       /**
@@ -14870,6 +14935,17 @@ function $$SanitizeUriProvider() {
   };
 }
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *     Any commits to this file should be reviewed with security in mind.  *
+ *   Changes to this file can potentially create security vulnerabilities. *
+ *          An approval from 2 Core members with history of modifying      *
+ *                         this file is required.                          *
+ *                                                                         *
+ *  Does the change somehow allow for arbitrary javascript to be executed? *
+ *    Or allows for someone to change the prototype of built-in objects?   *
+ *     Or gives undesired access to variables likes document or window?    *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 var $sceMinErr = minErr('$sce');
 
 var SCE_CONTEXTS = {
@@ -14945,7 +15021,7 @@ function adjustMatchers(matchers) {
  * can override it completely to change the behavior of `$sce`, the common case would
  * involve configuring the {@link ng.$sceDelegateProvider $sceDelegateProvider} instead by setting
  * your own whitelists and blacklists for trusting URLs used for loading AngularJS resources such as
- * templates.  Refer {@link ng.$sceDelegateProvider#resourceUrlWhitelist
+ * template.  Refer {@link ng.$sceDelegateProvider#resourceUrlWhitelist
  * $sceDelegateProvider.resourceUrlWhitelist} and {@link
  * ng.$sceDelegateProvider#resourceUrlBlacklist $sceDelegateProvider.resourceUrlBlacklist}
  */
@@ -14957,7 +15033,7 @@ function adjustMatchers(matchers) {
  *
  * The `$sceDelegateProvider` provider allows developers to configure the {@link ng.$sceDelegate
  * $sceDelegate} service.  This allows one to get/set the whitelists and blacklists used to ensure
- * that the URLs used for sourcing Angular templates are safe.  Refer {@link
+ * that the URLs used for sourcing Angular template are safe.  Refer {@link
  * ng.$sceDelegateProvider#resourceUrlWhitelist $sceDelegateProvider.resourceUrlWhitelist} and
  * {@link ng.$sceDelegateProvider#resourceUrlBlacklist $sceDelegateProvider.resourceUrlBlacklist}
  *
@@ -14967,7 +15043,7 @@ function adjustMatchers(matchers) {
  * **Example**:  Consider the following case. <a name="example"></a>
  *
  * - your app is hosted at url `http://myapp.example.com/`
- * - but some of your templates are hosted on other domains you control such as
+ * - but some of your template are hosted on other domains you control such as
  *   `http://srv01.assets.example.com/`,  `http://srv02.assets.example.com/`, etc.
  * - and you have an open redirect at `http://myapp.example.com/clickThru?...`.
  *
@@ -15335,14 +15411,14 @@ function $SceDelegateProvider() {
  * }];
  * ```
  *
- * ## Impact on loading templates
+ * ## Impact on loading template
  *
  * This applies both to the {@link ng.directive:ngInclude `ng-include`} directive as well as
  * `templateUrl`'s specified by {@link guide/directive directives}.
  *
- * By default, Angular only loads templates from the same domain and protocol as the application
+ * By default, Angular only loads template from the same domain and protocol as the application
  * document.  This is done by calling {@link ng.$sce#getTrustedResourceUrl
- * $sce.getTrustedResourceUrl} on the template URL.  To load templates from other domains and/or
+ * $sce.getTrustedResourceUrl} on the template URL.  To load template from other domains and/or
  * protocols, you may either either {@link ng.$sceDelegateProvider#resourceUrlWhitelist whitelist
  * them} or {@link ng.$sce#trustAsResourceUrl wrap it} into a trusted value.
  *
@@ -15351,8 +15427,8 @@ function $SceDelegateProvider() {
  * [Same Origin Policy](https://code.google.com/p/browsersec/wiki/Part2#Same-origin_policy_for_XMLHttpRequest)
  * and [Cross-Origin Resource Sharing (CORS)](http://www.w3.org/TR/cors/)
  * policy apply in addition to this and may further restrict whether the template is successfully
- * loaded.  This means that without the right CORS policy, loading templates from a different domain
- * won't work on all browsers.  Also, loading templates from `file://` URL does not work on some
+ * loaded.  This means that without the right CORS policy, loading template from a different domain
+ * won't work on all browsers.  Also, loading template from `file://` URL does not work on some
  * browsers.
  *
  * ## This feels like too much overhead
@@ -15367,8 +15443,8 @@ function $SceDelegateProvider() {
  * through {@link ng.$sce#getTrusted $sce.getTrusted}.  SCE doesn't play a role here.
  *
  * The included {@link ng.$sceDelegate $sceDelegate} comes with sane defaults to allow you to load
- * templates in `ng-include` from your application's domain without having to even know about SCE.
- * It blocks loading templates from other domains or loading templates over http from an https
+ * template in `ng-include` from your application's domain without having to even know about SCE.
+ * It blocks loading template from other domains or loading template over http from an https
  * served document.  You can change these by setting your own custom {@link
  * ng.$sceDelegateProvider#resourceUrlWhitelist whitelists} and {@link
  * ng.$sceDelegateProvider#resourceUrlBlacklist blacklists} for matching such URLs.
@@ -15407,7 +15483,7 @@ function $SceDelegateProvider() {
  *      not appropriate to use in for a scheme, domain, etc. as it would match too much.  (e.g.
  *      http://**.example.com/ would match http://evil.com/?ignore=.example.com/ and that might
  *      not have been the intention.)  Its usage at the very end of the path is ok.  (e.g.
- *      http://foo.example.com/templates/**).
+ *      http://foo.example.com/template/**).
  *  - **RegExp** (*see caveat below*)
  *    - *Caveat*:  While regular expressions are powerful and offer great flexibility,  their syntax
  *      (and all the inevitable escaping) makes them *harder to maintain*.  It's easy to
@@ -16045,7 +16121,7 @@ function $TemplateRequestProvider() {
       };
 
       return $http.get(tpl, httpOptions)
-        .finally(function() {
+        ['finally'](function() {
           handleRequestFn.totalPendingRequests--;
         })
         .then(function(response) {
@@ -16480,7 +16556,7 @@ function $WindowProvider() {
  * @description
  * Filters are used for formatting data displayed to the user.
  *
- * The general syntax in templates is as follows:
+ * The general syntax in template is as follows:
  *
  *         {{ expression [| filter_name[:parameter_value] ... ] }}
  *
@@ -16741,8 +16817,8 @@ function createPredicateFn(expression, comparator, matchAgainstAnyProp) {
 }
 
 function deepCompare(actual, expected, comparator, matchAgainstAnyProp, dontMatchWholeObject) {
-  var actualType = typeof actual;
-  var expectedType = typeof expected;
+  var actualType = (actual !== null) ? typeof actual : 'null';
+  var expectedType = (expected !== null) ? typeof expected : 'null';
 
   if ((expectedType === 'string') && (expected.charAt(0) === '!')) {
     return !deepCompare(actual, expected.substring(1), comparator, matchAgainstAnyProp);
@@ -16767,7 +16843,7 @@ function deepCompare(actual, expected, comparator, matchAgainstAnyProp, dontMatc
       } else if (expectedType === 'object') {
         for (key in expected) {
           var expectedVal = expected[key];
-          if (isFunction(expectedVal)) {
+          if (isFunction(expectedVal) || isUndefined(expectedVal)) {
             continue;
           }
 
@@ -17081,6 +17157,14 @@ function ampmGetter(date, formats) {
   return date.getHours() < 12 ? formats.AMPMS[0] : formats.AMPMS[1];
 }
 
+function eraGetter(date, formats) {
+  return date.getFullYear() <= 0 ? formats.ERAS[0] : formats.ERAS[1];
+}
+
+function longEraGetter(date, formats) {
+  return date.getFullYear() <= 0 ? formats.ERANAMES[0] : formats.ERANAMES[1];
+}
+
 var DATE_FORMATS = {
   yyyy: dateGetter('FullYear', 4),
     yy: dateGetter('FullYear', 2, 0, true),
@@ -17107,10 +17191,14 @@ var DATE_FORMATS = {
      a: ampmGetter,
      Z: timeZoneGetter,
     ww: weekGetter(2),
-     w: weekGetter(1)
+     w: weekGetter(1),
+     G: eraGetter,
+     GG: eraGetter,
+     GGG: eraGetter,
+     GGGG: longEraGetter
 };
 
-var DATE_FORMATS_SPLIT = /((?:[^yMdHhmsaZEw']+)|(?:'(?:[^']|'')*')|(?:E+|y+|M+|d+|H+|h+|m+|s+|a|Z|w+))(.*)/,
+var DATE_FORMATS_SPLIT = /((?:[^yMdHhmsaZEwG']+)|(?:'(?:[^']|'')*')|(?:E+|y+|M+|d+|H+|h+|m+|s+|a|Z|G+|w+))(.*)/,
     NUMBER_STRING = /^\-?\d+$/;
 
 /**
@@ -17147,6 +17235,8 @@ var DATE_FORMATS_SPLIT = /((?:[^yMdHhmsaZEw']+)|(?:'(?:[^']|'')*')|(?:E+|y+|M+|d
  *   * `'Z'`: 4 digit (+sign) representation of the timezone offset (-1200-+1200)
  *   * `'ww'`: Week of year, padded (00-53). Week 01 is the week with the first Thursday of the year
  *   * `'w'`: Week of year (0-53). Week 1 is the week with the first Thursday of the year
+ *   * `'G'`, `'GG'`, `'GGG'`: The abbreviated form of the era string (e.g. 'AD')
+ *   * `'GGGG'`: The long form of the era string (e.g. 'Anno Domini')
  *
  *   `format` string can also be one of the following predefined
  *   {@link guide/i18n localizable formats}:
@@ -17480,6 +17570,43 @@ function limitToFilter() {
  * @param {boolean=} reverse Reverse the order of the array.
  * @returns {Array} Sorted copy of the source array.
  *
+ *
+ * @example
+ * The example below demonstrates a simple ngRepeat, where the data is sorted
+ * by age in descending order (predicate is set to `'-age'`).
+ * `reverse` is not set, which means it defaults to `false`.
+   <example module="orderByExample">
+     <file name="index.html">
+       <script>
+         angular.module('orderByExample', [])
+           .controller('ExampleController', ['$scope', function($scope) {
+             $scope.friends =
+                 [{name:'John', phone:'555-1212', age:10},
+                  {name:'Mary', phone:'555-9876', age:19},
+                  {name:'Mike', phone:'555-4321', age:21},
+                  {name:'Adam', phone:'555-5678', age:35},
+                  {name:'Julie', phone:'555-8765', age:29}];
+           }]);
+       </script>
+       <div ng-controller="ExampleController">
+         <table class="friend">
+           <tr>
+             <th>Name</th>
+             <th>Phone Number</th>
+             <th>Age</th>
+           </tr>
+           <tr ng-repeat="friend in friends | orderBy:'-age'">
+             <td>{{friend.name}}</td>
+             <td>{{friend.phone}}</td>
+             <td>{{friend.age}}</td>
+           </tr>
+         </table>
+       </div>
+     </file>
+   </example>
+ *
+ * The predicate and reverse parameters can be controlled dynamically through scope properties,
+ * as shown in the next example.
  * @example
    <example module="orderByExample">
      <file name="index.html">
@@ -17862,6 +17989,7 @@ var htmlAnchorDirective = valueFn({
  * but not on older IEs:
  *
  * ```html
+ * <!-- See below for an example of ng-disabled being used correctly -->
  * <div ng-init="isDisabled = false">
  *  <button disabled="{{isDisabled}}">Disabled</button>
  * </div>
@@ -18437,7 +18565,7 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
  *
  * # Alias: {@link ng.directive:ngForm `ngForm`}
  *
- * In Angular forms can be nested. This means that the outer form is valid when all of the child
+ * In Angular, forms can be nested. This means that the outer form is valid when all of the child
  * forms are valid as well. However, browsers do not allow nesting of `<form>` elements, so
  * Angular provides the {@link ng.directive:ngForm `ngForm`} directive which behaves identically to
  * `<form>` but can be nested.  This allows you to have nested forms, which is very useful when
@@ -18575,9 +18703,11 @@ var formDirectiveFactory = function(isNgForm) {
       name: 'form',
       restrict: isNgForm ? 'EAC' : 'E',
       controller: FormController,
-      compile: function ngFormCompile(formElement) {
+      compile: function ngFormCompile(formElement, attr) {
         // Setup initial state of the control
         formElement.addClass(PRISTINE_CLASS).addClass(VALID_CLASS);
+
+        var nameAttr = attr.name ? 'name' : (isNgForm && attr.ngForm ? 'ngForm' : false);
 
         return {
           pre: function ngFormPreLink(scope, formElement, attr, controller) {
@@ -18609,23 +18739,21 @@ var formDirectiveFactory = function(isNgForm) {
               });
             }
 
-            var parentFormCtrl = controller.$$parentForm,
-                alias = controller.$name;
+            var parentFormCtrl = controller.$$parentForm;
 
-            if (alias) {
-              setter(scope, null, alias, controller, alias);
-              attr.$observe(attr.name ? 'name' : 'ngForm', function(newValue) {
-                if (alias === newValue) return;
-                setter(scope, null, alias, undefined, alias);
-                alias = newValue;
-                setter(scope, null, alias, controller, alias);
-                parentFormCtrl.$$renameControl(controller, alias);
+            if (nameAttr) {
+              setter(scope, null, controller.$name, controller, controller.$name);
+              attr.$observe(nameAttr, function(newValue) {
+                if (controller.$name === newValue) return;
+                setter(scope, null, controller.$name, undefined, controller.$name);
+                parentFormCtrl.$$renameControl(controller, newValue);
+                setter(scope, null, controller.$name, controller, controller.$name);
               });
             }
             formElement.on('$destroy', function() {
               parentFormCtrl.$removeControl(controller);
-              if (alias) {
-                setter(scope, null, alias, undefined, alias);
+              if (nameAttr) {
+                setter(scope, null, attr[nameAttr], undefined, controller.$name);
               }
               extend(controller, nullFormCtrl); //stop propagating child destruction handlers upwards
             });
@@ -21992,7 +22120,7 @@ var ngIfDirective = ['$animate', function($animate) {
  *
  * By default, the template URL is restricted to the same domain and protocol as the
  * application document. This is done by calling {@link $sce#getTrustedResourceUrl
- * $sce.getTrustedResourceUrl} on it. To load templates from other domains or protocols
+ * $sce.getTrustedResourceUrl} on it. To load template from other domains or protocols
  * you may either {@link ng.$sceDelegateProvider#resourceUrlWhitelist whitelist them} or
  * {@link $sce#trustAsResourceUrl wrap them} as trusted values. Refer to Angular's {@link
  * ng.$sce Strict Contextual Escaping}.
@@ -22028,7 +22156,7 @@ var ngIfDirective = ['$animate', function($animate) {
   <example module="includeExample" deps="angular-animate.js" animations="true">
     <file name="index.html">
      <div ng-controller="ExampleController">
-       <select ng-model="template" ng-options="t.name for t in templates">
+       <select ng-model="template" ng-options="t.name for t in template">
         <option value="">(blank)</option>
        </select>
        url of the template: <code>{{template.url}}</code>
@@ -22041,10 +22169,10 @@ var ngIfDirective = ['$animate', function($animate) {
     <file name="script.js">
       angular.module('includeExample', ['ngAnimate'])
         .controller('ExampleController', ['$scope', function($scope) {
-          $scope.templates =
+          $scope.template =
             [ { name: 'template1.html', url: 'template1.html'},
               { name: 'template2.html', url: 'template2.html'} ];
-          $scope.template = $scope.templates[0];
+          $scope.template = $scope.template[0];
         }]);
      </file>
     <file name="template1.html">
@@ -22598,8 +22726,8 @@ is set to `true`. The parse error is stored in `ngModel.$error.parse`.
  * data-binding. Notice how different directives (`contenteditable`, `ng-model`, and `required`)
  * collaborate together to achieve the desired result.
  *
- * Note that `contenteditable` is an HTML5 attribute, which tells the browser to let the element
- * contents be edited in place by the user.  This will not work on older browsers.
+ * `contenteditable` is an HTML5 attribute, which tells the browser to let the element
+ * contents be edited in place by the user.
  *
  * We are using the {@link ng.service:$sce $sce} service here and include the {@link ngSanitize $sanitize}
  * module to automatically remove "bad" content like inline event listener (e.g. `<span onclick="...">`).
@@ -24116,7 +24244,7 @@ var ngPluralizeDirective = ['$locale', '$interpolate', function($locale, $interp
  *
  * * When an item is added, a new instance of the template is added to the DOM.
  * * When an item is removed, its template instance is removed from the DOM.
- * * When items are reordered, their respective templates are reordered in the DOM.
+ * * When items are reordered, their respective template are reordered in the DOM.
  *
  * By default, `ngRepeat` does not allow duplicate items in arrays. This is because when
  * there are duplicates, it is not possible to maintain a one-to-one mapping between collection

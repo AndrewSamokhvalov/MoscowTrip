@@ -7,15 +7,15 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from card.models import *
 from django.contrib.auth.decorators import login_required
-
 from card.polygon import *
 import json
 import random
 from card.utils import address_to_coordinates
 
 
+
 def card(request):
-    return render_to_response('index.html')
+    return render_to_response('main.html')
 
 
 @csrf_exempt
@@ -95,7 +95,7 @@ def filter_places(route, types, radius, bbox):
 
         places = places.filter(id__in=idplaces)
 
-    return places.order_by('-rating')[:20]
+    return places.order_by('-rating')[:50]
 
 
 def serialize_places(places, callback):
@@ -127,9 +127,6 @@ def serialize_places(places, callback):
                 "coordinates": [place.lat, place.lon]
             },
             "id": place.id,
-            "properties": {
-                "balloonContent": render_to_response('balloon_content.html', context).content.decode('utf-8'),
-            },
             "options": {
                 "iconLayout": "default#image",
                 "iconImageHref": place.id_type.url_image_marker,
@@ -139,12 +136,27 @@ def serialize_places(places, callback):
                 "rating": str(float(place.rating)),
                 "name": place.name,
                 "image": url,
-                "type": place.id_type_id
+                "type": place.id_type_id,
+                "id": place.pk
             }
 
         }
 
         features.append(feature)
+    # Последний элемент с отрицательныйм id отправляется для того чтобы на клиенте понять что сегмент полностью загрузился
+    objectid = (-1) * random.randint(1, math.pow(10, 10))
+    feature = {
+        "type": 'Feature',
+        "geometry": {
+            "type": "Point",
+            "coordinates": [0, 0]
+        },
+        "id": objectid,
+        "fields": {
+            "id": objectid
+        }
+    }
+    features.append(feature)
 
     feature = {
         "type": 'Feature',
@@ -168,8 +180,8 @@ def serialize_places(places, callback):
 
 
 @csrf_exempt
-def set_types(request):
-    if request.method == 'POST':
+def types(request):
+    if request.method == 'PUT':
         try:
             str_response = request.body.decode('utf-8')
             received_json_data = json.loads(str_response)
@@ -183,6 +195,75 @@ def set_types(request):
             print('Types %s ' % str(types))
 
             return HttpResponse("Good!")
+
+        except Exception as inst:
+            print("=" * 150)
+            print(type(inst))  # the exception instance
+            print(inst.args)  # arguments stored in .args
+            print(inst)  # __str__ allows args to be printed directly
+            return HttpResponse("error!")
+
+    if request.method == 'GET':
+        try:
+            types = request.session.get('types')
+
+            if types == None:
+                print("ERROR: Types is none!")
+                return HttpResponse("ERROR: Types is none!")
+
+            print('Types %s ' % str(types))
+
+            return HttpResponse(json.dumps(types))
+
+        except Exception as inst:
+            print("=" * 150)
+            print(type(inst))  # the exception instance
+            print(inst.args)  # arguments stored in .args
+            print(inst)  # __str__ allows args to be printed directly
+            return HttpResponse("error!")
+
+    return HttpResponse("Not POST request!")
+
+@csrf_exempt
+def radius(request):
+    if request.method == 'PUT':
+        try:
+            str_response = request.body.decode('utf-8')
+            received_json_data = json.loads(str_response)
+            radius = float(json.loads(received_json_data['radius']))
+            route = request.session.get('route')
+
+            if radius == None:
+                print("ERROR: Radius is none!")
+                return HttpResponse("ERROR: Radius is none!")
+
+            if route == None:
+                print("ERROR: Route is none!")
+                return HttpResponse("ERROR: Route is none!")
+
+
+            radius = radius / 50000;
+            request.session['radius'] = radius
+            print('Radius %s ' % str(radius))
+
+            return HttpResponse(get_polygons(radius, route))
+
+        except Exception as inst:
+            print("=" * 150)
+            print(type(inst))  # the exception instance
+            print(inst.args)  # arguments stored in .args
+            print(inst)  # __str__ allows args to be printed directly
+            return HttpResponse("error!")
+
+    if request.method == 'GET':
+        try:
+            radius = request.session.get('radius')
+            if radius == None:
+                print("ERROR: Types is none!")
+                return HttpResponse("ERROR: Raduis is none!")
+            print('Radius %s ' % str(radius))
+
+            return HttpResponse(json.dumps(radius))
 
         except Exception as inst:
             print("=" * 150)
@@ -255,6 +336,7 @@ def set_route(request):
             str_response = request.body.decode('utf-8')
             received_json_data = json.loads(str_response)
 
+            radius = request.session.get('radius')
             route = json.loads(received_json_data['points'])
 
             if route == None:
@@ -265,7 +347,7 @@ def set_route(request):
             request.session['route'] = route
             print('Route %s ' % str(route))
 
-            return HttpResponse(get_polygons(0.02, route))
+            return HttpResponse(get_polygons(radius, route))
 
         except Exception as inst:
             print("=" * 150)
@@ -284,7 +366,35 @@ def get_place_info(request):
             place_id = json.loads(place_id)
 
             place = Place.objects.select_related().filter(id=place_id)
-            return HttpResponse(serializers.serialize("json", place))
+            # images = Image.objects.select_related().filter(id_place=place_id)
+            json_place = serializers.serialize("json", place, fields=(
+                'address',
+                'website',
+                'description',
+                'working_hours',
+                'cost',
+                'e_mail',
+                'vk_link',
+                'website',
+                'phone',
+                'lat',
+                'lon',
+                'id_tag',
+            ))
+
+            place = json.loads(json_place)[0]
+
+            id_tags = place['fields']['id_tag']
+            del place['fields']['id_tag']
+            tags = Tag.objects.select_related().filter(id__in=id_tags)
+            json_tags = serializers.serialize("json", tags)
+            tags = json.loads(json_tags)
+            ltags = []
+            for tag in tags:
+                ltags.append(tag['fields']['tag'])
+            place['fields']['tags'] = ltags
+
+            return HttpResponse(json.dumps(place['fields']))
 
         except Exception as inst:
             print("=" * 150)
@@ -460,7 +570,10 @@ def save_place(received_json_data, user, is_edit=True):
                 if getattr(place, field) != received_json_data[field]:
                     setattr(place, field, received_json_data[field])
                     if field == fields[1]:
-                        lon, lat = address_to_coordinates(place.address)
+                        coordinates = address_to_coordinates(place.address)
+                        if coordinates is None:
+                            return HttpResponse(u'Адрес некорректен. Из адреса не могут быть получены координаты.')
+                        lon, lat = coordinates
                         place.lon = lon
                         place.lat = lat
 

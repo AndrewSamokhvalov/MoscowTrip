@@ -2,30 +2,16 @@
 
 /* App Module */
 
-var roadtrippersApp = angular.module('roadtrippersApp', ['yaMap', 'uiSlider', 'slick',
-    'ngTagsInput', 'ngRoute', ]);
+var roadtrippersApp = angular.module('roadtrippersApp', ['yaMap', 'uiSlider', 'slick', 'ngRoute', ]);
 
-roadtrippersApp.config(['$interpolateProvider','yaMapSettingsProvider',
-    function($interpolateProvider,yaMapSettings) {
-        $interpolateProvider.startSymbol('[[');
-        $interpolateProvider.endSymbol(']]');
+roadtrippersApp.config([ 'yaMapSettingsProvider', '$routeProvider',
+    function (yaMapSettings, $routeProvider) {
+
         yaMapSettings.setOrder('latlong');
+        $routeProvider.
+            when('/', {
+                templateUrl: '/static/app/partials/index.html',
+                controller: 'CardCtrl'
+            })
     }
-])
-.config(['$routeProvider', '$locationProvider',
-  function($routeProvider) {
-      $routeProvider
-          .when('/', {
-              templateUrl: '/managePlaces/addedPlaces',
-              controller: 'managePlacesCtrl'
-          })
-          .when('/editPlace/:placeId', {
-                  templateUrl: '/managePlaces/editPlace',
-                  controller: 'editPlaceCtrl'
-              })
-          .when('/addPlace', {
-                  templateUrl: '/managePlaces/addPlace',
-                  controller: 'addPlaceCtrl'
-              });
-
-  }]);
+]);

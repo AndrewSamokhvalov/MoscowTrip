@@ -1,0 +1,92 @@
+.popover {
+    display: block;
+}
+
+.btn {
+    margin-top: 10px;
+}
+.media-body h5
+{
+    position: absolute;
+    top:10px;
+    left:80px;
+}
+.like-balloon
+{
+    position: absolute;
+    right: -36px;
+    top:0;
+    border-radius: 5px;
+    width: 34px;
+    height: 34px;
+    background: #fff;
+    cursor: pointer;
+}
+.trip-balloon
+{
+    position: absolute;
+    cursor: pointer;
+    right: -36px;
+    bottom:0;
+    border-radius: 5px;
+    width: 34px;
+    height: 34px;
+    background: #fff;
+}
+.trip-balloon .icon-cab
+{
+    position: absolute;
+    font-size: 1.8em;
+    /*top: 6px;*/
+    left:3px;
+    color: #00cc99;
+}
+.like-balloon .icon-heart
+{
+    position: absolute;
+    font-size: 1.8em;
+    left:4px;
+    color: #ff3366;
+}
+.like-balloon .icon-heart:hover
+{
+    color:#ff0099;
+}
+.trip-balloon .icon-cab:hover
+{
+    color:#00cccc;
+}
+.modal-body img
+{
+    cursor: pointer;
+}
+.modal-body span.place-name
+{
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    text-shadow: black 1px 0px, black 1px 1px, black 0px 1px, black -1px 1px, black -1px 0px, black -1px -1px, black 0px -1px, black 1px -1px;
+    font-size: 1.25em;
+    padding:0 10px 8px 10px;
+    color:#fff;
+}
+.modal-body .rating
+{
+    position: absolute;
+    top:3px;
+    z-index: 20;
+    width:2em;
+    height:2em;
+    margin: 0;
+    background-color: #5bb765;
+    border-radius: 0 0 3px 3px;
+    left:15px;
+}
+.modal-body .value-rating
+{
+    position: relative;
+    top:5px;
+    margin-left: 4px;
+    height: 100%;
+    color: #fff;
+}
