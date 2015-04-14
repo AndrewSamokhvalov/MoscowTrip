@@ -6,11 +6,9 @@ urlpatterns = patterns('',
 
     url(r'^getPlaces/?', views.get_places),
     url(r'^getPlaceInfo/?', views.get_place_info),
-    url(r'^getArea/?', views.get_area),
-
-    url(r'^setTypes/?', views.set_types),
+    url(r'^types/?', views.types),
     url(r'^setRoute/?', views.set_route),
-    url(r'^setRadius/?', views.set_radius),
+    url(r'^radius/?', views.radius),
 
     url(r'^$', views.card, name='index'),
 

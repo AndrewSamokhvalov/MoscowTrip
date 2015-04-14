@@ -51,10 +51,9 @@
     <script src="/static/app/js/services.js"></script>
     <script src="/static/app/js/controllers.js"></script>
     <script src="/static/app/js/directives.js"></script>
-
     {#    {% endcompress %}#}
 </head>
-<body>
+<body ng-controller="CardCtrl">
 
 
 <!-- NAVBAR
@@ -96,47 +95,6 @@
 {#          }]);#}
 {#        </script>#}
 {#        {% endif %}#}
-
-<script type="text/javascript">
-    $(window).load(function () {
-        $("#show-off").click(function () {
-            $(".up-unchk").css("display", "none");
-            $(".up-chk").css("display", "inline");
-            $(".main-info").css("bottom", "-160px");
-            $(".list_of_nav_buttons").css("bottom", "0");
-        });
-    });
-</script>
-<script type="text/javascript">
-    $(window).load(function () {
-        $("#show-on").click(function () {
-            $(".up-unchk").css("display", "inline");
-            $(".up-chk").css("display", "none");
-            $(".main-info").css("bottom", "0");
-            $(".list_of_nav_buttons").css("bottom", "160px");
-        });
-    });
-</script>
-<script type="text/javascript">
-    $(window).load(function () {
-        $("#show-off-right").click(function () {
-            $(".up-unchk-right").css("display", "none");
-            $(".up-chk-right").css("display", "inline");
-            $(".main-info-right").css("right", "-350px");
-            $(".list_of_nav_buttons_right").css("right", "0");
-        });
-    });
-</script>
-<script type="text/javascript">
-    $(window).load(function () {
-        $("#show-on-right").click(function () {
-            $(".up-unchk-right").css("display", "inline");
-            $(".up-chk-right").css("display", "none");
-            $(".main-info-right").css("right", "0");
-            $(".list_of_nav_buttons_right").css("right", "350px");
-        });
-    });
-</script>
 <script>
     $(window).resize(function () {
         $('#popup').css({
@@ -147,6 +105,7 @@
     });
     $(window).resize();
 </script>
+
 
 
 </body>

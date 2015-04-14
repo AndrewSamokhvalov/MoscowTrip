@@ -2,39 +2,75 @@ roadtrippersApp.factory('CardSvc', function ($http) {
 
     return {
         setTypes: function ($scope, types) {
-            return $http.post('/setTypes', { 'types': JSON.stringify(types) }).success(function (response) {
+            return $http.put('/types', { 'types': JSON.stringify(types) }).success(function (response) {
                 $scope.rom.updateROM();
+            });
+        },
+
+        getTypes: function ($scope, types) {
+            return $http.get('/types').success(function (response) {
+
             });
         },
 
         getPlaceInfo: function ($scope, place_id) {
-            return $http.get('/getPlaceInfo' + '?place_id=' + place_id + '').success(function (response) {
-                var data = response[0];
+            return $http.get('/getPlaceInfo' + '?place_id=' + place_id).success(function (response) {
                 var object = $scope.rom.getRom().objects.getById(place_id);
-                for (var i in data.fields) {
-                    object.fields[i] = data.fields[i];
+                for (var i in response) {
+                    object.fields[i] = response[i];
                 }
-                object.fields.id = place_id;
             });
         },
         setRadius: function ($scope, radius) {
-            return $http.post('/setRadius', { 'radius': JSON.stringify(radius) }).success(function (response) {
+            return $http.put('/radius', { 'radius': JSON.stringify(radius) }).success(function (polyline) {
                 $scope.rom.updateROM();
+                // Создаем ломаную с помощью вспомогательного класса Polyline.
+                var area = new ymaps.GeoObject({
+                    // Описываем геометрию геообъекта.
+                    geometry: {
+                        // Тип геометрии - "Многоугольник".
+                        type: "Polygon",
+                        // Указываем координаты вершин многоугольника.
+                        coordinates: polyline,
+                        // Задаем правило заливки внутренних контуров по алгоритму "nonZero".
+                        fillRule: "nonZero"
+                    }
+                }, {
+                    // Описываем опции геообъекта.
+                    // Цвет заливки.
+                    fillColor: '#65BDE8',
+                    // Цвет обводки.
+                    strokeColor: '#65BDE8',
+                    // Общая прозрачность (как для заливки, так и для обводки).
+                    opacity: 0.5,
+                    // Ширина обводки.
+                    strokeWidth: 0,
+                    // Стиль обводки.
+                    strokeStyle: 'shortdash'
+                });
+
+                // Добавляем линии на карту.
+                $scope.map.geoObjects.remove($scope.route.area);
+                $scope.route.area = area;
+                $scope.map.geoObjects.add(area);
+
             });
         },
-        setRoute: function ($scope, route) {
-            var points = [];
-            route.getPaths().each(function (path) {
-                points.push(path.geometry.getCoordinates())
-            });
+        getRadius: function ($scope) {
+            return $http.get('/radius').success(function (response) {
 
-            $scope.map.geoObjects.remove($scope.route.data);
-            $scope.map.geoObjects.remove($scope.route.area);
+            });
+        },
+
+
+        setRoute: function ($scope, route) {
+            var path = route.getPaths()[0];
+            var points = path.properties.get('coordinates');
 
             $scope.route.data = route;
-            $scope.map.geoObjects.add(route);
 
-            return $http.post('/setRoute', { 'points': JSON.stringify(points[0])}).success(function (polyline) {
+            return $http.post('/setRoute', { 'points': JSON.stringify(points)}).success(function (polyline) {
+                    $scope.rom.updateROM();
 
                     // Создаем ломаную с помощью вспомогательного класса Polyline.
                     var area = new ymaps.GeoObject({
@@ -50,9 +86,9 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                     }, {
                         // Описываем опции геообъекта.
                         // Цвет заливки.
-                        fillColor: '#00FFFF',
+                        fillColor: '#65BDE8',
                         // Цвет обводки.
-                        strokeColor: '#0000FF',
+                        strokeColor: '#65BDE8',
                         // Общая прозрачность (как для заливки, так и для обводки).
                         opacity: 0.5,
                         // Ширина обводки.
@@ -61,10 +97,10 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                         strokeStyle: 'shortdash'
                     });
 
+                    $scope.map.geoObjects.remove($scope.route.area);
                     // Добавляем линии на карту.
                     $scope.route.area = area;
                     $scope.map.geoObjects.add(area);
-                    $scope.rom.updateROM();
                 }
             );
         }

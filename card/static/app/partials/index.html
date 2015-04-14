@@ -1,55 +1,6 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href={% static "images/favicon.ico" %} type="image/x-icon">
-    <link type="text/css" rel="stylesheet" href="http://static.graddit.com/css/graddit.css"/>
-
-    {#   Angular and Jqueru must be first #}
-    <script src={% static "app/bower_components/jquery/dist/jquery.js" %}></script>
-    <script src={% static "app/bower_components/angular/angular.js" %}></script>
-
-    {#   Bootstrap #}
-    <script src={% static "app/bower_components/bootstrap/dist/js/bootstrap.js" %}></script>
-    <link href={% static "app/bower_components/bootstrap/dist/css/bootstrap.css" %} rel="stylesheet">
-
-    {#   Radius slider #}
-    <script src={% static "app/bower_components/angular-slider/angular-slider.js" %}></script>
-    <link href={% static "app/bower_components/angular-slider/angular-slider.css" %} rel="stylesheet">
-
-    {#   Angular image carousel #}
-    <link href={% static "app/bower_components/slick-carousel/slick/slick.css" %} rel="stylesheet">
-    <script src={% static "app/bower_components/slick-carousel/slick/slick.js" %}></script>
-    <script src={% static "app/bower_components/angular-slick/dist/slick.js" %}></script>
-
-
-    {#   Yandex map #}
-    <script src={% static "app/js/ya-map-2.1.js" %}></script>
-
-    {#   BXSlider - image carousel #}
-    {#    <script src={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.js" %}></script>#}
-    {#    <link href={% static "app/bower_components/bxslider-4/dist/jquery.bxslider.css" %} rel="stylesheet">#}
-
-    {#   Roadtrippers api #}
-    <script src={% static "app/js/app.js" %}></script>
-    <script src={% static "app/js/services.js" %}></script>
-    <script src={% static "app/js/controllers.js" %}></script>
-
-    <link href={% static "app/css/roadtrippers.css" %} rel="stylesheet">
-    <link href={% static "app/css/rt_ballon_content.css" %} rel="stylesheet">
-    <link href={% static "app/css/rt_filters.css" %} rel="stylesheet">
-
-</head>
-
-<body ng-app="roadtrippersApp" ng-controller="CardCtrl">
-
 <header>
     <div class="logotype">
-        <img src="{% static "app/images/logotype.gif" %}" alt="Путеводитель"/>
+        <img src="/static/app/images/logotype.gif" alt="Путеводитель"/>
     </div>
 </header>
 
@@ -99,31 +50,7 @@
     <ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="init($target)" ya-controls=""></ya-map>
 </main>
 
-<section id="right-bar">
-    <nav class="list_of_nav_buttons_right">
-        <div class="up-chk-right" id="show-on-right">
-            <span class="icon icon-up-micro"></span>
-        </div>
-        <div class="up-unchk-right" id="show-off-right">
-            <span class="icon icon-down-micro"></span>
-        </div>
-    </nav>
-    <main class="main-info-right">
-        <img src="{% static "app/images/0002.jpg" %}" alt="Маршрут">
-
-        <div class="make-trip">
-            <div class="form-A">
-                <span class="icon-A">A:</span>
-                <input class="form-a-inp" type="text" placeholder="Введите пункт А"/>
-            </div>
-            <div class="form-B">
-                <span class="icon-B">B:</span>
-                <input class="form-b-inp" type="text" placeholder="Введите пункт В"/>
-            </div>
-            <input id="find-trip-btn" type="submit" value="Построить маршрут">
-        </div>
-    </main>
-</section>
+<rt-right-collapsible></rt-right-collapsible>
 
 
 <!-- Popup window -->
@@ -137,26 +64,24 @@
                         aria-hidden="true">&times;</span></button>
                 <div class="rating">
                     <div class="value-rating">
-                        [[currentPlace.info.rating]]
+                        {{ currentPlace.fields.rating }}
                     </div>
                 </div>
                 <span class="icon-vk"></span>
                 <span class="icon-globe"></span>
                 <span class="icon-email"></span>
-                <span class="icon-heart"></span>
-                <span class="icon-cab"></span>
 
-                <h2 class="modal-title" id="gridSystemModalLabel">[[currentPlace.info.name]]</h2>
+                <h2 class="modal-title" id="gridSystemModalLabel">{{ currentPlace.fields.name }}  </h2>
             </div>
 
 
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <slick init-onload=true infinite="true" slides-to-show="2" data="places">
-                            <div ng-repeat="place in places">
+                        <slick init-onload=true infinite="true" slides-to-show="2" data="rom.places">
+                            <div ng-repeat="place in rom.places">
                                 <span>
-                                    <img ng-src="[[place.fields.image]]" width="410px" height="410px">
+                                        <img width="410px" height="410px">
                                 </span>
                             </div>
                         </slick>
@@ -165,30 +90,18 @@
                         <div class="col-md-7">
                             <h3>Описание места:</h3>
 
-                            <p>[[currentPlace.info.description]]</p>
+                            <p>{{ currentPlace.fields.description }}  </p>
 
                         </div>
 
                         <div class="col-md-5">
-                            <br>
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <span class=""></span>
-                                    Рейтинг места
-                                </div>
-                                <div class="panel-footer">
-                                    <div id='rate_7j4ncbs' class='ffbs_rate'>
-                                    <!--{[['<img src="http://static.graddit.com/img/star.png"/>']]}--></div>
-                                    <div id='stats_7j4ncbs' class='ffbs_stats'></div>
-                                </div>
-                            </div>
                             </br>
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <span class="icon-phone"></span>
                                     Телефон
                                 </div>
-                                <div class="panel-footer">[[currentPlace.info.phone]]</div>
+                                <div class="panel-footer">{{ currentPlace.fields.phone }}  </div>
                             </div>
                             </br>
                             <div class="panel panel-default">
@@ -196,7 +109,7 @@
                                     <span class="icon-address-book"></span>
                                     Адрес
                                 </div>
-                                <div class="panel-footer">[[currentPlace.info.address]]</div>
+                                <div class="panel-footer">{{ currentPlace.fields.address }}  </div>
                             </div>
                             </br>
                             <div class="panel panel-default">
@@ -204,109 +117,16 @@
                                     <span class="icon-clock"></span>
                                     Рабочие часы
                                 </div>
-                                <div class="panel-footer">[[currentPlace.info.working_hours]]</div>
+                                <div class="panel-footer">{{ currentPlace.fields.working_hours }}  </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
     </div>
 </div>
 
-<section id="bottom-bar">
-    <nav class="list_of_nav_buttons">
-        <span class="nav-button-text-bottom">Места</span>
-
-        <div class="up-chk" id="show-on">
-            <span class="icon icon-up-micro"></span>
-        </div>
-        <div class="up-unchk" id="show-off">
-            <span class="icon icon-down-micro"></span>
-        </div>
-    </nav>
-    <main class="main-info">
-        <div>
-            <slick init-onload=true infinite="true" slides-to-show="1" slides-to-scroll="5" data="places"
-                   variable-width="true">
-                <div ng-repeat="place in places">
-                    <div class="rating">
-                        <div class="value-rating">
-                            [[place.fields.rating]]
-                        </div>
-                    </div>
-                    <div class="slick-place">
-                        <div class="slick-filter slick-filter-[[place.fields.type]]">
-                            <span class="slick-filter-icon"></span>
-                        </div>
-                    </div>
-                    <span>
-                        <img ng-src="[[place.fields.image]]" width="150px" height="150px">
-                    </span>
-                    <span class="place-name" onclick="$('#detailPlaceInfo').modal('show')">
-                        [[ place.fields.name ]]
-                    </span>
-                </div>
-            </slick>
-            {#            <div class="slider1" slideit>#}
-        </div>
-        </div>
-    </main>
-</section>
-
-
-<script type="text/javascript">
-    $(window).load(function () {
-        $("#show-off").click(function () {
-            $(".up-unchk").css("display", "none");
-            $(".up-chk").css("display", "inline");
-            $(".main-info").css("bottom", "-160px");
-            $(".list_of_nav_buttons").css("bottom", "0");
-        });
-    });
-</script>
-<script type="text/javascript">
-    $(window).load(function () {
-        $("#show-on").click(function () {
-            $(".up-unchk").css("display", "inline");
-            $(".up-chk").css("display", "none");
-            $(".main-info").css("bottom", "0");
-            $(".list_of_nav_buttons").css("bottom", "160px");
-        });
-    });
-</script>
-<script type="text/javascript">
-    $(window).load(function () {
-        $("#show-off-right").click(function () {
-            $(".up-unchk-right").css("display", "none");
-            $(".up-chk-right").css("display", "inline");
-            $(".main-info-right").css("right", "-350px");
-            $(".list_of_nav_buttons_right").css("right", "0");
-        });
-    });
-</script>
-<script type="text/javascript">
-    $(window).load(function () {
-        $("#show-on-right").click(function () {
-            $(".up-unchk-right").css("display", "inline");
-            $(".up-chk-right").css("display", "none");
-            $(".main-info-right").css("right", "0");
-            $(".list_of_nav_buttons_right").css("right", "350px");
-        });
-    });
-</script>
-<script>
-    $(window).resize(function () {
-        $('#popup').css({
-            left: ($(document).width() - $('#popup').outerWidth()) / 2,
-            top: ($(document).height() - $('#popup').outerHeight()) / 2
-        });
-
-    });
-    $(window).resize();
-</script>
-
-<script type='text/javascript' src='http://www.graddit.com/rate/rus/5/7j4ncbs?id=rate_7j4ncbs&stats=stats_7j4ncbs&info=info&info_delay=2&class_star=ffbs_star_img&class_star_set=ffbs_star_img_set&class_star_vote=ffbs_star_img_vote&views=yes&votes=yes&average=yes'></script>
-
-</body>
-</html>
+<rt-down-collapsible places="rom.places" current-place="currentPlace" slidefilter="slidefilter.idfilter"></rt-down-collapsible>
