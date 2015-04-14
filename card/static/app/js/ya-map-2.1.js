@@ -10,7 +10,7 @@ angular.module('yaMap',[]).
 
     provider('yaMapSettings',function yaMapSettingsProvider(){
         var options = {
-            version:'2.1',
+            version:'2.1.20',
             lang:'ru_RU',
             order:'longlat'
         };

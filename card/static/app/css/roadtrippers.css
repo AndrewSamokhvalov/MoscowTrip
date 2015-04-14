@@ -193,8 +193,8 @@ header
     background-color: #f5f5f5;
     width:100%;
     box-shadow: 0 0 0.05em ;
-    bottom:-155px;
-    height: 155px;
+    bottom:-160px;
+    height: 160px;
 }
 .main-info-right img
 {
@@ -321,298 +321,7 @@ li.show-btn-right
 
 /*---------------------------end-footer_rightbar-------------------------------*/
 
-/*---------------------------filtersBlock-------------------------------*/
-.filters>ul
-{
-    position: fixed;
-    z-index: 2;
-    top: 2.6em;
-    left: 0.25em;
-    width: auto;
-    height: auto;
-    font-size: 1.5em;
-    box-shadow: 0 0 0.05em ;
-    background: #f5f5f5;
-    list-style-type: none;
-    margin:0 0 0 0;
-    padding: 0 0 0 0;
-    -webkit-border-radius: 0.4em;
-    -moz-border-radius: 0.4em;
-    border-radius: 0.4em;
-    cursor: pointer;
-}
-.filters>ul>.filter-place_of_interests:hover {
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    -webkit-border-bottom-left-radius: 0.4em;
-    -webkit-border-top-left-radius: 0.4em;
-    -moz-border-bottom-left-radius: 0.4em;
-    -moz-border-top-left-radius: 0.4em;
-    border-bottom-left-radius: 0.4em;
-    border-top-left-radius: 0.4em;
-}
-.filters>ul>.filter-food:hover,
-.filters>ul>.filter-camera:hover,
-.filters>ul>.filter-exhibition:hover{
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-}
-.filters>ul>.filter-park:hover {
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    -webkit-border-bottom-right-radius: 0.4em;
-    -webkit-border-top-right-radius: 0.4em;
-    -moz-border-bottom-right-radius: 0.4em;
-    -moz-border-top-right-radius: 0.4em;
-    border-bottom-right-radius: 0.4em;
-    border-top-right-radius: 0.4em;
-}
-.filters li
-{
-    display: table-cell;
-    vertical-align: middle;
-    border-right: 0.05em solid grey;
-}
-.filters li:last-child
-{
-    border-right: none;
-}
-.filters .filter-place_of_interests .icon-cat-attractions
-{
-    color: #0099cc;
-    text-shadow: 0 0 0.2em rgba(0,0,0,0);
-    cursor: pointer;
-}
-.filters .filter-food .icon-cat-food-drink
-{
-    color: #00cccc;
-    text-shadow: 0 0 0.2em rgba(0,0,0,0);
-    cursor: pointer;
-}
-.filters .filter-park .icon-cat-nature
-{
-    color: #009966;
-    text-shadow: 0 0 0.2em rgba(0,0,0,0);
-    cursor: pointer;
-}
-.filters input[type="checkbox"],
-.list_of_nav_buttons input[type="checkbox"],
-.list_of_nav_buttons_right input[type="checkbox"]
-{
-    display: none;
-}
-.filters input[type="checkbox"]:checked + .filter-place_of_interests
-{
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    -webkit-border-bottom-left-radius: 0.4em;
-    -webkit-border-top-left-radius: 0.4em;
-    -moz-border-bottom-left-radius: 0.4em;
-    -moz-border-top-left-radius: 0.4em;
-    border-bottom-left-radius: 0.4em;
-    border-top-left-radius: 0.4em;
-}
-.filters input[type="checkbox"]:checked + .filter-park
-{
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    -webkit-border-bottom-right-radius: 0.4em;
-    -webkit-border-top-right-radius: 0.4em;
-    -moz-border-bottom-right-radius: 0.4em;
-    -moz-border-top-right-radius: 0.4em;
-    border-bottom-right-radius: 0.4em;
-    border-top-right-radius: 0.4em;
-}
-.filters input[type="checkbox"]:checked + li
-{
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-}
-/*---------------------------end-filtersBlock-------------------------------*/
 
-/*---------------------------balloonbox-------------------------------*/
-#parent_popup{
-    position: fixed;
-    top: 0;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: black;
-    -moz-opacity:0.6;
-    opacity: 0.6;
-    display:none;
-    z-index: 100;
-}
-#popup {
-    z-index: 111;
-    width:auto;
-    height:80%;
-    background: #dfdfdf;
-    padding: 10px;
-    position: fixed;
-    display: none;
-    top: 4em;
-    min-width: 800px;
-    right: 21em;
-    left: 21em;
-}
-.popup-main
-{
-    background: #fff;
-    border-radius: 10px;
-    height: 100%;
-}
-#scrl
-{
-    height: 68%;
-    width: 100%;
-    overflow-y: scroll;
-}
-#heady img
-{
-    position: absolute;
-    top: 0;
-    left: 20px;
-    width:140px;
-    height: 140px;
-}
-#heady
-{
-    width: 100%;
-    height: 12em;
-    position: relative;
-    top: 0;
-    left:0;
-    box-shadow: 0 4px 2px -2px gray;
-}
-#footy
-{
-    width: 100%;
-    height: 100%;
-    position: relative;
-    bottom: 0;
-    left:0;
-}
-#heady h2
-{
-    position:absolute;
-    width: 15em;
-    left:10em;
-}
-#heady #list-of-p
-{
-    position: absolute;
-    top: 3em;
-    left:14em;
-    font-size: 1em;
-}
-#footy .add-like-place
-{
-    position: absolute;
-    top:1em;
-    left:20px;
-    border: 1px solid gray;
-    box-shadow: 0.2em 0.2em 2px rgba(122,122,122,0.5);
-    width:7.5em;
-    height:1.4em;
-    border-radius: 5px;
-    font-size: 2em;
-    color: #ff3366;
-    cursor: pointer;
-}
-#footy .add-like-place:hover
-{
-    color:#ff0099;
-}
-#footy .add-to-trip:hover
-{
-    color:#00cccc;
-}
-.add-like-place span,
-.add-to-trip span
-{
-    position: absolute;
-    top:5px;
-    left:7px;
-}
-#footy .add-to-trip
-{
-    position: absolute;
-    top:1em;
-    left:9em;
-    border: 1px solid gray;
-    box-shadow: 0.2em 0.2em 2px rgba(122,122,122,0.5);
-    width:8em;
-    height:1.4em ;
-    border-radius: 5px;
-    font-size: 2em;
-    color: #00cc99;
-    cursor: pointer;
-}
-.contacts
-{
-    position:absolute;
-    top:6em;
-    right:2em;
-    width:18em;
-    border: 1px solid gray;
-    border-radius: 5px;
-    box-shadow: 0.2em 0.2em 2px rgba(122,122,122,0.5);
-    height: auto;
-}
-.options
-{
-    position:absolute;
-    top: 6em;
-    /*border: 1px solid gray;
-    border-radius: 5px;
-    box-shadow: 0.2em 0.2em 2px rgba(122,122,122,0.5);*/
-    left:1.6em;
-    width:33em;
-}
-.close-btn{
-    z-index: 112;
-    width: 10px;
-    height: 10px;
-    background: #dfdfdf;
-    padding: 5px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    position: absolute;
-    bottom: 94%;
-    right: 1em;
-}
-.x-btn{
-    position: absolute;
-    bottom: 3px;
-    right: 5px;
-}
-
-/*---------------------------end-balloonbox-------------------------------*/
 
 /*---------------------------balloon_balloon-elements-------------------------------*/
 
@@ -679,16 +388,15 @@ li.show-btn-right
 {
     position: absolute;
     font-size: 1.8em;
-    top: 6px;
-    left:4px;
+    /*top: 6px;*/
+    left:3px;
     color: #00cc99;
 }
 .like-balloon .icon-heart
 {
     position: absolute;
     font-size: 1.8em;
-    top: 6px;
-    left:5px;
+    left:4px;
     color: #ff3366;
 }
 .like-balloon .icon-heart:hover
@@ -716,23 +424,27 @@ li.show-btn-right
     width:20px;
     height: 20px;
 }
+.media-left img
+{
+    cursor: pointer;
+}
 /*---------------------------end-balloon_balloon-elements-------------------------------*/
 
 .radius
 {
     position: fixed;
     z-index: 2;
-    top: 7.6em;
+    top: 7.8em;
     left: 5.6em;
-    width: auto;
-    height: auto;
-    font-size: 1.0em;
-    border-radius: 0.4em;
-    box-shadow: 0 0 0.05em ;
-    background: #f5f5f5;
-    list-style-type: none;
-    margin:0;
-    padding: 0;
+    width: 150px;
+    /*height: auto;*/
+    /*font-size: 1.0em;*/
+    /*border-radius: 0.4em;*/
+    /*box-shadow: 0 0 0.05em ;*/
+    /*background: #f5f5f5;*/
+    /*list-style-type: none;*/
+    /*margin:0;*/
+    /*padding: 0;*/
 }
 
 
@@ -769,41 +481,77 @@ li.show-btn-right
 .icon-heart:before { content: '\e809'; }
 
 
+/*-----------------------slick slide----------------------*/
 
-
-@font-face{
-    font-family:'roadtrippers-icons';
-    src:url(../fonts/roadtrippers-icons-ee0681ed1cb33a78b388e6d15da10edb.woff) format("woff");
-    font-weight:normal;
-    font-style:normal
+.slick-slide
+{
+    margin: 6px 6px 0 0;
+}
+.slick-slide img
+{
+    position: relative;
+    border-radius: 5px;
+    top:-56px;
+}
+.slick-slide .rating
+{
+    position: relative;
+    top:0;
+    z-index: 20;
+    width:2em;
+    height:2em;
+    margin: 0 !important;
+    background-color: #5bb765;
+    border-radius: 0 0 3px 3px;
+    left:5px;
+}
+.slick-slide .value-rating
+{
+    position: relative;
+    top:5px;
+    margin-left: 4px;
+    height: 100%;
+    color: #fff;
 }
 
-[data-icon]:before,.icon-add-photo:before,.icon-angle-double-down:before,.icon-angle-double-up:before,.icon-att-50-amp:before,.icon-att-big-rigs:before,.icon-att-camp-sites:before,.icon-att-chain:before,.icon-att-check-in:before,.icon-att-check-out:before,.icon-att-credit-card:before,.icon-att-discounts:before,.icon-att-dump-sites:before,.icon-att-full-hookup:before,.icon-att-hours:before,.icon-att-independent:before,.icon-att-laundry:before,.icon-att-outdoor-seating:before,.icon-att-parking:before,.icon-att-paved-site:before,.icon-att-pets:before,.icon-att-price-range:before,.icon-att-pull_through:before,.icon-att-quiet-hours:before,.icon-att-restrooms:before,.icon-att-room-service:before,.icon-att-rooms:before,.icon-att-sewer-hookup:before,.icon-att-showers:before,.icon-att-swimming-pool:before,.icon-att-tent-sites:before,.icon-att-wheelchair:before,.icon-att-wifi:before,.icon-background-circle-filled:before,.icon-caret-down:before,.icon-caret-left:before,.icon-caret-right:before,.icon-caret-up:before,.icon-cat-accommodation:before,.icon-cat-activities:before,.icon-cat-attractions:before,.icon-cat-bucketlist:before,.icon-cat-camping-rv:before,.icon-cat-drives:before,.icon-cat-entertainment:before,.icon-cat-events:before,.icon-cat-food-drink:before,.icon-cat-more:before,.icon-cat-motoring:before,.icon-cat-nature:before,.icon-cat-places:before,.icon-cat-points-of-interest:before,.icon-cat-regions:before,.icon-cat-services:before,.icon-cat-shopping:before,.icon-cat-sports:before,.icon-circle-star:before,.icon-location:before,.icon-master-blog:before,.icon-master-collection:before,.icon-master-guide:before,.icon-master-logo:before,.icon-master-places:before,.icon-master-stroked-logo:before,.icon-master-trip:before,.icon-nav-add-photo:before,.icon-nav-add-to-trip:before,.icon-nav-address:before,.icon-nav-admin:before,.icon-nav-analytics:before,.icon-nav-angle-double-down:before,.icon-nav-arrow:before,.icon-nav-arrow-down:before,.icon-nav-arrow-left:before,.icon-nav-arrow-up:before,.icon-nav-assets:before,.icon-nav-asterisk:before,.icon-nav-back:before,.icon-nav-been-there:before,.icon-nav-blog-icon:before,.icon-nav-bomb:before,.icon-nav-bulb:before,.icon-nav-business:before,.icon-nav-byways:before,.icon-nav-camera:before,.icon-nav-categories:before,.icon-nav-check:before,.done .waypoint-state-icon:before,.icon-nav-circle:before,.icon-nav-circle-arrow-left:before,.icon-nav-circle-arrow-right:before,.icon-nav-content:before,.icon-nav-cursor:before,.icon-nav-data:before,.icon-nav-day:before,.icon-nav-description:before,.icon-nav-design:before,.icon-nav-distance:before,.icon-nav-down:before,.icon-nav-download:before,.icon-nav-drag:before,.icon-nav-edit:before,.icon-nav-edit-place:before,.icon-nav-email:before,.icon-nav-embed-map:before,.icon-nav-exclamation:before,.icon-nav-exit:before,.error .waypoint-state-icon:before,.icon-nav-ext-link:before,.icon-nav-flag:before,.icon-nav-fuel:before,.icon-nav-gas:before,.icon-nav-geo-waypoint:before,.icon-nav-google:before,.icon-nav-guide:before,.icon-nav-highway:before,.icon-nav-home:before,.icon-nav-html:before,.icon-nav-info:before,.icon-nav-laquo:before,.icon-nav-link:before,.icon-nav-list:before,.icon-nav-logout-boring:before,.icon-nav-logout-skull:before,.icon-nav-map:before,.icon-nav-message:before,.icon-nav-minus:before,.icon-nav-minus-circle:before,.icon-nav-mobile:before,.icon-nav-navicon:before,.icon-nav-next:before,.icon-nav-night:before,.icon-nav-password:before,.icon-nav-pc:before,.icon-nav-pen:before,.icon-nav-people:before,.icon-nav-phone:before,.icon-nav-photo:before,.icon-nav-pin:before,.icon-nav-plus:before,.icon-nav-plus-circle:before,.icon-nav-preview:before,.icon-nav-print:before,.icon-nav-product:before,.icon-nav-profile:before,.icon-nav-question:before,.icon-nav-raquo:before,.icon-nav-refresh:before,.icon-nav-remove-from-trip:before,.icon-nav-reply:before,.icon-nav-review:before,.icon-nav-roadtrippers-decal:before,.icon-nav-route:before,.icon-nav-route-add:before,.icon-nav-route-subtract:before,.icon-nav-save:before,.icon-nav-save-place:before,.icon-nav-search:before,.icon-nav-settings:before,.icon-nav-share:before,.icon-nav-shooting-star:before,.icon-nav-star:before,.icon-nav-tag:before,.icon-nav-tagline:before,.icon-nav-thumbdown:before,.icon-nav-thumbup:before,.icon-nav-time:before,.icon-nav-trash:before,.icon-nav-trip:before,.icon-nav-triple-pin:before,.icon-nav-up:before,.icon-nav-upload:before,.icon-nav-url:before,.icon-nav-users:before,.icon-nav-via-waypoint:before,.icon-nav-web:before,.icon-nav-wiki:before,.icon-nav-write-review:before,.icon-photo-placeholder-01:before,.icon-photo-placeholder-02:before,.icon-photo-placeholder-03:before,.icon-photo-placeholder-04:before,.icon-social-facebook:before,.icon-social-flickr:before,.icon-social-gplus:before,.icon-social-instagram:before,.icon-social-linkedin:before,.icon-social-pinterest:before,.icon-social-rss:before,.icon-social-stumble:before,.icon-social-tumblr:before,.icon-social-twitter:before,.icon-social-vimeo:before,.icon-social-youtube:before,.icon-trip-calendar:before,.icon-trip-delete:before,.icon-trip-dots:before,.icon-trip-end:before,.icon-trip-start:before,.icon-user-blogger:before,.icon-user-expert:before,.icon-user-foodie:before,.icon-user-photographer:before,.icon-user-road-warrior:before,.icon-user-tour-guide:before{
-    font-family:"roadtrippers-icons";
-    display: inline-block;
-    text-decoration: inherit;
-    width: 0.7em;
-    padding-top:0.2em;
-    padding-left: 0.2em;
-    padding-right: 0.2em;
-    font-size: 1.8em;
-    text-align: center;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 0.5em;
+.slick-place
+{
+    position: relative;
+    top:-28px;
+    z-index: 20;
+    width:2em;
+    height:2em;
+    background-color: #fff;
+    border-radius: 1em;
+    left: 40px;
 }
-ul div{
-    cursor:pointer;
+.slick-filter
+{
+    position: relative;
+    top:3px;
+    left:3px;
+    width:1.6em;
+    height:1.6em;
+    border-radius: 0.8em;
+}
+.slick-filter-1
+{
+    background-color: #0099cc;
+}
+.slick-filter-2
+{
+    background-color: #00cccc;
+}
+.slick-filter-3
+{
+    background-color: #009966;
+}
+.slick-filter-icon
+{
+    position: relative;
+    left:-2px;
+    color: #fff;
 }
 
-.icon-cat-attractions:before{
- content:"\f104"
-}
+/*-----------------------end slick slide----------------------*/
 
-.icon-cat-nature:before{
-    content:"\f10c"
-}
-
-.icon-cat-food-drink:before{
- content:"\f1e2"
-}

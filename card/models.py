@@ -1,32 +1,6 @@
+import datetime
 from django.db import models
-
-
-# class Location(models.Model):
-#     address = models.CharField(max_length=200, default="none")
-#
-#     longitude = models.FloatField()
-#     latitude = models.FloatField()
-#
-#
-# class Type(models.Model):
-#     name = models.CharField(max_length=200)
-#
-#
-# class Place(models.Model):
-#     id_location = models.ForeignKey(Location)
-#     id_type = models.ForeignKey(Type)
-#
-#     common_name = models.CharField(max_length=100)
-#     description = models.CharField(max_length=300)
-#
-#     full_name = models.CharField(max_length=200)
-#     short_name = models.CharField(max_length=100)
-#
-#     public_phone = models.CharField(max_length=50)
-#     working_hours = models.CharField(max_length=200)
-#
-#     web_site = models.URLField()
-#     rating = models.FloatField()
+from django.contrib.auth.models import User
 
 
 class Type(models.Model):
@@ -43,17 +17,21 @@ class Place(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
     website = models.CharField(max_length=100, blank=True)
-    description = models.CharField(max_length=1500)
+    description = models.CharField(max_length=10000)
     working_hours = models.CharField(max_length=200, blank=True)
-    cost = models.FloatField(blank=True, null=True)
+    cost = models.FloatField(blank=True, null=True, default=None)
     lat = models.FloatField()
     lon = models.FloatField()
-    rating = models.FloatField()
-    e_mail = models.EmailField(blank=True)
-    vk_link = models.URLField(blank=True)
+    rating = models.FloatField(default=0)
+    e_mail = models.EmailField(max_length=100, blank=True)
+    vk_link = models.URLField(max_length=100, blank=True)
     phone = models.CharField(max_length=50, blank=True)
     id_type = models.ForeignKey(Type)
     id_tag = models.ManyToManyField(Tag, blank=True)
+    create_date = models.DateTimeField(auto_now_add=True, default=datetime.datetime.now())
+    last_edit_date = models.DateTimeField(auto_now=True, default=datetime.datetime.now())
+    main_pic_url = models.URLField(max_length=100, default='http://img.vos.uz/pjp05.jpg')
+    user_id = models.ForeignKey(User, null=True, blank=True, default=None)
 
 
 class Image(models.Model):

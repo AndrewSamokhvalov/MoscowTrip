@@ -1,27 +1,27 @@
-{% load staticfiles %}
+<div class="modal-content popover top">
+    <div class="modal-body" style="padding: 5px">
+        <div class="media arrow">
+            <div class="media-left">
+               <img class="media-object" src={{ image }} alt="img" height="70px" width="70px" onclick="$('#detailPlaceInfo').modal('show')">
+            </div>
 
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-<div class="balloon-info">
-    <div class="balloon-img">
-        <img src={{ image }} alt="img">
-    </div>
-    <div class="balloon-rate">
-        {{ rating }}
-    </div>
-    <h4 onclick="document.getElementById('parent_popup').style.display='inline',document.getElementById('popup').style.display='inline';">
-        {{ name }}
-    </h4>
-    <div class="like-balloon">
-        <span class="icon icon-heart"></span>
-    </div>
-    <div class="trip-balloon">
-        <span class="icon icon-cab"></span>
+            <div class="media-body">
+                <h5> {{ name }}</h5>
+
+                <div class="like-balloon">
+                    <span class="icon icon-heart"></span>
+                </div>
+                <div class="trip-balloon">
+                    <span class="icon icon-cab"></span>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+                         aria-valuenow="{{ rating }}" aria-valuemin="0"
+                         aria-valuemax="100" style="width: {{ rating }}%">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-</body>
-</html>

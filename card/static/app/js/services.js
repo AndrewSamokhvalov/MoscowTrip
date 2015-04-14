@@ -3,26 +3,30 @@ roadtrippersApp.factory('CardSvc', function ($http) {
     return {
         setTypes: function ($scope, types) {
             return $http.post('/setTypes', { 'types': JSON.stringify(types) }).success(function (response) {
-                $scope.updateROM()
+                $scope.rom.updateROM()
             });
         },
 
-        setPlaceInfo: function (place_id, scope) {
-            return $http.get('/getPlaceInfo', { 'types': JSON.stringify(place_id) }).success(function (response) {
+        getPlaceInfo: function ($scope, place_id)
+        {
+            return $http.get('/getPlaceInfo'+'?place_id='+place_id+'').success(function (response)
+            {
+                $scope.currentPlace.update(response);
             });
         },
 
         setRoute: function ($scope, route) {
-            var points = []
-            route.getPaths().each(function(path){points.push(path.geometry.getCoordinates())})
+            var points = [];
+            route.getPaths().each(function(path){points.push(path.geometry.getCoordinates())});
 
-            $scope.map.geoObjects.remove($scope.route)
-            $scope.map.geoObjects.remove($scope.area)
+            $scope.map.geoObjects.remove($scope.route);
+            $scope.map.geoObjects.remove($scope.area);
 
-            $scope.route = route
-            $scope.map.geoObjects.add(route)
+            $scope.route = route;
+            $scope.map.geoObjects.add(route);
 
-            return $http.post('/setRoute', { 'points': JSON.stringify(points[0])}).success(function (polyline) {
+            return $http.post('/setRoute', { 'points': JSON.stringify(points[0])}).success(function (polyline)
+                   {
 
                         // Создаем ломаную с помощью вспомогательного класса Polyline.
                         var area = new ymaps.GeoObject({
@@ -50,10 +54,43 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                         });
 
                         // Добавляем линии на карту.
-                        $scope.area = area
-                        $scope.map.geoObjects.add(area)
-                        $scope.updateROM()
-                });
+                        $scope.area = area;
+                        $scope.map.geoObjects.add(area);
+                        $scope.rom.updateROM();
+                   }
+            );
         }
     };
+})
+.factory('managePlacesCvs', function($http) {
+    return {
+        getUserPlaces: function ($scope) {
+            return $http.get('/getUserPlaces').success(function (response) {$scope.updatePlaces(response)});
+        },
+
+        getUserPlaceInfo: function ($scope, place_id) {
+            return $http.get('/getUserPlaceInfo'+'?place_id='+place_id+'').success(function (response)
+            {
+                $scope.place.update(response);
+            });
+        },
+
+        getUsedTags: function($scope) {
+            return $http.get('/getTags').success(function (response) {
+                $scope.updateUsedTags(response);
+            });
+        },
+
+        sendPlaceInfo: function(url, place) {
+            return $http.post(url, place.info).success(function (response) {
+                console.log(response);
+            });
+        },
+
+        deleteUserPlace: function(url, place_id) {
+            return $http.get(url+'?place_id='+place_id+'').success(function (response) {
+                console.log(response);
+            });
+        }
+    }
 });

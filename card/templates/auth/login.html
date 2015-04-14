@@ -7,7 +7,6 @@
     <link rel="stylesheet" href={% static "app/bower_components/bootstrap/dist/css/bootstrap.min.css" %}>
     <script src={% static "app/bower_components/jquery/dist/jquery.js" %}></script>
     <script src={% static "app/bower_components/bootstrap/dist/js/bootstrap.min.js" %}></script>
-    <script src={% static "app/js/manage_places/validator.js" %}></script>
 </head>
 
 <body>
@@ -22,20 +21,18 @@
 
                 <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 
-                <form data-toggle="validator" id="login-form" class="form-horizontal" role="form" action="{{ app_path }}"
+                <form id="login-form" class="form-horizontal" role="form" action="{{ app_path }}"
                       method="post">{% csrf_token %}
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input id="id_username" type="text" class="form-control" name="username" value=""
                                placeholder="Имя пользователя" required>
-                        <div class="help-block with-errors"></div>
                     </div>
 
                     <div style="margin-bottom: 15px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input id="id_password" type="password" class="form-control" name="password"
                                placeholder="Пароль" required>
-                        <div class="help-block with-errors"></div>
                     </div>
 
                     {% if form.non_field_errors %}
