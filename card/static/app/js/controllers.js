@@ -84,6 +84,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                 },
 
                 buildRoute: function () {
+                    $scope.route.addRoute();
 
                 }
             });
@@ -143,8 +144,8 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
             map.controls.add(geolocationControl);
             map.controls.add(searchControl);
             map.controls.add(MyRouteEditor);
-            map.controls.add(searchStartPoint);
-            map.controls.add(searchFinishPoint);
+//            map.controls.add(searchStartPoint);
+//            map.controls.add(searchFinishPoint);
 
             map.events.add('balloonopen', function (e) {
                 var balloon = e.get('balloon');
@@ -435,19 +436,20 @@ function Route($scope, CardSvc)
         this.multiRoute.model.setReferencePoints(referencePoints, [1]);
     };
 
-    this.addRoute = function (start, finish)
+    this.addRoute = function ()
     {
 
-        if(!(finish&&start)) return;
+        if(!(this._finish && this._start)) return;
         if(this.multiRoute) $scope.map.geoObjects.remove(this.multiRoute);
         var multiRoute = new ymaps.multiRouter.MultiRoute({
             referencePoints: [
-                start,
-                finish
+                this._start,
+                this._finish
             ],
             params: {
+                routingMode: 'driving',
+                results: 1
                 // avoidTrafficJams: true,
-                //routingMode: 'masstransit'
             }
         });
 
@@ -469,24 +471,22 @@ function Route($scope, CardSvc)
 
     this.__defineSetter__("start",function(value)
     {
-        _start = value;
-        this.addRoute(_start,_finish);
+        this._start = value;
     });
 
     this.__defineSetter__("finish",function(value)
     {
-        _finish = value;
-        this.addRoute(_start,_finish);
+        this._finish = value;
     });
 
     this.__defineGetter__("start",function()
     {
-        return _start;
+        return this._start;
     });
 
     this.__defineGetter__("finish",function()
     {
-        return _finish;
+        return this._finish;
     });
 
 //    routeEditor.events.add('deselect', function (route) {
