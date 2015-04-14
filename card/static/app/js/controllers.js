@@ -37,7 +37,6 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     $('#routeEditorButton').bind('click', this.initEventsCallback);
                 },
 
-
 //                При клике контрол:
 //                1. становится Активным (изменяется вид)
 //                2. Повести эвенты на клик карты
@@ -47,7 +46,6 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 //                2. Сохраняем координаты конечной точки
 //                3. Если вторая точка сохранена, то строим маршрут
 //                4. Делаем кнопку неактивной
-
 
                 clear: function () {
                     // Снимаем обработчики кликов.
@@ -66,16 +64,13 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     return function (e) {
                         switch (p.state) {
                             case p.STATES.START.value:
-                                p.startPoint = e.get('coords');
+                                $scope.route.start = e.get('coords');
                                 console.log('Start:' + p.startPoint);
                                 p.state++;
                                 break;
 
                             case p.STATES.FINISH.value:
-                                if (p.multiRoute != undefined) {
-                                    map.geoObjects.remove(p.multiRoute);
-                                }
-                                p.finishPoint = e.get('coords');
+                                $scope.route.finish = e.get('coords');
                                 console.log('Finish:' + p.finishPoint);
 
                                 p.buildRoute();
@@ -88,36 +83,8 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     }
                 },
 
-
                 buildRoute: function () {
-                    var multiRoute = new ymaps.multiRouter.MultiRoute({
-                        referencePoints: [
-                            this.startPoint,
-                            this.finishPoint
-                        ],
-                        params: {
-                            // avoidTrafficJams: true,
-                            //routingMode: 'masstransit'
-                        }
-                    });
 
-                    multiRoute.events.once("activeroutechange", function (event) {
-                        console.log('k');
-
-                    });
-
-                    multiRoute.model.events.once("requestsuccess", function (event) {
-                        var multiRouteModel = event.get("target");
-                        var firstroute = multiRouteModel.getRoutes()[0];
-
-                        CardSvc.setRoute($scope, firstroute);
-                    });
-
-                    this.multiRoute = multiRoute;
-                    map.geoObjects.add(multiRoute);
-
-                    this.startPoint = [];
-                    this.finishPoint = [];
                 }
             });
 
@@ -242,7 +209,7 @@ function MapObjectFilter($scope, CardSvc) {
 
     function isChecked(indx) {
         var i = filterArray.indexOf(indx);
-        if (i >= 0)
+        if(i >= 0)
             return true;
         return false;
     }
@@ -453,20 +420,70 @@ function Place($scope, CardSvc) {
         })
     }
 }
-function Route($scope, CardSvc) {
-
-    this.multiroute = null;
+function Route($scope, CardSvc)
+{
+    var _start;
+    var _finish;
     this.area = null;
 
     this.addTotTrip = function () {
         var referencePoints = multiroute.model.getReferencePoints();
         referencePoints.splice(1, 0, "Москва, ул. Солянка, 7");
-    }
+    };
 
-    this.addRoute = function (start, finish) {
+    this.addRoute = function (start, finish)
+    {
 
-    }
+        if(!(finish||start)) return;
+        if(this.multiRoute) $scope.map.geoObjects.remove(this.multiRoute);
+        var multiRoute = new ymaps.multiRouter.MultiRoute({
+            referencePoints: [
+                start,
+                finish
+            ],
+            params: {
+                // avoidTrafficJams: true,
+                //routingMode: 'masstransit'
+            }
+        });
 
+        multiRoute.events.once("activeroutechange", function (event)
+        {
+        });
+
+        multiRoute.model.events.once("requestsuccess", function (event)
+        {
+            var multiRouteModel = event.get("target");
+            var firstroute = multiRouteModel.getRoutes()[0];
+
+            CardSvc.setRoute($scope, firstroute);
+        });
+
+        this.multiRoute = multiRoute;
+        $scope.map.geoObjects.add(multiRoute);
+    };
+
+    this.__defineSetter__("start",function(value)
+    {
+        _start = value;
+        this.addRoute(_start,_finish);
+    });
+
+    this.__defineSetter__("finish",function(value)
+    {
+        _finish = value;
+        this.addRoute(_start,_finish);
+    });
+
+    this.__defineGetter__("start",function()
+    {
+        return _start;
+    });
+
+    this.__defineGetter__("finish",function()
+    {
+        return _finish;
+    });
 
 //    routeEditor.events.add('deselect', function (route) {
 //        var route = routeEditor.getRoute();
