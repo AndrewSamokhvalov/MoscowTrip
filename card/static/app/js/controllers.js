@@ -434,6 +434,7 @@ function Route($scope, CardSvc)
         var referencePoints = this.multiRoute.model.getReferencePoints();
         referencePoints.splice(1, 0, coords);
         this.multiRoute.model.setReferencePoints(referencePoints, [1]);
+        CardSvc.setRoute($scope,this.multiRoute.model.getRoutes()[0]);
     };
 
     this.addRoute = function ()
