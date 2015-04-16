@@ -142,16 +142,6 @@ def serialize_places(places, callback):
     }
     features.append(feature)
 
-    feature = {
-        "type": 'Feature',
-        "geometry": {
-            "type": "Point",
-            "coordinates": [0, 0]
-        },
-        "id": (-1) * random.randint(1, math.pow(10, 10))
-    }
-    features.append(feature)
-
     data = {
         "error": None,
         "data": {
