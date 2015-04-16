@@ -20,19 +20,19 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     MyRouteEditorLayout.superclass.build.call(this);
 
                     this.STATES = {
-                        START: {value: 0, name: "Start", code: "S"},
-                        FINISH: {value: 1, name: "Finish", code: "F"}
+                        INACTIVE: {value: 0, name: "Inactive", code: "I"},
+                        WAIT_START: {value: 1, name: "Wait_Start", code: "S"},
+                        WAIT_FINISH: {value: 2, name: "Wait_Finish", code: "F"}
                     };
 
-
-                    this.state = this.STATES.START.value;
+                    this.state = this.STATES.INACTIVE.value;
                     this.startPoint = [];
                     this.finishPoint = [];
 
                     // Привязываем функции-обработчики к контексту и сохраняем ссылки
                     // на них, чтобы потом отписаться от событий.
-                    this.initEventsCallback = ymaps.util.bind(this.initEvents, this);
-
+                    this.initEventsCallback = this.initEvents(this);
+                    this.addPointCallback = this.addPoints(this);
                     // Начинаем слушать клики на кнопках макета.
                     $('#routeEditorButton').bind('click', this.initEventsCallback);
                 },
@@ -55,37 +55,45 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     MyRouteEditorLayout.superclass.clear.call(this);
                 },
 
-                initEvents: function () {
-                    this.addPointCallback = this.addPoints(this);
-                    map.events.add('click', this.addPointCallback);
-                },
-
-                addPoints: function (p) {
+                initEvents: function (p)
+                {
                     return function (e) {
-                        switch (p.state) {
-                            case p.STATES.START.value:
-                                $scope.route.start = e.get('coords');
-                                console.log('Start:' + p.startPoint);
-                                p.state++;
-                                break;
-
-                            case p.STATES.FINISH.value:
-                                $scope.route.finish = e.get('coords');
-                                console.log('Finish:' + p.finishPoint);
-
-                                p.buildRoute();
-
-                                // Очищение
-                                map.events.remove('click', p.addPointCallback);
-                                p.state = p.STATES.START.value;
-                                break;
+                        if (p.state == p.STATES.INACTIVE.value)
+                        {
+                            map.events.add('click', p.addPointCallback);
+                            p.state = p.STATES.WAIT_START.value;
+                        }
+                        else
+                        {
+                            $scope.route.clear();
+                            map.events.remove('click', p.addPointCallback);
+                            p.state = p.STATES.INACTIVE.value;
                         }
                     }
                 },
 
-                buildRoute: function () {
-                    $scope.route.addRoute();
+                addPoints: function (p)
+                {
+                    return function (e) {
+                        switch (p.state) {
+                            case p.STATES.WAIT_START.value:
+                                $scope.route.start = e.get('coords');
+                                console.log('Start:' + $scope.route.start);
+                                p.state++;
+                                break;
 
+                            case p.STATES.WAIT_FINISH.value:
+                                $scope.route.finish = e.get('coords');
+                                console.log('Finish:' + $scope.route.finish);
+
+                                $scope.route.addRoute();
+
+                                // Очищение
+                                map.events.remove('click', p.addPointCallback);
+                                p.state = p.STATES.INACTIVE.value;
+                                break;
+                        }
+                    }
                 }
             });
 
@@ -430,11 +438,19 @@ function Route($scope, CardSvc)
 
     this.addPoint = function (place)
     {
+        //Координаты добавляемой точки
         var coords = $scope.rom.getRom().objects.getById(place.fields.id).geometry.coordinates;
+
         var referencePoints = this.multiRoute.model.getReferencePoints();
+        /*if(referencePoints.indexOf(coords) >-1)*/
         referencePoints.splice(1, 0, coords);
-        this.multiRoute.model.setReferencePoints(referencePoints, [1]);
-        CardSvc.setRoute($scope,this.multiRoute.model.getRoutes()[0]);
+
+        //Via point ( для SetReferences необходим массив индексов Via-points)
+        var transitArray=[];
+        for (var i=1;i<referencePoints.length-1;i++) transitArray.push(i);
+
+
+        this.multiRoute.model.setReferencePoints(referencePoints, transitArray);
     };
 
     this.addRoute = function ()
@@ -454,11 +470,16 @@ function Route($scope, CardSvc)
             }
         });
 
-        multiRoute.events.once("activeroutechange", function (event)
+        multiRoute.model.events.once("requestchange", function (event)
         {
+            console.log('l');
+            var multiRouteModel = event.get("target");
+            var firstroute = multiRouteModel.getRoutes()[0];
+            if(firstroute)
+                CardSvc.setRoute($scope, firstroute);
         });
 
-        multiRoute.model.events.once("requestsuccess", function (event)
+        multiRoute.model.events.add("requestsuccess", function (event)
         {
             var multiRouteModel = event.get("target");
             var firstroute = multiRouteModel.getRoutes()[0];
@@ -470,19 +491,26 @@ function Route($scope, CardSvc)
         $scope.map.geoObjects.add(multiRoute);
     };
 
+    this.clear = function()
+    {
+        this.start = undefined;
+        this.finish = undefined;
+        if(this.multiRoute) {}//todo: delete multiRoute
+    };
+
     this.__defineSetter__("start",function(value)
     {
         this._start = value;
     });
 
-    this.__defineSetter__("finish",function(value)
-    {
-        this._finish = value;
-    });
-
     this.__defineGetter__("start",function()
     {
         return this._start;
+    });
+
+    this.__defineSetter__("finish",function(value)
+    {
+        this._finish = value;
     });
 
     this.__defineGetter__("finish",function()
