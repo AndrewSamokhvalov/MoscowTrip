@@ -7,9 +7,9 @@ roadtrippersApp.factory('CardSvc', function ($http) {
             });
         },
 
-        getTypes: function ($scope, types) {
+        getTypes: function ($scope) {
             return $http.get('/types').success(function (response) {
-
+                $scope.filters.filterArray = response;
             });
         },
 
@@ -56,17 +56,23 @@ roadtrippersApp.factory('CardSvc', function ($http) {
 
             });
         },
+
         getRadius: function ($scope) {
             return $http.get('/radius').success(function (response) {
-
+                $scope.radius = response;
             });
         },
 
 
         setRoute: function ($scope, route) {
-            var path = route.getPaths()[0];
-            var points = path.properties.get('coordinates');
+            var path = route.getPaths();
+            var points = [];
+            for(var i in path)
+            {
+                for(var j in path[i].properties.get("coordinates"))
+                points.push(path[i].properties.get('coordinates')[j]);
 
+            }
             $scope.route.data = route;
 
             return $http.post('/setRoute', { 'points': JSON.stringify(points)}).success(function (polyline) {

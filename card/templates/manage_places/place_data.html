@@ -1,0 +1,187 @@
+<div class="container">
+
+    <div class="page-header row" style="margin-top: 10px">
+
+        <div class="col-lg-10">
+            <h2>{% block header %}{% endblock %}</h2>
+        </div>
+
+        <div>
+            {% block additional_header_data %}{% endblock %}
+        </div>
+
+    </div>
+
+    <form role="form">
+        <div style="width: 50%">
+            <div ng-class="place.inputStyle.name">
+                <label for="name" class="control-label">Название</label>
+                <input type="text" class="form-control" id="name" maxlength="100"
+                       ng-model="place.info.name" required>
+                <div class="help-block with-errors">[[place.helpMsg.name]]</div>
+            </div>
+
+            <div class="form-group">
+                <label for="type">Категория места</label>
+                <select class="form-control" id="type" ng-model="place.info.id_type">
+                    {% for type in types %}
+                        <option id="{{ type.id }}">{{ type.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div ng-class="place.inputStyle.address">
+                <label for="address" class="control-label">Адрес</label>
+                <input type="text" class="form-control" id="address" maxlength="200" ng-model="place.info.address" required>
+                <div class="help-block with-errors">[[place.helpMsg.address]]</div>
+            </div>
+
+            <div ng-class="place.inputStyle.description">
+                <label for="description" class="control-label">Описание</label>
+                <textarea class="form-control" id="description" rows="5" maxlength="10000" ng-model="place.info.description"
+                          required></textarea>
+                <div class="help-block with-errors">[[place.helpMsg.description]]</div>
+            </div>
+
+            <div ng-class="place.inputStyle.working_hours">
+                <label for="working_hours" class="control-label">Часы работы</label>
+                <textarea class="form-control" id="working_hours" rows="3" ng-model="place.info.working_hours"
+                          maxlength="200"></textarea>
+                <div class="help-block with-errors">[[place.helpMsg.working_hours]]</div>
+            </div>
+
+            <div ng-class="place.inputStyle.cost">
+                <label for="cost" class="control-label">Стоимость (необязательно)</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-ruble"></i></span>
+                    <input type="text" pattern="^\d+(\.\d{1,2})?" class="form-control" id="cost" ng-model="place.info.cost">
+                </div>
+                <div class="help-block with-errors">[[place.helpMsg.cost]]</div>
+            </div>
+
+            <div ng-class="place.inputStyle.e_mail">
+                <label for="e_mail" class="control-label">E-mail (необязательно)</label>
+                 <div class="input-group">
+                    <span class="input-group-addon">@</span>
+                    <input type="email" class="form-control" id="e_mail" ng-model="place.info.e_mail">
+                 </div>
+                <div class="help-block with-errors">[[place.helpMsg.e_mail]]</div>
+            </div>
+
+            <div ng-class="place.inputStyle.website">
+                <label for="website" class="control-label">Сайт (необязательно)</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                    <input type="url" class="form-control" id="website" maxlength="100" ng-model="place.info.website">
+                </div>
+                <div class="help-block with-errors">[[place.helpMsg.website]]</div>
+            </div>
+
+            <div ng-class="place.inputStyle.vk_link">
+                <label for="vk_link" class="control-label">Ссылка VK (необязательно)</label>
+                <div class="input-group" ng-class="{error: place.info.vk_link}">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                    <input type="url" class="form-control" id="vk_link" maxlength="100" ng-model="place.info.vk_link">
+                </div>
+                <div class="help-block with-errors">[[place.helpMsg.vk_link]]</div>
+            </div>
+
+            <div ng-class="place.inputStyle.phone">
+                <label for="phone" class="control-label">Телефон (необязательно)</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
+                    <input type="text" class="form-control" id="phone" maxlength="100" ng-model="place.info.phone">
+                </div>
+                <div class="help-block with-errors">[[place.helpMsg.phone]]</div>
+            </div>
+
+            <div ng-class="place.inputStyle.id_tag">
+                <label for="tags" class="control-label">Теги, относящиеся к месту (необязательно)</label>
+                <tags-input ng-model="place.info.tagNames" id="place_tags" min-length="3" max-length="100" placeholder="Добавьте тег"
+                            replace-spaces-with-dashes="false">
+                    <auto-complete source="loadItems($query)" min-length="1" debounce-delay="0"
+                                   load-on-down-arrow="true" max-results-to-show="50"></auto-complete>
+                </tags-input>
+                <div class="help-block with-errors">[[place.helpMsg.id_tag]]</div>
+            </div>
+
+            <div ng-class="place.inputStyle.main_pic_url">
+                <label for="main_pic_url" class="control-label">URL главного изображения места</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                    <input type="url" class="form-control" id="main_pic_url" maxlength="100" ng-model="place.info.main_pic_url" required>
+                </div>
+                <div class="help-block with-errors">[[place.helpMsg.main_pic_url]]</div>
+            </div>
+
+            <img class="img-responsive" src="[[ place.info.main_pic_url ]]" alt="" style="padding-bottom: 15px">
+
+        </div>
+
+        {% block form_additional_content %}{% endblock %}
+
+    </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteConfirmMsgBox" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #F8F8F8">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Подтверждение удаления</h4>
+      </div>
+      <div class="modal-body">
+          Удалить место из базы данных?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default col-lg-2"
+                data-dismiss="modal"
+                ng-click="place.delete('/deleteUserPlace')">Да</button>
+        <button type="button" class="btn btn-primary col-lg-2" data-dismiss="modal">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="saveConfirmMsgBox" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #F8F8F8">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Подтверждение сохранения</h4>
+      </div>
+      <div class="modal-body">
+          Сохранить место в базе данных?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default col-lg-2"
+                data-dismiss="modal"
+                ng-click="place.save('/managePlaces/editPlace')">Да</button>
+        <button type="button" class="btn btn-primary col-lg-2" data-dismiss="modal">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="saveConfirmMsgBoxNew" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #F8F8F8">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Подтверждение сохранения</h4>
+      </div>
+      <div class="modal-body">
+          Сохранить место в базе данных?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default col-lg-2"
+                data-dismiss="modal"
+                ng-click="place.save('/managePlaces/addPlace')">Да</button>
+        <button type="button" class="btn btn-primary col-lg-2" data-dismiss="modal">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>

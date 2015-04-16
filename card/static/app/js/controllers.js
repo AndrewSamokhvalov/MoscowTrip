@@ -20,19 +20,19 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     MyRouteEditorLayout.superclass.build.call(this);
 
                     this.STATES = {
-                        START: {value: 0, name: "Start", code: "S"},
-                        FINISH: {value: 1, name: "Finish", code: "F"}
+                        INACTIVE: {value: 0, name: "Inactive", code: "I"},
+                        WAIT_START: {value: 1, name: "Wait_Start", code: "S"},
+                        WAIT_FINISH: {value: 2, name: "Wait_Finish", code: "F"}
                     };
 
-
-                    this.state = this.STATES.START.value;
+                    this.state = this.STATES.INACTIVE.value;
                     this.startPoint = [];
                     this.finishPoint = [];
 
                     // Привязываем функции-обработчики к контексту и сохраняем ссылки
                     // на них, чтобы потом отписаться от событий.
-                    this.initEventsCallback = ymaps.util.bind(this.initEvents, this);
-
+                    this.initEventsCallback = this.initEvents(this);
+                    this.addPointCallback = this.addPoints(this);
                     // Начинаем слушать клики на кнопках макета.
                     $('#routeEditorButton').bind('click', this.initEventsCallback);
                 },
@@ -55,36 +55,45 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     MyRouteEditorLayout.superclass.clear.call(this);
                 },
 
-                initEvents: function () {
-                    this.addPointCallback = this.addPoints(this);
-                    map.events.add('click', this.addPointCallback);
-                },
-
-                addPoints: function (p) {
+                initEvents: function (p)
+                {
                     return function (e) {
-                        switch (p.state) {
-                            case p.STATES.START.value:
-                                $scope.route.start = e.get('coords');
-                                console.log('Start:' + p.startPoint);
-                                p.state++;
-                                break;
-
-                            case p.STATES.FINISH.value:
-                                $scope.route.finish = e.get('coords');
-                                console.log('Finish:' + p.finishPoint);
-
-                                p.buildRoute();
-
-                                // Очищение
-                                map.events.remove('click', p.addPointCallback);
-                                p.state = p.STATES.START.value;
-                                break;
+                        if (p.state == p.STATES.INACTIVE.value)
+                        {
+                            map.events.add('click', p.addPointCallback);
+                            p.state = p.STATES.WAIT_START.value;
+                        }
+                        else
+                        {
+                            $scope.route.clear();
+                            map.events.remove('click', p.addPointCallback);
+                            p.state = p.STATES.INACTIVE.value;
                         }
                     }
                 },
 
-                buildRoute: function () {
+                addPoints: function (p)
+                {
+                    return function (e) {
+                        switch (p.state) {
+                            case p.STATES.WAIT_START.value:
+                                $scope.route.start = e.get('coords');
+                                console.log('Start:' + $scope.route.start);
+                                p.state++;
+                                break;
 
+                            case p.STATES.WAIT_FINISH.value:
+                                $scope.route.finish = e.get('coords');
+                                console.log('Finish:' + $scope.route.finish);
+
+                                $scope.route.addRoute();
+
+                                // Очищение
+                                map.events.remove('click', p.addPointCallback);
+                                p.state = p.STATES.INACTIVE.value;
+                                break;
+                        }
+                    }
                 }
             });
 
@@ -103,8 +112,9 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
             $scope.rom = new ROM($scope, $compile, CardSvc);
             $scope.currentPlace = new Place($scope, CardSvc);
 
-            $scope.radius = 1000;
-            CardSvc.setRadius($scope, 1000);
+            //$scope.radius = 1000;
+            //CardSvc.setRadius($scope, 1000);
+            CardSvc.getRadius($scope);
             $scope.$watch('radius', function (newVal, oldVal) {
                 CardSvc.setRadius($scope, newVal);
             });
@@ -143,8 +153,8 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
             map.controls.add(geolocationControl);
             map.controls.add(searchControl);
             map.controls.add(MyRouteEditor);
-            map.controls.add(searchStartPoint);
-            map.controls.add(searchFinishPoint);
+//            map.controls.add(searchStartPoint);
+//            map.controls.add(searchFinishPoint);
 
             map.events.add('balloonopen', function (e) {
                 var balloon = e.get('balloon');
@@ -197,44 +207,46 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
         }]);
 
 function MapObjectFilter($scope, CardSvc) {
-    var filterArray = [];
 
-    function getFilterFromServer() {
-        $.get('/getFilters')
-            .success(function (data) {
-                filterArray = data;
-            });
+    this.filterArray = [];
+    CardSvc.getTypes($scope)
 
-    }
+    //function getFilterFromServer() {
+    //    $.get('/getFilters')
+    //        .success(function (data) {
+    //            filterArray = data;
+    //        });
+    //
+    //}
 
-    function isChecked(indx) {
-        var i = filterArray.indexOf(indx);
+    this.isChecked = function (indx) {
+        var i = this.filterArray.indexOf(indx);
         if(i >= 0)
             return true;
         return false;
     }
 
-    function switchFilter(filter) {
+    this.switchFilter = function(filter) {
         var indx = filter;
         if (indx) {
-            var i = filterArray.indexOf(indx);
+            var i = this.filterArray.indexOf(indx);
             if (i >= 0)
-                filterArray.splice(i, 1);
+                this.filterArray.splice(i, 1);
             else
-                filterArray.push(indx);
-            CardSvc.setTypes($scope, filterArray);
+                this.filterArray.push(indx);
+            CardSvc.setTypes($scope, this.filterArray);
         }
     }
 
-    return{
-        filters: filterArray,
-        switchFilter: function (i) {
-            switchFilter(i)
-        },
-        isChecked: function (i) {
-            isChecked(i)
-        }
-    }
+    //return {
+    //    filters: this.filterArray,
+    //    switchFilter: function (i) {
+    //        switchFilter(i)
+    //    },
+    //    isChecked: function (i) {
+    //        isChecked(i)
+    //    }
+    //}
 }
 
 function ROM($scope, $compile, CardSvc) {
@@ -420,6 +432,7 @@ function Place($scope, CardSvc) {
             CardSvc.getPlaceInfo($scope, id)
     }
 }
+
 function Route($scope, CardSvc)
 {
     var _start;
@@ -429,33 +442,48 @@ function Route($scope, CardSvc)
 
     this.addPoint = function (place)
     {
+        //Координаты добавляемой точки
         var coords = $scope.rom.getRom().objects.getById(place.fields.id).geometry.coordinates;
+
         var referencePoints = this.multiRoute.model.getReferencePoints();
+        /*if(referencePoints.indexOf(coords) >-1)*/
         referencePoints.splice(1, 0, coords);
-        this.multiRoute.model.setReferencePoints(referencePoints, [1]);
+
+        //Via point ( для SetReferences необходим массив индексов Via-points)
+        var transitArray=[];
+        for (var i=1;i<referencePoints.length-1;i++) transitArray.push(i);
+
+
+        this.multiRoute.model.setReferencePoints(referencePoints, transitArray);
     };
 
-    this.addRoute = function (start, finish)
+    this.addRoute = function ()
     {
 
-        if(!(finish&&start)) return;
+        if(!(this._finish && this._start)) return;
         if(this.multiRoute) $scope.map.geoObjects.remove(this.multiRoute);
         var multiRoute = new ymaps.multiRouter.MultiRoute({
             referencePoints: [
-                start,
-                finish
+                this._start,
+                this._finish
             ],
             params: {
+                routingMode: 'driving',
+                results: 1
                 // avoidTrafficJams: true,
-                //routingMode: 'masstransit'
             }
         });
 
-        multiRoute.events.once("activeroutechange", function (event)
+        multiRoute.model.events.once("requestchange", function (event)
         {
+            console.log('l');
+            var multiRouteModel = event.get("target");
+            var firstroute = multiRouteModel.getRoutes()[0];
+            if(firstroute)
+                CardSvc.setRoute($scope, firstroute);
         });
 
-        multiRoute.model.events.once("requestsuccess", function (event)
+        multiRoute.model.events.add("requestsuccess", function (event)
         {
             var multiRouteModel = event.get("target");
             var firstroute = multiRouteModel.getRoutes()[0];
@@ -467,26 +495,31 @@ function Route($scope, CardSvc)
         $scope.map.geoObjects.add(multiRoute);
     };
 
+    this.clear = function()
+    {
+        this.start = undefined;
+        this.finish = undefined;
+        if(this.multiRoute) {}//todo: delete multiRoute
+    };
+
     this.__defineSetter__("start",function(value)
     {
-        _start = value;
-        this.addRoute(_start,_finish);
-    });
-
-    this.__defineSetter__("finish",function(value)
-    {
-        _finish = value;
-        this.addRoute(_start,_finish);
+        this._start = value;
     });
 
     this.__defineGetter__("start",function()
     {
-        return _start;
+        return this._start;
+    });
+
+    this.__defineSetter__("finish",function(value)
+    {
+        this._finish = value;
     });
 
     this.__defineGetter__("finish",function()
     {
-        return _finish;
+        return this._finish;
     });
 
 //    routeEditor.events.add('deselect', function (route) {

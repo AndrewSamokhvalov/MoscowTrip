@@ -1,0 +1,12 @@
+{% extends "manage_places/place_data.html" %}
+
+{% block header %}Редактирование места{% endblock %}
+
+{% block additional_header_data %}
+    <button class="btn btn-danger pull-right" data-toggle="modal" data-target="#deleteConfirmMsgBox">Удалить место</button>
+{% endblock %}
+
+{% block form_additional_content %}
+<button class="btn btn-primary" style="margin-bottom: 15px"
+        data-toggle="modal" data-target="#saveConfirmMsgBox">Сохранить</button>
+{% endblock %}
