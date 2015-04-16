@@ -13,7 +13,6 @@ import random
 from card.utils import address_to_coordinates
 
 
-
 def card(request):
     return render_to_response('main.html')
 
@@ -28,11 +27,11 @@ def get_places(request):
             callback = request.GET.get('callback')
             bbox = request.GET.get('bbox')
 
-            if types == None:
+            if types is None:
                 print("ERROR: Types is none!")
                 return HttpResponse("ERROR: Types is none!")
 
-            if route == None:
+            if route is None:
                 print("ERROR: Types is none!")
                 return HttpResponse("ERROR: Types is none!")
 
@@ -101,24 +100,9 @@ def filter_places(route, types, radius, bbox):
 def serialize_places(places, callback):
     features = []
     idplaces = set(place.id for place in places)
-    images = Image.objects.all().filter(id_place__in=idplaces).values('id', 'url_image')
+    #images = Image.objects.all().filter(id_place__in=idplaces).values('id', 'url_image')
 
     for place in places:
-
-        image = next((image for image in images if image['id'] == place.id), None)
-        url = ""
-
-        # TODO: Как сделать лучше?
-        if image is not None:
-            url = image['url_image']
-        else:
-            url = ""
-
-        context = {
-            'image': url,
-            'name': place.name,
-            'rating': place.rating * 10
-        }
 
         feature = {
             "type": 'Feature',
@@ -135,7 +119,7 @@ def serialize_places(places, callback):
             "fields": {
                 "rating": str(float(place.rating)),
                 "name": place.name,
-                "image": url,
+                "image": place.main_pic_url,
                 "type": place.id_type_id,
                 "id": place.pk
             }
@@ -187,7 +171,7 @@ def types(request):
             received_json_data = json.loads(str_response)
             types = json.loads(received_json_data['types'])
 
-            if types == None:
+            if types is None:
                 print("ERROR: Types is none!")
                 return HttpResponse("ERROR: Types is none!")
 
@@ -207,9 +191,10 @@ def types(request):
         try:
             types = request.session.get('types')
 
-            if types == None:
-                print("ERROR: Types is none!")
-                return HttpResponse("ERROR: Types is none!")
+            if types is None:
+                types = []
+                request.session['types'] = types
+                #return HttpResponse("ERROR: Types is none!")
 
             print('Types %s ' % str(types))
 
@@ -224,6 +209,7 @@ def types(request):
 
     return HttpResponse("Not POST request!")
 
+
 @csrf_exempt
 def radius(request):
     if request.method == 'PUT':
@@ -233,16 +219,16 @@ def radius(request):
             radius = float(json.loads(received_json_data['radius']))
             route = request.session.get('route')
 
-            if radius == None:
+            if radius is None:
                 print("ERROR: Radius is none!")
                 return HttpResponse("ERROR: Radius is none!")
 
-            if route == None:
+            if route is None:
                 print("ERROR: Route is none!")
                 return HttpResponse("ERROR: Route is none!")
 
 
-            radius = radius / 50000;
+            radius = radius / 50000
             request.session['radius'] = radius
             print('Radius %s ' % str(radius))
 
@@ -258,9 +244,10 @@ def radius(request):
     if request.method == 'GET':
         try:
             radius = request.session.get('radius')
-            if radius == None:
-                print("ERROR: Types is none!")
-                return HttpResponse("ERROR: Raduis is none!")
+            if radius is None:
+                radius = 1000
+                request.session['radius'] = radius
+
             print('Radius %s ' % str(radius))
 
             return HttpResponse(json.dumps(radius))
@@ -437,7 +424,7 @@ def get_supported_types():
 @csrf_exempt
 @login_required(login_url='/managePlaces/login/')
 def base_manage_places(request):
-    return render_to_response('manage_places/base.html')
+    return render_to_response('manage_places/base.html', {'username': request.user.username})
 
 
 @csrf_exempt
@@ -446,10 +433,7 @@ def manage_places(request):
     if 'place_types' not in request.session:
         request.session['place_types'] = get_supported_types()
 
-    return render_to_response('manage_places/manage_places.html',
-                              {
-                                  'username': request.user.username
-                              })
+    return render_to_response('manage_places/manage_places.html')
 
 
 @csrf_exempt
@@ -460,7 +444,6 @@ def add_place(request):
             request.session['place_types'] = get_supported_types()
         return render_to_response('manage_places/add_place.html',
                                   {
-                                      'username': request.user.username,
                                       'types': request.session['place_types']
                                   })
     elif request.method == 'POST':
@@ -523,7 +506,6 @@ def edit_place(request):
         return render_to_response('manage_places/edit_place.html',
                                   {
                                       'types': request.session['place_types'],
-                                      'username': request.user.username
                                   })
     elif request.method == 'POST':
         str_response = request.body.decode('utf-8')
@@ -572,7 +554,13 @@ def save_place(received_json_data, user, is_edit=True):
                     if field == fields[1]:
                         coordinates = address_to_coordinates(place.address)
                         if coordinates is None:
-                            return HttpResponse(u'Адрес некорректен. Из адреса не могут быть получены координаты.')
+                            return HttpResponse(
+                                json.dumps(
+                                    {
+                                        'address':
+                                            [u'Адрес некорректен. Из адреса не могут быть получены координаты.']
+                                    }
+                                ))
                         lon, lat = coordinates
                         place.lon = lon
                         place.lat = lat

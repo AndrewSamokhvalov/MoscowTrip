@@ -7,9 +7,9 @@ roadtrippersApp.factory('CardSvc', function ($http) {
             });
         },
 
-        getTypes: function ($scope, types) {
+        getTypes: function ($scope) {
             return $http.get('/types').success(function (response) {
-
+                $scope.filters.filterArray = response;
             });
         },
 
@@ -56,9 +56,10 @@ roadtrippersApp.factory('CardSvc', function ($http) {
 
             });
         },
+
         getRadius: function ($scope) {
             return $http.get('/radius').success(function (response) {
-
+                $scope.radius = response;
             });
         },
 

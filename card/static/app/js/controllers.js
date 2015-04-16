@@ -104,8 +104,9 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
             $scope.rom = new ROM($scope, $compile, CardSvc);
             $scope.currentPlace = new Place($scope, CardSvc);
 
-            $scope.radius = 1000;
-            CardSvc.setRadius($scope, 1000);
+            //$scope.radius = 1000;
+            //CardSvc.setRadius($scope, 1000);
+            CardSvc.getRadius($scope);
             $scope.$watch('radius', function (newVal, oldVal) {
                 CardSvc.setRadius($scope, newVal);
             });
@@ -198,44 +199,46 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
         }]);
 
 function MapObjectFilter($scope, CardSvc) {
-    var filterArray = [];
 
-    function getFilterFromServer() {
-        $.get('/getFilters')
-            .success(function (data) {
-                filterArray = data;
-            });
+    this.filterArray = [];
+    CardSvc.getTypes($scope)
 
-    }
+    //function getFilterFromServer() {
+    //    $.get('/getFilters')
+    //        .success(function (data) {
+    //            filterArray = data;
+    //        });
+    //
+    //}
 
-    function isChecked(indx) {
-        var i = filterArray.indexOf(indx);
+    this.isChecked = function (indx) {
+        var i = this.filterArray.indexOf(indx);
         if(i >= 0)
             return true;
         return false;
     }
 
-    function switchFilter(filter) {
+    this.switchFilter = function(filter) {
         var indx = filter;
         if (indx) {
-            var i = filterArray.indexOf(indx);
+            var i = this.filterArray.indexOf(indx);
             if (i >= 0)
-                filterArray.splice(i, 1);
+                this.filterArray.splice(i, 1);
             else
-                filterArray.push(indx);
-            CardSvc.setTypes($scope, filterArray);
+                this.filterArray.push(indx);
+            CardSvc.setTypes($scope, this.filterArray);
         }
     }
 
-    return{
-        filters: filterArray,
-        switchFilter: function (i) {
-            switchFilter(i)
-        },
-        isChecked: function (i) {
-            isChecked(i)
-        }
-    }
+    //return {
+    //    filters: this.filterArray,
+    //    switchFilter: function (i) {
+    //        switchFilter(i)
+    //    },
+    //    isChecked: function (i) {
+    //        isChecked(i)
+    //    }
+    //}
 }
 
 function ROM($scope, $compile, CardSvc) {
@@ -421,6 +424,7 @@ function Place($scope, CardSvc) {
             CardSvc.getPlaceInfo($scope, id)
     }
 }
+
 function Route($scope, CardSvc)
 {
     var _start;

@@ -99,7 +99,7 @@ function PlaceForm(managePlacesCvs)
 {
     this.info = {};
 
-    this.inputStyle = {
+    this.initInputStyle = {
         'name': 'form-group',
         'address': 'form-group',
         'description': 'form-group',
@@ -113,7 +113,7 @@ function PlaceForm(managePlacesCvs)
         'main_pic_url': 'form-group'
     };
 
-    this.helpMsg = {
+    this.initHelpMsg = {
         'name': 'Максимальная длина 100 символов',
         'address': 'Максимальная длина 200 символов',
         'description': 'Максимальная длина 10000 символов',
@@ -127,6 +127,10 @@ function PlaceForm(managePlacesCvs)
         'main_pic_url': 'Максимальная длина 100 символов'
     };
 
+    this.inputStyle = angular.copy(this.initInputStyle);
+
+    this.helpMsg = angular.copy(this.initHelpMsg);
+
     this.update = function update(data)
     {
         for (var i in data[0].fields) {
@@ -136,11 +140,22 @@ function PlaceForm(managePlacesCvs)
 
     this.save = function (url) {
         console.log('save data');
-        managePlacesCvs.sendPlaceInfo(url, this.place);
+        managePlacesCvs.sendPlaceInfo(url, this);
     };
 
     this.delete = function(url) {
         console.log('delete data');
         managePlacesCvs.deleteUserPlace(url, this.place.info.id);
     };
+
+    this.showErrors = function(errors) {
+        for (var field in errors) {
+            this.inputStyle[field] = this.initInputStyle[field] + ' has error';
+            this.helpMsg[field] = errors[field].join(' ');
+        }
+    };
+
+    this.hideErrors = function() {
+
+    }
 }
