@@ -32,7 +32,8 @@
 
             <div ng-class="place.inputStyle.address">
                 <label for="address" class="control-label">Адрес</label>
-                <input type="text" class="form-control" id="address" maxlength="200" ng-model="place.info.address" required>
+                <input type="text" class="form-control" id="address" maxlength="200" ng-model="place.info.address"
+                       ng-change="place.hideErrors('address')" required="">
                 <div class="help-block with-errors">[[place.helpMsg.address]]</div>
             </div>
 
@@ -112,9 +113,31 @@
                     <input type="url" class="form-control" id="main_pic_url" maxlength="100" ng-model="place.info.main_pic_url" required>
                 </div>
                 <div class="help-block with-errors">[[place.helpMsg.main_pic_url]]</div>
+                <img class="img-responsive" src="[[ place.info.main_pic_url ]]" alt="" style="padding-bottom: 15px">
             </div>
 
-            <img class="img-responsive" src="[[ place.info.main_pic_url ]]" alt="" style="padding-bottom: 15px">
+            <div ng-repeat="image in place.info.images track by $index">
+                <div ng-if="$index == 0">
+                    <label for="[[ 'image' + $index ]]" class="control-label">Дополнительные изображения места</label>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                    <input type="url" class="form-control" id="[[ 'image' + $index ]]" maxlength="100"
+                    ng-model="place.info.images[$index]" required>
+                    <span class="input-group-btn">
+                        <button class="btn btn-danger" ng-click="place.deleteImage($index)">
+                            <span class="glyphicon glyphicon-minus"></span>
+                        </button>
+                    </span>
+                </div>
+                <div class="help-block with-errors" style="margin-bottom: 15px">[[place.helpMsg.images]]</div>
+                <img class="img-responsive" src="[[ place.info.images[$index] ]]" alt="" style="padding-bottom: 15px">
+            </div>
+
+            <button class="btn btn-success btn-sm" ng-click="place.addImage()" style="margin-bottom: 15px">
+                <span class="glyphicon glyphicon-plus"></span> Добавить изображение
+            </button>
 
         </div>
 

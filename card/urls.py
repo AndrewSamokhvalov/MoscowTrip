@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 
 from card import views
+from card.manage_places import views as manage_places_views
 
 urlpatterns = patterns('',
 
@@ -11,9 +12,9 @@ urlpatterns = patterns('',
     url(r'^radius/?', views.radius),
 
     url(r'^$', views.card, name='index'),
-    url(r'managePlaces/addedPlaces/?', views.manage_places),
-    url(r'^managePlaces/addPlace/?', views.add_place),
-    url(r'^managePlaces/editPlace/?', views.edit_place),
+    url(r'managePlaces/addedPlaces/?', manage_places_views.manage_places),
+    url(r'^managePlaces/addPlace/?', manage_places_views.add_place),
+    url(r'^managePlaces/editPlace/?', manage_places_views.edit_place),
     url(r'^managePlaces/login/?$', 'django.contrib.auth.views.login',
         {
             'template_name': 'auth/login.html',
@@ -24,13 +25,13 @@ urlpatterns = patterns('',
             'next_page': '/managePlaces'
         }),
 
-    url(r'^managePlaces/?', views.base_manage_places),
+    url(r'^managePlaces/?', manage_places_views.base_manage_places),
 
-    url(r'^getUserPlaces/?', views.get_user_places),
+    url(r'^getUserPlaces/?', manage_places_views.get_user_places),
 
-    url(r'^getUserPlaceInfo/?', views.get_user_place_info),
+    url(r'^getUserPlaceInfo/?', manage_places_views.get_user_place_info),
 
-    url(r'^getTags/?', views.get_tags),
+    url(r'^getTags/?', manage_places_views.get_tags),
 
-    url(r'^deleteUserPlace/?', views.delete_user_place),
+    url(r'^deleteUserPlace/?', manage_places_views.delete_user_place),
 )
