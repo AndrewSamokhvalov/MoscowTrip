@@ -54,7 +54,7 @@
 
 
 <!-- Popup window -->
-<div class="modal fade bs-example-modal-lg" id="detailPlaceInfo" tabindex="-1" role="dialog"
+<div class="modal" id="detailPlaceInfo" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
 
     <div class="modal-dialog modal-lg">
@@ -97,7 +97,9 @@
                             <span class="icon-cab" ng-click="currentPlace.addToTrip()"></span>
                             <div class="well">
                                 Теги:
-                                <tags-input class="tags" ng-model="currentPlace.fields.tags"/>
+                                <div class="label" ng-repeat="tag in currentPlace.fields.tags">
+                                    <div ng-style="currentPlace.bgColor()">{{ tag }}</div>
+                                </div>
                             </div>
 
                             <p class="description-text">{{ currentPlace.fields.description }}  </p>

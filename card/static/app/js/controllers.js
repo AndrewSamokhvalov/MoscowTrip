@@ -5,6 +5,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
     function ($scope, $timeout, $compile, CardSvc) {
         $scope.filters = [];
 
+
         $scope.init = function (map) {
 
             // Создадим пользовательский макет редактора маршрута
@@ -398,6 +399,8 @@ function Place($scope, CardSvc) {
         $scope.currentPlace.fields = object.fields;
     };
 
+    this.bgColor = colorPalette();
+
     this.addToTrip = function () {
         this.load(parseInt(this.fields.id));
         $scope.route.addPoint(this);
@@ -515,4 +518,18 @@ function SlideFilter($scope, routeEditor, CardSvc) {
     this.idfilter = function (place) {
         return parseInt(place.fields.id) > 0
     }
+}
+
+function colorPalette()
+{
+    var _palette = ["#CE5256","#3FBF7A","#AD8255","#2CD3BA","#E5A43B","#D44465","#726868"];
+    var _shift = Math.floor(Math.random()*( 31 - 17 ) + 17);
+    function _getColor(indx)
+    {
+        return _palette[(_shift + indx) % _palette.length];
+    }
+
+    var obj = { "background-color" : _getColor(1)};
+
+    return obj;
 }
