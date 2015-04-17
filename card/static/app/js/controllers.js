@@ -9,33 +9,32 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
             // Создадим пользовательский макет редактора маршрута
             var MyRouteEditorLayout = ymaps.templateLayoutFactory.createClass("<div>" +
-                "<div id='routeEditorButton' class='btn btn-default btn-routeControll {% if state.selected %}my-button-selected{% endif %}'>" +
-                "<img src='/static/app/images/routeIcon.svg' />" +
-                "</div>", {
+                        "<div id='routeEditorButton' class='btn btn-default btn-routeControll {% if state.selected %}my-button-selected{% endif %}'>" +
+                        "<img src='/static/app/images/routeIcon.svg' />" +
+                        "</div>", {
 
-                // Переопределяем методы макета, чтобы выполнять дополнительные действия
-                // при построении и очистке макета.
-                build: function () {
-                    // Вызываем родительский метод build.
-                    MyRouteEditorLayout.superclass.build.call(this);
+                        // Переопределяем методы макета, чтобы выполнять дополнительные действия
+                        // при построении и очистке макета.
+                        STATES: {
+                            INIT: {value: 0, name: "Init", code: "I"},
+                            INACTIVE: {value: 1, name: "Inactive", code: "N"},
+                            WAIT_START: {value: 2, name: "Wait_Start", code: "S"},
+                            WAIT_FINISH: {value: 3, name: "Wait_Finish", code: "F"}
+                        },
 
-                    this.STATES = {
-                        INACTIVE: {value: 0, name: "Inactive", code: "I"},
-                        WAIT_START: {value: 1, name: "Wait_Start", code: "S"},
-                        WAIT_FINISH: {value: 2, name: "Wait_Finish", code: "F"}
-                    };
+                        STATE: {value: 1, name: "Inactive", code: "I"},
 
-                    this.state = this.STATES.INACTIVE.value;
-                    this.startPoint = [];
-                    this.finishPoint = [];
+                        build: function () {
+                            // Вызываем родительский метод build.
+                            MyRouteEditorLayout.superclass.build.call(this);
 
-                    // Привязываем функции-обработчики к контексту и сохраняем ссылки
-                    // на них, чтобы потом отписаться от событий.
-                    this.initEventsCallback = this.initEvents(this);
-                    this.addPointCallback = this.addPoints(this);
-                    // Начинаем слушать клики на кнопках макета.
-                    $('#routeEditorButton').bind('click', this.initEventsCallback);
-                },
+                            // Привязываем функции-обработчики к контексту и сохраняем ссылки
+                            // на них, чтобы потом отписаться от событий.
+                            this.initEventsCallback = ymaps.util.bind(this.initEvents, this);
+
+                            // Начинаем слушать клики на кнопках макета.
+                            $('#routeEditorButton').bind('click', this.initEventsCallback);
+                        },
 
 //                При клике контрол:
 //                1. становится Активным (изменяется вид)
@@ -47,55 +46,50 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 //                3. Если вторая точка сохранена, то строим маршрут
 //                4. Делаем кнопку неактивной
 
-                clear: function () {
-                    // Снимаем обработчики кликов.
-                    $('#routeEditorButton').unbind('click', this.initEventsCallback);
+                        clear: function () {
+                            $('#routeEditorButton').unbind('click', this.initEventsCallback);
+                            MyRouteEditorLayout.superclass.clear.call(this);
+                        },
 
-                    // Вызываем родительский метод clear.
-                    MyRouteEditorLayout.superclass.clear.call(this);
-                },
+                        initEvents: function (e) {
+                            if (this.STATE.value == this.STATES.INACTIVE.value) {
+                                this.addPointCallback = ymaps.util.bind(this.addPoints, this);
 
-                initEvents: function (p)
-                {
-                    return function (e) {
-                        if (p.state == p.STATES.INACTIVE.value)
-                        {
-                            map.events.add('click', p.addPointCallback);
-                            p.state = p.STATES.WAIT_START.value;
-                        }
-                        else
-                        {
-                            $scope.route.clear();
-                            map.events.remove('click', p.addPointCallback);
-                            p.state = p.STATES.INACTIVE.value;
-                        }
-                    }
-                },
+                                map.events.add('click', this.addPointCallback);
+                                this.STATE = this.STATES.WAIT_START;
+                            }
+                            else {
+                                $scope.route.clear();
+                                map.events.remove('click', this.addPointCallback);
+                                this.STATE = this.STATES.INACTIVE;
+                            }
+                        },
 
-                addPoints: function (p)
-                {
-                    return function (e) {
-                        switch (p.state) {
-                            case p.STATES.WAIT_START.value:
-                                $scope.route.start = e.get('coords');
-                                console.log('Start:' + $scope.route.start);
-                                p.state++;
-                                break;
+                        addPoints: function (e) {
 
-                            case p.STATES.WAIT_FINISH.value:
-                                $scope.route.finish = e.get('coords');
-                                console.log('Finish:' + $scope.route.finish);
+                            switch (this.STATE.value) {
+                                case this.STATES.WAIT_START.value:
+                                    $scope.route.start = e.get('coords');
+                                    console.log('Start:' + $scope.route.start);
 
-                                $scope.route.addRoute();
+                                    this.STATE = this.STATES.WAIT_FINISH;
+                                    break;
 
-                                // Очищение
-                                map.events.remove('click', p.addPointCallback);
-                                p.state = p.STATES.INACTIVE.value;
-                                break;
+                                case this.STATES.WAIT_FINISH.value:
+                                    $scope.route.finish = e.get('coords');
+                                    console.log('Finish:' + $scope.route.finish);
+
+                                    $scope.route.addRoute();
+
+                                    // Очищение
+                                    map.events.remove('click', this.addPointCallback);
+                                    this.STATE = this.STATES.INACTIVE;
+                                    break;
+                            }
                         }
                     }
-                }
-            });
+                )
+                ;
 
             var MyRouteEditor = new ymaps.control.Button({
                 data: {
@@ -112,8 +106,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
             $scope.rom = new ROM($scope, $compile, CardSvc);
             $scope.currentPlace = new Place($scope, CardSvc);
 
-            //$scope.radius = 1000;
-            //CardSvc.setRadius($scope, 1000);
+
             CardSvc.getRadius($scope);
             $scope.$watch('radius', function (newVal, oldVal) {
                 CardSvc.setRadius($scope, newVal);
@@ -131,7 +124,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     noPopup: true,
                     placeholderContent: 'Адрес начальной точки',
                     size: 'large',
-                    position: { right:1, top: 44 }
+                    position: { right: 1, top: 44 }
                 }
             });
             var searchFinishPoint = new ymaps.control.SearchControl({
@@ -143,7 +136,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     placeholderContent: 'Адрес конечной точки',
                     size: 'large',
                     float: 'none',
-                    position: { right:1, top: 76 }
+                    position: { right: 1, top: 76 }
                 }
             });
 
@@ -167,10 +160,10 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
             searchStartPoint.events.add('resultselect', function (e) {
                 var results = searchStartPoint.getResultsArray(),
-                selected = e.get('index'),
-                point = results[selected].geometry.getCoordinates();
+                    selected = e.get('index'),
+                    point = results[selected].geometry.getCoordinates();
 
-                    calculator.setStartPoint(point);
+                calculator.setStartPoint(point);
             })
                 .add('load', function (event) {
                     // По полю skip определяем, что это не дозагрузка данных.
@@ -185,7 +178,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     selected = e.get('index'),
                     point = results[selected].geometry.getCoordinates();
 
-                    calculator.setFinishPoint(point);
+                calculator.setFinishPoint(point);
             })
                 .add('load', function (event) {
                     // По полю skip определяем, что это не дозагрузка данных.
@@ -198,7 +191,8 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
         };
     }
 ])
-    .controller('AdminCtrl', ['$scope', 'CardSvc',
+    .
+    controller('AdminCtrl', ['$scope', 'CardSvc',
         function ($scope, CardSvc) {
 
 
@@ -209,7 +203,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 function MapObjectFilter($scope, CardSvc) {
 
     this.filterArray = [];
-    CardSvc.getTypes($scope)
+    CardSvc.getTypes($scope);
 
     //function getFilterFromServer() {
     //    $.get('/getFilters')
@@ -221,12 +215,12 @@ function MapObjectFilter($scope, CardSvc) {
 
     this.isChecked = function (indx) {
         var i = this.filterArray.indexOf(indx);
-        if(i >= 0)
+        if (i >= 0)
             return true;
         return false;
     }
 
-    this.switchFilter = function(filter) {
+    this.switchFilter = function (filter) {
         var indx = filter;
         if (indx) {
             var i = this.filterArray.indexOf(indx);
@@ -423,25 +417,22 @@ function Place($scope, CardSvc) {
         $scope.currentPlace.fields = object.fields;
     };
 
-    this.addToTrip = function()
-    {
+    this.addToTrip = function () {
         this.load(parseInt(this.fields.id));
         $scope.route.addPoint(this);
     };
     this.load = function (id) {
-            CardSvc.getPlaceInfo($scope, id)
+        CardSvc.getPlaceInfo($scope, id)
     }
 }
 
-function Route($scope, CardSvc)
-{
+function Route($scope, CardSvc) {
     var _start;
     var _finish;
     this.area = null;
     this.multiRoute;
 
-    this.addPoint = function (place)
-    {
+    this.addPoint = function (place) {
         //Координаты добавляемой точки
         var coords = $scope.rom.getRom().objects.getById(place.fields.id).geometry.coordinates;
 
@@ -450,18 +441,17 @@ function Route($scope, CardSvc)
         referencePoints.splice(1, 0, coords);
 
         //Via point ( для SetReferences необходим массив индексов Via-points)
-        var transitArray=[];
-        for (var i=1;i<referencePoints.length-1;i++) transitArray.push(i);
+        var transitArray = [];
+        for (var i = 1; i < referencePoints.length - 1; i++) transitArray.push(i);
 
 
         this.multiRoute.model.setReferencePoints(referencePoints, transitArray);
     };
 
-    this.addRoute = function ()
-    {
+    this.addRoute = function () {
 
-        if(!(this._finish && this._start)) return;
-        if(this.multiRoute) $scope.map.geoObjects.remove(this.multiRoute);
+        if (!(this._finish && this._start)) return;
+        if (this.multiRoute) $scope.map.geoObjects.remove(this.multiRoute);
         var multiRoute = new ymaps.multiRouter.MultiRoute({
             referencePoints: [
                 this._start,
@@ -474,17 +464,15 @@ function Route($scope, CardSvc)
             }
         });
 
-        multiRoute.model.events.once("requestchange", function (event)
-        {
+        multiRoute.model.events.once("requestchange", function (event) {
             console.log('l');
             var multiRouteModel = event.get("target");
             var firstroute = multiRouteModel.getRoutes()[0];
-            if(firstroute)
+            if (firstroute)
                 CardSvc.setRoute($scope, firstroute);
         });
 
-        multiRoute.model.events.add("requestsuccess", function (event)
-        {
+        multiRoute.model.events.add("requestsuccess", function (event) {
             var multiRouteModel = event.get("target");
             var firstroute = multiRouteModel.getRoutes()[0];
 
@@ -495,30 +483,26 @@ function Route($scope, CardSvc)
         $scope.map.geoObjects.add(multiRoute);
     };
 
-    this.clear = function()
-    {
+    this.clear = function () {
         this.start = undefined;
         this.finish = undefined;
-        if(this.multiRoute) {}//todo: delete multiRoute
+        if (this.multiRoute) {
+        }//todo: delete multiRoute
     };
 
-    this.__defineSetter__("start",function(value)
-    {
+    this.__defineSetter__("start", function (value) {
         this._start = value;
     });
 
-    this.__defineGetter__("start",function()
-    {
+    this.__defineGetter__("start", function () {
         return this._start;
     });
 
-    this.__defineSetter__("finish",function(value)
-    {
+    this.__defineSetter__("finish", function (value) {
         this._finish = value;
     });
 
-    this.__defineGetter__("finish",function()
-    {
+    this.__defineGetter__("finish", function () {
         return this._finish;
     });
 

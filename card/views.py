@@ -32,11 +32,12 @@ def get_places(request):
                 return HttpResponse("ERROR: Types is none!")
 
             if route is None:
-                print("ERROR: Types is none!")
-                return HttpResponse("ERROR: Types is none!")
+                print("ERROR: Route is none!")
+                return HttpResponse("ERROR: Route is none!")
 
             if radius is None:
-                radius = 0.02
+                print("ERROR: Radius is none!")
+                return HttpResponse("ERROR: Radius is none!")
 
             # print("types: %s" % types)
             # print("callback: %s" % callback)
@@ -236,7 +237,7 @@ def radius(request):
             radius = request.session.get('radius')
             if radius is None:
                 radius = 1000
-                request.session['radius'] = radius
+                request.session['radius'] = radius / 50000
 
             print('Radius %s ' % str(radius))
 
