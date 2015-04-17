@@ -57,13 +57,11 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                                 this.addPointCallback = ymaps.util.bind(this.addPoints, this);
 
                                 map.events.add('click', this.addPointCallback);
-                                $('#routeEditorButton').addClass('btn-routeControll-action');
                                 this.STATE = this.STATES.WAIT_START;
                             }
                             else {
                                 $scope.route.clear();
                                 map.events.remove('click', this.addPointCallback);
-                                $('#routeEditorButton').removeClass('btn-routeControll-action');
                                 this.STATE = this.STATES.INACTIVE;
                             }
                         },
@@ -396,16 +394,24 @@ function ROM($scope, $compile, CardSvc) {
 
 function Place($scope, CardSvc) {
     this.fields = {};
+
     this.init = function (id) {
         var object = $scope.rom.getRom().objects.getById(id);
         $scope.currentPlace.fields = object.fields;
     };
 
+    this.bgColor = colorPalette;
 
     this.addToTrip = function () {
         this.load(parseInt(this.fields.id));
         $scope.route.addPoint(this);
     };
+
+    this.addLike = function() {
+        this.fields.likes += 1;
+        CardSvc.addPlaceLike(this.fields.id);
+    };
+
     this.load = function (id) {
         CardSvc.getPlaceInfo($scope, id)
     }
@@ -521,8 +527,7 @@ function SlideFilter($scope, routeEditor, CardSvc) {
     }
 }
 
-/*
-function colorPalette(index)
+function colorPalette()
 {
     var _palette = ["#CE5256","#3FBF7A","#AD8255","#2CD3BA","#E5A43B","#D44465","#726868"];
     var _shift = Math.floor(Math.random()*( 31 - 17 ) + 17);
@@ -531,7 +536,7 @@ function colorPalette(index)
         return _palette[(_shift + indx) % _palette.length];
     }
 
-    var str =  "background-color"+ ":"+ _getColor(index)+";"
+    var obj = { "background-color" : _getColor(1)};
 
-    return str;
-}*/
+    return obj;
+}
