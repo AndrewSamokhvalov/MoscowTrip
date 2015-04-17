@@ -442,6 +442,18 @@ li.show-btn-right
     color:#fff;
     cursor: pointer;
 }
+.place-labels
+{
+    display: inline;
+    padding: 0.3em 0.4em 0.4em;
+    margin-right: 0.2em;
+    background-color: #C56542;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 90%;
+    border-radius: 0.3em;
+    box-shadow: 0 0 1px rgba(60,40,10,0.3);
+}
 /*-----------------------end slick slide----------------------*/
 
 /*----------------------popup menu--------------------------*/
