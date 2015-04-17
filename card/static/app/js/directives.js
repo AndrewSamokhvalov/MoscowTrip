@@ -24,8 +24,9 @@ roadtrippersApp
             replace: true,
             scope: {
                 places: '=places',
-                currentPlace: '=currentPlace',
-                slidefilter: '=slidefilter'
+                currentPlace: '=',
+                sliderFilter: '=',
+                sliderApply:'='
 
             },
             templateUrl: '/static/app/partials/rt-down-collapsible.html',

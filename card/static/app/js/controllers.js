@@ -3,7 +3,7 @@
 
 roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardSvc',
     function ($scope, $timeout, $compile, CardSvc) {
-        $scope.filters = [];
+        $scope.slider = new Slider();
 
         $scope.init = function (map) {
 
@@ -102,7 +102,6 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
             });
 
             $scope.filters = new MapObjectFilter($scope, CardSvc);
-            $scope.slidefilter = new SlideFilter();
             $scope.rom = new ROM($scope, $compile, CardSvc);
             $scope.currentPlace = new Place($scope, CardSvc);
 
@@ -191,14 +190,6 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
         };
     }
 ])
-    .
-    controller('AdminCtrl', ['$scope', 'CardSvc',
-        function ($scope, CardSvc) {
-
-
-            $scope.name = "Kostya";
-
-        }]);
 
 function MapObjectFilter($scope, CardSvc) {
 
@@ -245,7 +236,7 @@ function MapObjectFilter($scope, CardSvc) {
 
 function ROM($scope, $compile, CardSvc) {
     var rom;
-    this.places = null;
+    this.places = [];
 
     this.createROM = function () {
         var MyBalloonLayout = ymaps.templateLayoutFactory.createClass
@@ -365,20 +356,40 @@ function ROM($scope, $compile, CardSvc) {
         rom.objects.events.add('add', function (event) {
             var isSegmentLoaded = event.get('objectId') < 0;
             if (isSegmentLoaded) {
-                $scope.$apply(function () {
-                    console.log('Add current count - ' + rom.objects.getAll().length)
-                    $scope.rom.places = rom.objects.getAll();
-                })
+                var oldLen = $scope.rom.places.filter($scope.slider.idfilter).length;
+                var newLen = rom.objects.getAll().filter($scope.slider.idfilter).length;
+
+//                console.log('oldLen: ' + oldLen);
+//                console.log('newLen: ' + newLen);
+
+                var isNeedReload = (oldLen != newLen);
+
+                if (isNeedReload) {
+                    $scope.slider.apply(function () {
+                        console.log('Add current count - ' + rom.objects.getAll().length)
+                        $scope.rom.places = rom.objects.getAll();
+                    });
+                }
+
             }
         });
         rom.objects.events.add('remove', function (event) {
             var isSegmentRemoved = event.get('objectId') < 0;
             if (isSegmentRemoved) {
-                $scope.$apply(function () {
-                    console.log('Remove: current count - ' + rom.objects.getAll().length)
+                var oldLen = $scope.rom.places.filter($scope.slider.idfilter).length;
+                var newLen = rom.objects.getAll().filter($scope.slider.idfilter).length;
 
-                    $scope.rom.places = rom.objects.getAll();
-                })
+//                console.log('oldLen: ' + oldLen);
+//                console.log('newLen: ' + newLen);
+
+                var isNeedReload = oldLen != newLen;
+
+                if (isNeedReload) {
+                    $scope.slider.apply(function () {
+                        console.log('Add current count - ' + rom.objects.getAll().length)
+                        $scope.rom.places = rom.objects.getAll();
+                    });
+                }
             }
         });
 
@@ -530,8 +541,10 @@ function Route($scope, CardSvc) {
 
 }
 
-function SlideFilter($scope, routeEditor, CardSvc) {
+function Slider($scope) {
     this.idfilter = function (place) {
         return parseInt(place.fields.id) > 0
     }
+
+    this.apply = []
 }

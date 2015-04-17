@@ -129,6 +129,8 @@ def serialize_places(places, callback):
 
         features.append(feature)
     # Последний элемент с отрицательныйм id отправляется для того чтобы на клиенте понять что сегмент полностью загрузился
+
+
     objectid = (-1) * random.randint(1, math.pow(10, 10))
     feature = {
         "type": 'Feature',
@@ -237,7 +239,11 @@ def radius(request):
             radius = request.session.get('radius')
             if radius is None:
                 radius = 1000
-                request.session['radius'] = radius / 50000
+                request.session['radius'] = float(radius / 50000)
+
+            if radius is float('nan'):
+                radius = 1000
+                request.session['radius'] = float(radius / 50000)
 
             print('Radius %s ' % str(radius))
 
