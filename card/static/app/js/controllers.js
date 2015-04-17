@@ -57,11 +57,13 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                                 this.addPointCallback = ymaps.util.bind(this.addPoints, this);
 
                                 map.events.add('click', this.addPointCallback);
+                                $('#routeEditorButton').addClass('btn-routeControll-action');
                                 this.STATE = this.STATES.WAIT_START;
                             }
                             else {
                                 $scope.route.clear();
                                 map.events.remove('click', this.addPointCallback);
+                                $('#routeEditorButton').removeClass('btn-routeControll-action');
                                 this.STATE = this.STATES.INACTIVE;
                             }
                         },
@@ -399,7 +401,6 @@ function Place($scope, CardSvc) {
         $scope.currentPlace.fields = object.fields;
     };
 
-    this.bgColor = colorPalette();
 
     this.addToTrip = function () {
         this.load(parseInt(this.fields.id));
@@ -520,7 +521,8 @@ function SlideFilter($scope, routeEditor, CardSvc) {
     }
 }
 
-function colorPalette()
+/*
+function colorPalette(index)
 {
     var _palette = ["#CE5256","#3FBF7A","#AD8255","#2CD3BA","#E5A43B","#D44465","#726868"];
     var _shift = Math.floor(Math.random()*( 31 - 17 ) + 17);
@@ -529,7 +531,7 @@ function colorPalette()
         return _palette[(_shift + indx) % _palette.length];
     }
 
-    var obj = { "background-color" : _getColor(1)};
+    var str =  "background-color"+ ":"+ _getColor(index)+";"
 
-    return obj;
-}
+    return str;
+}*/

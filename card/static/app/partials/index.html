@@ -97,8 +97,8 @@
                             <span class="icon-cab" ng-click="currentPlace.addToTrip()"></span>
                             <div class="well">
                                 Теги:
-                                <div class="label" ng-repeat="tag in currentPlace.fields.tags">
-                                    <div ng-style="currentPlace.bgColor()">{{ tag }}</div>
+                                <div class="label label-default" ng-repeat="tag in currentPlace.fields.tags">
+                                    <span>{{ tag }}</span>
                                 </div>
                             </div>
 
