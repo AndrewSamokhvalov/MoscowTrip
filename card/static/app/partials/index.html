@@ -46,15 +46,15 @@
     <slider floor="1000" ceiling="5000" step="1000" precision="3" ng-model="radius"></slider>
 </div>
 
+<rt-right-collapsible></rt-right-collapsible>
+
 <main>
     <ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="init($target)" ya-controls=""></ya-map>
 </main>
 
-<rt-right-collapsible></rt-right-collapsible>
-
 
 <!-- Popup window -->
-<div class="modal fade bs-example-modal-lg" id="detailPlaceInfo" tabindex="-1" role="dialog"
+<div class="modal" id="detailPlaceInfo" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
 
     <div class="modal-dialog modal-lg">
@@ -67,9 +67,9 @@
                         {{ currentPlace.fields.rating }}
                     </div>
                 </div>
-                <span class="icon-vk"></span>
-                <span class="icon-globe"></span>
-                <span class="icon-email"></span>
+                <a href="{{ currentPlace.fields.vk_link }}" target="_blank"><span class="icon-vk"></span></a>
+                <a href="{{ currentPlace.fields.website }}" target="_blank"><span class="icon-globe"></span></a>
+                <a href="{{ currentPlace.fields.e_mail }}" target="_blank"><span class="icon-email"></span></a>
 
                 <h2 class="modal-title" id="gridSystemModalLabel">{{ currentPlace.fields.name }}  </h2>
             </div>
@@ -78,19 +78,32 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <slick init-onload=true infinite="true" slides-to-show="2" data="rom.places">
-                            <div ng-repeat="place in rom.places">
-                                <span>
-                                        <img width="410px" height="410px">
-                                </span>
-                            </div>
-                        </slick>
+                        <div style="height: 300px">
+                            <carousel interval="myInterval">
+                                <slide active="slide.active">
+                                    <img ng-src="{{ currentPlace.fields.image }}" style="margin:auto;">
+                                </slide>
+
+                                <slide ng-repeat="url_image in currentPlace.fields.additional_images">
+                                    <img src="{{ url_image }}" style="margin:auto;">
+                                </slide>
+                            </carousel>
+                        </div>
+
                     </div>
                     <div class="row">
                         <div class="col-md-7">
                             <h3>Описание места:</h3>
+                            <span class="icon-heart" ng-click="currentPlace.addLike()"></span><p>{{ currentPlace.fields.likes }}</p>
+                            <span class="icon-cab" ng-click="currentPlace.addToTrip()"></span>
+                            <div class="well">
+                                Теги:
+                                <div class="label" ng-repeat="tag in currentPlace.fields.tags">
+                                    <div ng-style="currentPlace.bgColor()">{{ tag }}</div>
+                                </div>
+                            </div>
 
-                            <p>{{ currentPlace.fields.description }}  </p>
+                            <p class="description-text">{{ currentPlace.fields.description }}  </p>
 
                         </div>
 
@@ -124,8 +137,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>
 

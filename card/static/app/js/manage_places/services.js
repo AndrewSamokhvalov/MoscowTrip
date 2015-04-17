@@ -19,11 +19,11 @@ managePlacesApp.factory('managePlacesCvs', function($http) {
             });
         },
 
-        sendPlaceInfo: function(url, place) {
+        sendPlaceInfo: function(url, place, $location) {
             return $http.post(url, place.info).success(function (response) {
-                console.log(response);
                 if (response != 'ok')
                     place.showErrors(response);
+                else $location.path('/');
             });
         },
 

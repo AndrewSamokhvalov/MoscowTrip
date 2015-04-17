@@ -5,6 +5,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
     function ($scope, $timeout, $compile, CardSvc) {
         $scope.slider = new Slider();
 
+
         $scope.init = function (map) {
 
             // Создадим пользовательский макет редактора маршрута
@@ -115,29 +116,10 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
             var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
             var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}});
-            var searchControl = new ymaps.control.SearchControl({options: { position: { right: 1, top: 10 }}});
-            var searchStartPoint = new ymaps.control.SearchControl({
-                options: {
-                    useMapBounds: true,
-                    noPlacemark: true,
-                    noPopup: true,
-                    placeholderContent: 'Адрес начальной точки',
-                    size: 'large',
-                    position: { right: 1, top: 44 }
-                }
-            });
-            var searchFinishPoint = new ymaps.control.SearchControl({
-                options: {
-                    useMapBounds: true,
-                    noCentering: true,
-                    noPopup: true,
-                    noPlacemark: true,
-                    placeholderContent: 'Адрес конечной точки',
-                    size: 'large',
-                    float: 'none',
-                    position: { right: 1, top: 76 }
-                }
-            });
+
+            var searchControl = new ymaps.control.SearchControl({options: { position: { right: 2, top: 10 }, noPlacemark: true, zIndex: 10}});
+
+            $scope.searchControl = searchControl;
 
             $scope.route = new Route($scope, CardSvc);
 
@@ -157,7 +139,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                 });
             });
 
-            searchStartPoint.events.add('resultselect', function (e) {
+            /*searchStartPoint.events.add('resultselect', function (e) {
                 var results = searchStartPoint.getResultsArray(),
                     selected = e.get('index'),
                     point = results[selected].geometry.getCoordinates();
@@ -185,7 +167,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     if (!event.get('skip') && searchFinishPoint.getResultsCount()) {
                         searchFinishPoint.showResult(0);
                     }
-                });
+                });*/
 
         };
     }
@@ -423,15 +405,24 @@ function ROM($scope, $compile, CardSvc) {
 
 function Place($scope, CardSvc) {
     this.fields = {};
+
     this.init = function (id) {
         var object = $scope.rom.getRom().objects.getById(id);
         $scope.currentPlace.fields = object.fields;
     };
 
+    this.bgColor = colorPalette;
+
     this.addToTrip = function () {
         this.load(parseInt(this.fields.id));
         $scope.route.addPoint(this);
     };
+
+    this.addLike = function() {
+        this.fields.likes += 1;
+        CardSvc.addPlaceLike(this.fields.id);
+    };
+
     this.load = function (id) {
         CardSvc.getPlaceInfo($scope, id)
     }
@@ -547,4 +538,18 @@ function Slider($scope) {
     }
 
     this.apply = []
+}
+
+function colorPalette()
+{
+    var _palette = ["#CE5256","#3FBF7A","#AD8255","#2CD3BA","#E5A43B","#D44465","#726868"];
+    var _shift = Math.floor(Math.random()*( 31 - 17 ) + 17);
+    function _getColor(indx)
+    {
+        return _palette[(_shift + indx) % _palette.length];
+    }
+
+    var obj = { "background-color" : _getColor(1)};
+
+    return obj;
 }

@@ -21,6 +21,7 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                 }
             });
         },
+        
         setRadius: function ($scope, radius) {
             return $http.put('/radius', { 'radius': JSON.stringify(radius) }).success(function (polyline) {
                 $scope.rom.updateROM();
@@ -62,8 +63,7 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                 $scope.radius = response;
             });
         },
-
-
+        
         setRoute: function ($scope, route) {
             var path = route.getPaths();
             var points = [];
@@ -109,6 +109,10 @@ roadtrippersApp.factory('CardSvc', function ($http) {
                     $scope.map.geoObjects.add(area);
                 }
             );
+        },
+        
+        addPlaceLike: function (place_id) {
+            return $http.post('/addPlaceLike', { 'place_id' : place_id}).success(function (response) {})
         }
     };
 });

@@ -38,6 +38,7 @@ roadtrippersApp
                     $(".up-chk").css("display", "inline");
                     $(".main-info").css("bottom", "-160px");
                     $(".list_of_nav_buttons").css("bottom", "0");
+                    $(".main-info-right").css("bottom", "5px");
                 });
 
                 $("#show-on").click(function () {
@@ -45,6 +46,7 @@ roadtrippersApp
                     $(".up-chk").css("display", "none");
                     $(".main-info").css("bottom", "0");
                     $(".list_of_nav_buttons").css("bottom", "160px");
+                    $(".main-info-right").css("bottom", "165px");
                 });
 
             }
@@ -56,20 +58,16 @@ roadtrippersApp
         return {
             restrict: 'E',
             replace: true,
-            scope: {
-//                places: '=places',
-//                currentPlace: '=currentPlace',
-//                slidefilter: '=slidefilter'
 
-            },
             templateUrl: '/static/app/partials/rt-right-collapsible.html',
 
             link: function ($scope, $element) {
                 $("#show-off-right").click(function () {
                     $(".up-unchk-right").css("display", "none");
                     $(".up-chk-right").css("display", "inline");
-                    $(".main-info-right").css("right", "-350px");
+                    $(".main-info-right").css("right", "-315px");
                     $(".list_of_nav_buttons_right").css("right", "0");
+                    $scope.searchControl.options.set('position', {right: 2, top: 10});
                 });
 
 
@@ -77,7 +75,8 @@ roadtrippersApp
                     $(".up-unchk-right").css("display", "inline");
                     $(".up-chk-right").css("display", "none");
                     $(".main-info-right").css("right", "0");
-                    $(".list_of_nav_buttons_right").css("right", "350px");
+                    $(".list_of_nav_buttons_right").css("right", "315px");
+                    $scope.searchControl.options.set('position', {right: 340, top: 10});
                 });
 
 

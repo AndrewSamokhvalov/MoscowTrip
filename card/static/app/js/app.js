@@ -2,8 +2,7 @@
 
 /* App Module */
 
-var roadtrippersApp = angular.module('roadtrippersApp', ['yaMap', 'uiSlider', 'ngRoute', 'slick' ]);
-
+var roadtrippersApp = angular.module('roadtrippersApp', ['yaMap', 'uiSlider', 'ngRoute', 'slick' , 'ui.bootstrap']);
 roadtrippersApp.config([ 'yaMapSettingsProvider', '$routeProvider',
     function (yaMapSettings, $routeProvider) {
 

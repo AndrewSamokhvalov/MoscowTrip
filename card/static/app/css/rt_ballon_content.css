@@ -66,9 +66,13 @@
     bottom: 0px;
     left: 0;
     text-shadow: black 1px 0px, black 1px 1px, black 0px 1px, black -1px 1px, black -1px 0px, black -1px -1px, black 0px -1px, black 1px -1px;
-    font-size: 1.25em;
+    font-size: 1em;
     padding:0 10px 8px 10px;
     color:#fff;
+}
+.carousel img
+{
+    height: 300px !important;
 }
 .modal-body .rating
 {
@@ -89,4 +93,9 @@
     margin-left: 4px;
     height: 100%;
     color: #fff;
+}
+.modal-body .well
+{
+    position: relative;
+    top:-20px;
 }

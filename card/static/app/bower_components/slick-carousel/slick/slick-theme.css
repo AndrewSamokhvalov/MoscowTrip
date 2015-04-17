@@ -20,21 +20,21 @@
 .slick-next
 {
     font-size: 0;
-    line-height: 0;
+    line-height: 1.5;
 
     position: absolute;
     top: 50%;
 
     display: block;
-
-    width: 20px;
-    height: 20px;
+    text-shadow: black 2px 0px, black 2px 2px, black 0px 2px, black -2px 2px, black -2px 0px, black -2px -2px, black 0px -2px, black 2px -2px;
+    width: 24px;
+    height: 24px;
     margin-top: -10px;
     padding: 0;
 
     cursor: pointer;
 
-    color: transparent;
+    color: #fff;
     border: none;
     outline: none;
     background: transparent;
@@ -69,16 +69,16 @@
     line-height: 1;
 
     opacity: .75;
-    color: white;
+    color: #fff;
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-.slick-prev
+/*.slick-prev
 {
     left: -25px;
-}
+}*/
 [dir='rtl'] .slick-prev
 {
     right: -25px;
@@ -95,7 +95,7 @@
 
 .slick-next
 {
-    right: -25px;
+    right: 0;
 }
 [dir='rtl'] .slick-next
 {
