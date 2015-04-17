@@ -34,4 +34,6 @@ urlpatterns = patterns('',
     url(r'^getTags/?', manage_places_views.get_tags),
 
     url(r'^deleteUserPlace/?', manage_places_views.delete_user_place),
+
+    url(r'^addPlaceLike/?', views.add_place_like)
 )

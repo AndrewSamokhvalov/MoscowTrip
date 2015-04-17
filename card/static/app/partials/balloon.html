@@ -12,7 +12,7 @@
         <span class="place-name"> {{ currentPlace.fields.name }} </span>
 
         <div class="like-balloon">
-            <span class="icon icon-heart"></span>
+            <span class="icon icon-heart" ng-click="currentPlace.addLike()"></span>
         </div>
         <div class="trip-balloon" ng-click="currentPlace.addToTrip()">
             <span class="icon icon-cab"></span>

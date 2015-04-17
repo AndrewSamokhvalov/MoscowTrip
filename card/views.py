@@ -119,6 +119,7 @@ def serialize_places(places, callback):
                 "rating": str(float(place.rating)),
                 "name": place.name,
                 "image": place.main_pic_url,
+                "likes": place.likes,
                 "type": place.id_type_id,
                 "id": place.pk
             }
@@ -370,6 +371,10 @@ def get_place_info(request):
                 ltags.append(tag['fields']['tag'])
             place['fields']['tags'] = ltags
 
+            # add places images
+            place['fields']['additional_images'] = \
+                [image.url_image for image in Image.objects.filter(id_place=place_id)]
+
             return HttpResponse(json.dumps(place['fields']))
 
         except Exception as inst:
@@ -378,3 +383,17 @@ def get_place_info(request):
             print(inst.args)  # arguments stored in .args
             print(inst)  # __str__ allows args to be printed directly
             return HttpResponse("error!")
+
+
+@csrf_exempt
+def add_place_like(request):
+    if request.method == 'POST':
+        str_response = request.body.decode('utf-8')
+        received_json_data = json.loads(str_response)
+        place_id = received_json_data['place_id']
+
+        place = Place.objects.get(id=place_id)
+        place.likes += 1
+        place.save()
+
+        return HttpResponse('ok')

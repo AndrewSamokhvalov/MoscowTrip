@@ -394,17 +394,24 @@ function ROM($scope, $compile, CardSvc) {
 
 function Place($scope, CardSvc) {
     this.fields = {};
+
     this.init = function (id) {
         var object = $scope.rom.getRom().objects.getById(id);
         $scope.currentPlace.fields = object.fields;
     };
 
-    this.bgColor = colorPalette();
+    this.bgColor = colorPalette;
 
     this.addToTrip = function () {
         this.load(parseInt(this.fields.id));
         $scope.route.addPoint(this);
     };
+
+    this.addLike = function() {
+        this.fields.likes += 1;
+        CardSvc.addPlaceLike(this.fields.id);
+    };
+
     this.load = function (id) {
         CardSvc.getPlaceInfo($scope, id)
     }

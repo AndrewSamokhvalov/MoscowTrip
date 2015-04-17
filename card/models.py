@@ -32,6 +32,7 @@ class Place(models.Model):
     last_edit_date = models.DateTimeField(auto_now=True, default=datetime.datetime.now())
     main_pic_url = models.URLField(max_length=100, default='http://img.vos.uz/pjp05.jpg')
     user_id = models.ForeignKey(User, null=True, blank=True, default=None)
+    likes = models.IntegerField(default=0)
 
 
 class Image(models.Model):

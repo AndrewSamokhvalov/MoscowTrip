@@ -83,8 +83,9 @@
                                 <slide active="slide.active">
                                     <img ng-src="{{ currentPlace.fields.image }}" style="margin:auto;">
                                 </slide>
-                                <slide>
-                                    <img src="http://images.visitcanberra.com.au/images/canberra_hero_image.jpg" style="margin:auto;">
+
+                                <slide ng-repeat="url_image in currentPlace.fields.additional_images">
+                                    <img src="{{ url_image }}" style="margin:auto;">
                                 </slide>
                             </carousel>
                         </div>
@@ -93,7 +94,7 @@
                     <div class="row">
                         <div class="col-md-7">
                             <h3>Описание места:</h3>
-                            <span class="icon-heart"></span>
+                            <span class="icon-heart" ng-click="currentPlace.addLike()"></span><p>{{ currentPlace.fields.likes }}</p>
                             <span class="icon-cab" ng-click="currentPlace.addToTrip()"></span>
                             <div class="well">
                                 Теги:
