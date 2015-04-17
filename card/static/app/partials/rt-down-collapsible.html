@@ -12,9 +12,8 @@
 
     <main class="main-info">
         <div>
-            <slick init-onload=true infinite="true" slides-to-show="1" slides-to-scroll="5" data="places"
-                   variable-width="true">
-                <div ng-repeat="place in  places | filter: slidefilter">
+            <slick slider-apply="sliderApply" infinite="true" slides-to-show="1" slides-to-scroll="5" variable-width="true">
+                <div ng-repeat="place in  places | filter: sliderFilter">
                     <div class="rating">
                         <div class="value-rating">
                             {{ place.fields.rating }}
@@ -26,7 +25,7 @@
                         </div>
                     </div>
                     <span class="balloon-image">
-                        <rt-img place="place" current-place="currentPlace" width="150px" height="150px"> </rt-img>
+                        <rt-img place="place" current-place="currentPlace" width="150px" height="150px"></rt-img>
                     </span>
                     <span class="place-name">
                         {{ place.fields.name }}

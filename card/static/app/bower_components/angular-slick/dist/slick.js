@@ -49,10 +49,34 @@ angular.module('slick', []).directive('slick', [
                 variableWidth: '@',
                 vertical: '@',
                 prevArrow: '@',
-                nextArrow: '@'
+                nextArrow: '@',
+                sliderApply: '='
             },
             link: function (scope, element, attrs) {
                 var destroySlick, initializeSlick, isInitialized;
+                var isLocked = false;
+
+                scope.sliderApply = function (apply) {
+
+                    if (!isLocked) {
+                        isLocked = true;
+                        console.log('Update!');
+
+                        var slider = $(element);
+                        slider.slick('slickRemove');
+                        slider.removeClass('slick-initialized slick-slider');
+                        slider.find('.slick-list').remove();
+
+                        scope.$apply(function () {
+                            apply();
+                            initializeSlick();
+                            isLocked = false;
+                        });
+                    } else {
+                        console.log('Locked!');
+                    }
+
+                }
                 destroySlick = function () {
                     return $timeout(function () {
                         var slider;
@@ -142,23 +166,23 @@ angular.module('slick', []).directive('slick', [
                         });
                     });
                 };
-                if (scope.initOnload) {
-                    isInitialized = false;
-                    return scope.$watch('data', function (newVal, oldVal) {
-                        if (newVal == null) return false;
-
-                        if (isInitialized) {
-                            $(element).slick('slickRemove');
-                            $(element).removeClass('slick-initialized slick-slider');
-                            $(element).find('.slick-list').remove();
-                        }
-
-                        initializeSlick();
-                        return isInitialized = true;
-                    });
-                } else {
-                    return initializeSlick();
-                }
+//                if (scope.initOnload) {
+//                    isInitialized = false;
+//                    return scope.$watch('data', function (newVal, oldVal) {
+//                        if (newVal == null) return false;
+//
+//                        if (isInitialized) {
+//                            $(element).slick(gi'slickRemove');
+//                            $(element).removeClass('slick-initialized slick-slider');
+//                            $(element).find('.slick-list').remove();
+//                        }
+//
+//                        initializeSlick();
+//                        return isInitialized = true;
+//                    });
+//                } else {
+                return initializeSlick();
+//                }
             }
         };
     }
