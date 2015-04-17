@@ -571,3 +571,16 @@ li.show-btn-right
     position: relative;
     margin: 0 10px 0 0 ;
 }
+#detailPlaceInfo .like-score
+{
+    position: absolute;
+    width: 25px;
+    height: 15px;
+    top: 3px;
+    font-size: 0.5em;
+    text-align: center;
+    left: 2px;
+    cursor: pointer;
+    color: #fff;
+
+}
