@@ -99,3 +99,16 @@
     position: relative;
     top:-20px;
 }
+.like-balloon .like-score
+{
+    position: absolute;
+    width: 25px;
+    height: 15px;
+    top: 8px;
+    font-size: 0.5em;
+    text-align: center;
+    left: 1px;
+    cursor: pointer;
+    color: #fff;
+
+}
