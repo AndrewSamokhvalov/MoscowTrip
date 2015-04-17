@@ -66,7 +66,7 @@ header
     bottom: 0;
     top:0;
     right:0;
-    z-index: 2;
+    z-index: 1;
 }
 
 #bottom-bar .list_of_nav_buttons
@@ -102,7 +102,7 @@ header
     background: #f5f5f5;
     margin:0;
     padding: 0;
-    top: 7em;
+    top: 12em;
     right: 0;
     border-top-left-radius: 0.4em;
     -moz-border-top-left-radius: 0.4em;
@@ -204,12 +204,12 @@ header
     bottom:-160px;
     height: 160px;
 }
-.main-info-right img
+.main-info-right .trip-logo
 {
     position: absolute;
-    top:5px;
-    left:5px;
-    width:340px;
+    top: 5px;
+    left: 5px;
+    width: 305px;
     height: 230px;
     border-radius: 5px 5px 0 0;
 }
@@ -219,73 +219,22 @@ header
     top:235px;
     left:5px;
     bottom:5px;
-    width:340px;
+    width:305px;
     height: auto;
     background: #fff;
     border-radius: 0 0 5px 5px;
-}
-.make-trip .form-A
-{
-    position: absolute;
-    top: 0;
-    left:45px;
-    width:250px;
-    height: 20px;
-    border-radius: 5px;
-    border: 1px solid gray;
-}
-.make-trip .form-B
-{
-    position: absolute;
-    top: 25px;
-    left:45px;
-    width:250px;
-    height: 20px;
-    border-radius: 5px;
-    border: 1px solid gray;
-}
-.form-a-inp,
-.form-b-inp
-{
-    position: absolute;
-    right: 0;
-    top: 0;
-    border: none;
-    border-radius: 6px;
-    font-size: 1.1em;
-    width: 230px;
-}
-.icon-A,
-.icon-B
-{
-    position: absolute;
-    top:2px;
-    left:4px;
-}
-.input
-{
-    position: absolute;
-    left:10px;
-    top:0;
-    width:320px;
-    height:150px;
-}
-#find-trip-btn
-{
-    position: absolute;
-    color:#00cc99;
-    top:55px;
-    left: 105px;
+    overflow-y: auto;
 }
 #right-bar .main-info-right
 {
     position: fixed;
     z-index: 3;
     background-color: #f5f5f5;
-    width: 350px;
+    width: 315px;
     box-shadow: 0 0 0.05em ;
-    right:-350px;
-    height: 100%;
+    right:-315px;
+    top: 10px;
+    bottom: 5px;
 }
 .up-chk
 {
@@ -325,6 +274,34 @@ li.show-btn-right
     background: #fff;
     top:0;
     left:0.5em;
+}
+.trip-form
+{
+    position: relative;
+    border: solid 1px #000000;
+    margin-bottom: 10px;
+    top:5px;
+    left:5px;
+    width:280px;
+    border-radius: 2px;
+    height: 72px;
+}
+.form-picture
+{
+    position: relative;
+    top:0;
+    left:0;
+    height: 70px;
+    width: 70px;
+    border-radius: 2px 0 0 2px;
+}
+.form-adress
+{
+    position: relative;
+    left: 80px;
+    top: -55px;
+    height: 30px;
+    width: 190px;
 }
 
 /*---------------------------end-footer_rightbar-------------------------------*/
@@ -381,6 +358,7 @@ li.show-btn-right
 .icon-cab:before { content: '\e808'; }
 .icon-heart:before { content: '\e809'; }
 .icon-globe:before { content: '\e80a'; }
+.icon-hash:before { content: '\e802'; }
 
 /*-----------------------slick slide----------------------*/
 
@@ -496,7 +474,7 @@ li.show-btn-right
 #detailPlaceInfo .icon-vk
 {
     position: absolute;
-    margin-left: 600px;
+    margin-left: 650px;
     top:19px;
     font-size: 2em;
     color:#00a8f3;
@@ -505,7 +483,7 @@ li.show-btn-right
 #detailPlaceInfo .icon-email
 {
     position: absolute;
-    margin-left:650px;
+    margin-left:700px;
     top:19px;
     font-size: 2em;
     color:#00a8f3;
@@ -514,7 +492,7 @@ li.show-btn-right
 #detailPlaceInfo .icon-globe
 {
     position: absolute;
-    margin-left:700px;
+    margin-left:750px;
     top:19px;
     font-size: 2em;
     color:#00a8f3;
@@ -547,3 +525,49 @@ li.show-btn-right
 }
 
 /*----------------------  end popup menu--------------------------*/
+
+.modal-title
+{
+    width: 60% !important;
+}
+#detailPlaceInfo .modal-body .icon-heart
+{
+    position: relative;
+    top: -40px;
+    font-size: 2em;
+    left:300px;
+    color:#ff3366;
+    cursor: pointer;
+}
+#detailPlaceInfo .modal-body .icon-heart:hover
+{
+    color:#ff0099;
+}
+#detailPlaceInfo .modal-body .icon-cab
+{
+    position: relative;
+    top: -40px;
+    font-size: 2em;
+    left:350px;
+    cursor: pointer;
+    color:#00cc99;
+}
+#detailPlaceInfo .modal-body .icon-cab:hover
+{
+    color:#00cccc;
+}
+#bottom-bar .slick-next,
+#bottom-bar .slick-prev
+{
+    margin-top: 0 !important;
+    top:35% !important;
+}
+#detailPlaceInfo .description-text
+{
+    margin-top: -30px;
+}
+#detailPlaceInfo .tags
+{
+    position: relative;
+    margin: 0 10px 0 0 ;
+}

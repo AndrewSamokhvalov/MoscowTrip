@@ -116,29 +116,10 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
             var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
             var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}});
-            var searchControl = new ymaps.control.SearchControl({options: { position: { right: 1, top: 10 }}});
-            var searchStartPoint = new ymaps.control.SearchControl({
-                options: {
-                    useMapBounds: true,
-                    noPlacemark: true,
-                    noPopup: true,
-                    placeholderContent: 'Адрес начальной точки',
-                    size: 'large',
-                    position: { right: 1, top: 44 }
-                }
-            });
-            var searchFinishPoint = new ymaps.control.SearchControl({
-                options: {
-                    useMapBounds: true,
-                    noCentering: true,
-                    noPopup: true,
-                    noPlacemark: true,
-                    placeholderContent: 'Адрес конечной точки',
-                    size: 'large',
-                    float: 'none',
-                    position: { right: 1, top: 76 }
-                }
-            });
+
+            var searchControl = new ymaps.control.SearchControl({options: { position: { right: 2, top: 10 }, noPlacemark: true, zIndex: 10}});
+
+            $scope.searchControl = searchControl;
 
             $scope.route = new Route($scope, CardSvc);
 

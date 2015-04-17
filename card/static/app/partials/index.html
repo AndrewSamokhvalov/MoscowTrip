@@ -46,11 +46,11 @@
     <slider floor="1000" ceiling="5000" step="1000" precision="3" ng-model="radius"></slider>
 </div>
 
+<rt-right-collapsible></rt-right-collapsible>
+
 <main>
     <ya-map ya-zoom="11" ya-center="[55.76,37.64]" ya-after-init="init($target)" ya-controls=""></ya-map>
 </main>
-
-<rt-right-collapsible></rt-right-collapsible>
 
 
 <!-- Popup window -->
@@ -67,7 +67,7 @@
                         {{ currentPlace.fields.rating }}
                     </div>
                 </div>
-                <span class="icon-vk"></span>
+                <span class="icon-vk" onclick="{{ currentpla }}"></span>
                 <span class="icon-globe"></span>
                 <span class="icon-email"></span>
 
@@ -78,19 +78,22 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <slick init-onload=true infinite="true" slides-to-show="2" data="rom.places">
-                            <div ng-repeat="place in rom.places">
-                                <span>
-                                        <img width="410px" height="410px">
-                                </span>
-                            </div>
-                        </slick>
+                        <div style="height: 305px">
+                            <carousel interval="myInterval">
+                                <slide active="slide.active">
+                                    <img ng-src="{{ currentPlace.fields.image }}" style="margin:auto;">
+                                </slide>
+                            </carousel>
+                        </div>
+
                     </div>
                     <div class="row">
                         <div class="col-md-7">
                             <h3>Описание места:</h3>
+                            <span class="icon-heart"></span>
+                            <span class="icon-cab" ng-click="currentPlace.addToTrip()"></span>
 
-                            <p>{{ currentPlace.fields.description }}  </p>
+                            <p class="description-text">{{ currentPlace.fields.description }}  </p>
 
                         </div>
 
@@ -119,6 +122,18 @@
                                 </div>
                                 <div class="panel-footer">{{ currentPlace.fields.working_hours }}  </div>
                             </div>
+                            </br>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <span class="icon-hash"></span>
+                                    Теги
+                                </div>
+                                <div class="panel-footer">
+                                    <p class="tags" ng-repeat="tag in currentPlace.fields.tags">
+                                        {{ tag }}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -129,4 +144,5 @@
     </div>
 </div>
 
-<rt-down-collapsible places="rom.places" current-place="currentPlace" slidefilter="slidefilter.idfilter"></rt-down-collapsible>
+<rt-down-collapsible places="rom.places" current-place="currentPlace"
+                     slidefilter="slidefilter.idfilter"></rt-down-collapsible>
