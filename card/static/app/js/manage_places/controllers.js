@@ -29,10 +29,10 @@ managePlacesApp.controller('managePlacesCtrl', ['$scope', '$location', 'managePl
     }
 ]);
 
-managePlacesApp.controller('editPlaceCtrl', ['$scope', '$routeParams', 'managePlacesCvs',
-    function ($scope, $routeParams, managePlacesCvs) {
+managePlacesApp.controller('editPlaceCtrl', ['$scope', '$location', '$routeParams', 'managePlacesCvs',
+    function ($scope, $location, $routeParams, managePlacesCvs) {
 
-        $scope.place = new PlaceForm(managePlacesCvs);
+        $scope.place = new PlaceForm(managePlacesCvs, $location);
         $scope.usedTags = [];
 
         managePlacesCvs.getUserPlaceInfo($scope, $routeParams.placeId);
@@ -53,10 +53,10 @@ managePlacesApp.controller('editPlaceCtrl', ['$scope', '$routeParams', 'managePl
     }
 ]);
 
-managePlacesApp.controller('addPlaceCtrl', ['$scope', 'managePlacesCvs',
-    function ($scope, managePlacesCvs) {
+managePlacesApp.controller('addPlaceCtrl', ['$scope', '$location', 'managePlacesCvs',
+    function ($scope, $location, managePlacesCvs) {
 
-        $scope.place = new PlaceForm(managePlacesCvs);
+        $scope.place = new PlaceForm(managePlacesCvs, $location);
 
         $scope.updateUsedTags = function(data) {
             $scope.usedTags = data;
@@ -95,9 +95,25 @@ managePlacesApp.filter('tableFilter',
         }
     });
 
-function PlaceForm(managePlacesCvs)
+function PlaceForm(managePlacesCvs, $location)
 {
-    this.info = {};
+    this.info = {
+        'images': []
+    };
+
+    this.isChanged = {
+        'name': false,
+        'address': false,
+        'description': false,
+        'working_hours': false,
+        'cost': false,
+        'e_mail': false,
+        'website': false,
+        'vk_link': false,
+        'phone': false,
+        'id_tag': false,
+        'main_pic_url': false
+    };
 
     this.initInputStyle = {
         'name': 'form-group',
@@ -124,7 +140,8 @@ function PlaceForm(managePlacesCvs)
         'vk_link': 'Максимальная длина 100 символов',
         'phone': 'Максимальная длина 100 символов',
         'id_tag': 'Длина одного тега от 3 до 100 символов. Разделитель - запятая',
-        'main_pic_url': 'Максимальная длина 100 символов'
+        'main_pic_url': 'Максимальная длина 100 символов',
+        'images': 'Максимальная длина 100 символов'
     };
 
     this.inputStyle = angular.copy(this.initInputStyle);
@@ -140,22 +157,36 @@ function PlaceForm(managePlacesCvs)
 
     this.save = function (url) {
         console.log('save data');
-        managePlacesCvs.sendPlaceInfo(url, this);
+        managePlacesCvs.sendPlaceInfo(url, this, $location);
     };
 
     this.delete = function(url) {
         console.log('delete data');
-        managePlacesCvs.deleteUserPlace(url, this.place.info.id);
+        managePlacesCvs.deleteUserPlace(url, this.info.id);
+        $location.path('/');
     };
 
     this.showErrors = function(errors) {
         for (var field in errors) {
-            this.inputStyle[field] = this.initInputStyle[field] + ' has error';
+            this.inputStyle[field] = this.initInputStyle[field] + ' has-error';
             this.helpMsg[field] = errors[field].join(' ');
+            this.isChanged[field] = true;
         }
     };
 
-    this.hideErrors = function() {
+    this.hideErrors = function(elemId) {
+        if (this.isChanged[elemId] == true) {
+            this.inputStyle[elemId] = this.initInputStyle[elemId];
+            this.helpMsg[elemId] = this.initHelpMsg[elemId];
+            this.isChanged[elemId] = false;
+        }
+    };
 
-    }
+    this.addImage = function () {
+        this.info.images.push('');
+    };
+    
+    this.deleteImage = function (index) {
+        this.info.images.splice(index, 1);
+    };
 }
