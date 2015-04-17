@@ -139,7 +139,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                 });
             });
 
-            searchStartPoint.events.add('resultselect', function (e) {
+            /*searchStartPoint.events.add('resultselect', function (e) {
                 var results = searchStartPoint.getResultsArray(),
                     selected = e.get('index'),
                     point = results[selected].geometry.getCoordinates();
@@ -167,7 +167,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                     if (!event.get('skip') && searchFinishPoint.getResultsCount()) {
                         searchFinishPoint.showResult(0);
                     }
-                });
+                });*/
 
         };
     }
