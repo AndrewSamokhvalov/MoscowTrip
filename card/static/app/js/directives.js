@@ -98,8 +98,18 @@ roadtrippersApp
 
             link: function ($scope, element) {
                 element.bind('click', function () {
-                    $scope.currentPlace.init(parseInt($scope.place.fields.id))
-                    $scope.currentPlace.load(parseInt($scope.place.fields.id))
+                    if ($scope.currentPlace != $scope.place) {
+
+                        $scope.currentPlace.init(parseInt($scope.place.fields.id));
+                        $scope.currentPlace.load(parseInt($scope.place.fields.id));
+
+                        $scope.currentPlace.open();
+
+                        return;
+                    }
+
+                    //$scope.currentPlace.init(parseInt($scope.place.fields.id));
+                    //$scope.currentPlace.load(parseInt($scope.place.fields.id));
                     $('#detailPlaceInfo').modal('show');
                 });
 

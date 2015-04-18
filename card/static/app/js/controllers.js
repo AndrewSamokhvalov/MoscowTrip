@@ -433,6 +433,11 @@ function Place($scope, CardSvc) {
 
     this.load = function (id) {
         CardSvc.getPlaceInfo($scope, id)
+    };
+
+    this.open = function () {
+        $scope.map.balloon.close();
+        $scope.rom.getRom().objects.balloon.open(this.fields.id);
     }
 
     this.isEmptyVK = function () {
