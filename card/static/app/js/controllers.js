@@ -8,11 +8,16 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
         $scope.init = function (map) {
 
+            //начало обработки searchControl
+            //<- конец обработки searchControl
+
+
             // Создадим пользовательский макет редактора маршрута
+            // начало MyRouterEditor ->
             var MyRouteEditorLayout = ymaps.templateLayoutFactory.createClass("<div>" +
-                        "<div id='routeEditorButton' class='btn btn-default btn-routeControll {% if state.selected %}my-button-selected{% endif %}'>" +
-                        "<img src='/static/app/images/routeIcon.svg' />" +
-                        "</div>", {
+                    "<div id='routeEditorButton' class='btn btn-default btn-routeControll {% if state.selected %}my-button-selected{% endif %}'>" +
+                    "<img src='/static/app/images/routeIcon.svg' />" +
+                    "</div>", {
 
                         // Переопределяем методы макета, чтобы выполнять дополнительные действия
                         // при построении и очистке макета.
@@ -106,14 +111,14 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                 },
                 options: {
                     layout: MyRouteEditorLayout,
-                    position: { left: 42, top: 95 }
+                    position: {left: 42, top: 95}
                 }
             });
+// <- конец MyRouterEditor
 
             $scope.filters = new MapObjectFilter($scope, CardSvc);
             $scope.rom = new ROM($scope, $compile, CardSvc);
             $scope.currentPlace = new Place($scope, CardSvc);
-
 
             CardSvc.getRadius($scope);
             $scope.$watch('radius', function (newVal, oldVal) {
@@ -122,21 +127,25 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
             $scope.map = map;
 
-            var zoomControl = new ymaps.control.ZoomControl({options: { position: { left: 5, top: 140 }}});
-            var geolocationControl = new ymaps.control.GeolocationControl({options: { position: { left: 5, top: 105 }}});
+            var zoomControl = new ymaps.control.ZoomControl({options: {position: {left: 5, top: 140}}});
+            var geolocationControl = new ymaps.control.GeolocationControl({options: {position: {left: 5, top: 105}}});
 
-            var searchControl = new ymaps.control.SearchControl({options: { position: { right: 2, top: 10 }, noPlacemark: true, zIndex: 10}});
+            var searchControl = new ymaps.control.SearchControl({
+                options: {
+                    position: {right: 2, top: 10},
+                    placeholderContent: 'Адрес начальной точки',
+                    noPlacemark: true,
+                    zIndex: 10
+                }
+            });
 
             $scope.searchControl = searchControl;
 
             $scope.route = new Route($scope, CardSvc);
-
             map.controls.add(zoomControl);
             map.controls.add(geolocationControl);
             map.controls.add(searchControl);
             map.controls.add(MyRouteEditor);
-//            map.controls.add(searchStartPoint);
-//            map.controls.add(searchFinishPoint);
 
             map.events.add('balloonopen', function (e) {
                 var balloon = e.get('balloon');
@@ -147,36 +156,57 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
                 });
             });
 
-            /*searchStartPoint.events.add('resultselect', function (e) {
-             var results = searchStartPoint.getResultsArray(),
-             selected = e.get('index'),
-             point = results[selected].geometry.getCoordinates();
 
-             calculator.setStartPoint(point);
-             })
-             .add('load', function (event) {
-             // По полю skip определяем, что это не дозагрузка данных.
-             // По getRusultsCount определяем, что есть хотя бы 1 результат.
-             if (!event.get('skip') && searchStartPoint.getResultsCount()) {
-             searchStartPoint.showResult(0);
-             }
-             });
+            var pointSelection = new pointSelection();
+            // Выбранный результат помещаем в коллекцию.
+            searchControl.events.add('resultselect', function (e) {
+                var results = searchControl.getResultsArray(),
+                    selected = e.get('index'),
+                    point = results[selected].geometry.getCoordinates();
+                pointSelection.setPoint(point);
 
-             searchFinishPoint.events.add('resultselect', function (e) {
-             var results = searchFinishPoint.getResultsArray(),
-             selected = e.get('index'),
-             point = results[selected].geometry.getCoordinates();
+            })
+                .add('load', function (event) {
+                    // По полю skip определяем, что это не дозагрузка данных.
+                    // По getRusultsCount определяем, что есть хотя бы 1 результат.
+                    if (!event.get('skip') && searchControl.getResultsCount()) {
+                        searchControl.showResult(0);
+                    }
+                });
 
-             calculator.setFinishPoint(point);
-             })
-             .add('load', function (event) {
-             // По полю skip определяем, что это не дозагрузка данных.
-             // По getRusultsCount определяем, что есть хотя бы 1 результат.
-             if (!event.get('skip') && searchFinishPoint.getResultsCount()) {
-             searchFinishPoint.showResult(0);
-             }
-             });*/
+            function pointSelection() {
 
+                this.STATES = {
+                    INACTIVE: {value: 0, name: "Inactive", code: "N"},
+                    WAIT_START: {value: 1, name: "Wait_Start", code: "S"},
+                    WAIT_FINISH: {value: 2, name: "Wait_Finish", code: "F"}
+
+                };
+                this.STATE = this.STATES.WAIT_START;
+
+                this.setPoint = function (coords) {
+                    switch (this.STATE.value) {
+                        case this.STATES.WAIT_START.value:
+                            $scope.route.start = coords;
+                            console.log('Start:' + $scope.route.start);
+
+                            this.STATE = this.STATES.WAIT_FINISH;
+                            searchControl.options.set('placeholderContent', 'Введите адрес конечной точки');
+                            break;
+
+                        case this.STATES.WAIT_FINISH.value:
+                            $scope.route.finish = coords;
+                            console.log('Finish:' + $scope.route.finish);
+
+                            $scope.route.addRoute();
+                            this.STATE = this.STATES.INACTIVE;
+                            break;
+                    }
+                }
+            }
+
+
+//->конец delivery
         };
     }
 ])
@@ -231,11 +261,11 @@ function ROM($scope, $compile, CardSvc) {
     this.createROM = function () {
         var MyBalloonLayout = ymaps.templateLayoutFactory.createClass
         (
-                '<div class="modal-dialog">' +
-                '<div class="modal-content popover">' +
-                '<rt-balloon></rt-balloon>' +
-                '</div>' +
-                '</div>'
+            '<div class="modal-dialog">' +
+            '<div class="modal-content popover">' +
+            '<rt-balloon></rt-balloon>' +
+            '</div>' +
+            '</div>'
 
             ,
             {
@@ -312,8 +342,8 @@ function ROM($scope, $compile, CardSvc) {
                     return new ymaps.shape.Rectangle(new ymaps.geometry.pixel.Rectangle([
                         [position.left, position.top],
                         [
-                                position.left + this._$element[0].offsetWidth,
-                                position.top + this._$element[0].offsetHeight + this._$element.find('.arrow')[0].offsetHeight
+                            position.left + this._$element[0].offsetWidth,
+                            position.top + this._$element[0].offsetHeight + this._$element.find('.arrow')[0].offsetHeight
                         ]
                     ]));
                 },
@@ -540,6 +570,16 @@ function Route($scope, CardSvc) {
                 results: 1
                 // avoidTrafficJams: true,
             }
+
+        },
+        {
+            wayPointStartIconLayout: "default#image",
+            wayPointStartIconImageHref: "/static/app/images/start.png",
+            wayPointStartIconImageSize: [38, 52],
+            wayPointFinishIconLayout: "default#image",
+            wayPointFinishIconImageHref: "/static/app/images/finish.png",
+            wayPointFinishIconImageSize: [38, 52]
+
         });
 
         multiRoute.model.events.once("requestchange", function (event) {
@@ -623,8 +663,9 @@ function colorPalette() {
     function _getColor(indx) {
         return _palette[(_shift + indx) % _palette.length];
     }
-
+    
     var obj = { "background-color": _getColor(1)};
+
 
     return obj;
 }
