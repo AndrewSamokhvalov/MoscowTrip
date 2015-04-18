@@ -12,6 +12,7 @@ import random
 
 
 def card(request):
+    request.session.clear()
     return render_to_response('main.html')
 
 

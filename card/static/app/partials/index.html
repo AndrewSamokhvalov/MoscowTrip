@@ -67,9 +67,9 @@
                         {{ currentPlace.fields.rating }}
                     </div>
                 </div>
-                <a href="{{ currentPlace.fields.vk_link }}" ng-if="currentPlace.isEmpty(currentPlace.fields.vk_link)" target="_blank"><span class="icon-vk"></span></a>
-                <a href="{{ currentPlace.fields.website }}" target="_blank"><span class="icon-globe"></span></a>
-                <a href="{{ currentPlace.fields.e_mail }}" target="_blank"><span class="icon-email"></span></a>
+                <a href="{{ currentPlace.fields.vk_link }}" ng-if="currentPlace.isEmptyVK()" target="_blank"><span class="icon-vk"></span></a>
+                <a href="{{ currentPlace.fields.website }}" ng-if="currentPlace.isEmptyWebsite()" target="_blank"><span class="icon-globe"></span></a>
+                <a href="{{ currentPlace.fields.e_mail }}"  ng-if="currentPlace.isEmptyEmail()" target="_blank"><span class="icon-email"></span></a>
 
                 <h2 class="modal-title" id="gridSystemModalLabel">{{ currentPlace.fields.name }}  </h2>
             </div>

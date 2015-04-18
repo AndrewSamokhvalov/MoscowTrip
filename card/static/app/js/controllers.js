@@ -35,6 +35,13 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
                             // Начинаем слушать клики на кнопках макета.
                             $('#routeEditorButton').bind('click', this.initEventsCallback);
+
+                            switch (this.STATE.value) {
+                                case this.STATES.WAIT_START.value:
+                                case this.STATES.WAIT_FINISH.value:
+                                    $('#routeEditorButton').addClass('btn-routeControll-action');
+                                    break;
+                            }
                         },
 
 //                При клике контрол:
@@ -84,6 +91,7 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
 
                                     // Очищение
                                     map.events.remove('click', this.addPointCallback);
+                                    $('#routeEditorButton').removeClass('btn-routeControll-action');
                                     this.STATE = this.STATES.INACTIVE;
                                     break;
                             }
@@ -140,34 +148,34 @@ roadtrippersApp.controller('CardCtrl', ['$scope', '$timeout', '$compile', 'CardS
             });
 
             /*searchStartPoint.events.add('resultselect', function (e) {
-                var results = searchStartPoint.getResultsArray(),
-                    selected = e.get('index'),
-                    point = results[selected].geometry.getCoordinates();
+             var results = searchStartPoint.getResultsArray(),
+             selected = e.get('index'),
+             point = results[selected].geometry.getCoordinates();
 
-                calculator.setStartPoint(point);
-            })
-                .add('load', function (event) {
-                    // По полю skip определяем, что это не дозагрузка данных.
-                    // По getRusultsCount определяем, что есть хотя бы 1 результат.
-                    if (!event.get('skip') && searchStartPoint.getResultsCount()) {
-                        searchStartPoint.showResult(0);
-                    }
-                });
+             calculator.setStartPoint(point);
+             })
+             .add('load', function (event) {
+             // По полю skip определяем, что это не дозагрузка данных.
+             // По getRusultsCount определяем, что есть хотя бы 1 результат.
+             if (!event.get('skip') && searchStartPoint.getResultsCount()) {
+             searchStartPoint.showResult(0);
+             }
+             });
 
-            searchFinishPoint.events.add('resultselect', function (e) {
-                var results = searchFinishPoint.getResultsArray(),
-                    selected = e.get('index'),
-                    point = results[selected].geometry.getCoordinates();
+             searchFinishPoint.events.add('resultselect', function (e) {
+             var results = searchFinishPoint.getResultsArray(),
+             selected = e.get('index'),
+             point = results[selected].geometry.getCoordinates();
 
-                calculator.setFinishPoint(point);
-            })
-                .add('load', function (event) {
-                    // По полю skip определяем, что это не дозагрузка данных.
-                    // По getRusultsCount определяем, что есть хотя бы 1 результат.
-                    if (!event.get('skip') && searchFinishPoint.getResultsCount()) {
-                        searchFinishPoint.showResult(0);
-                    }
-                });*/
+             calculator.setFinishPoint(point);
+             })
+             .add('load', function (event) {
+             // По полю skip определяем, что это не дозагрузка данных.
+             // По getRusultsCount определяем, что есть хотя бы 1 результат.
+             if (!event.get('skip') && searchFinishPoint.getResultsCount()) {
+             searchFinishPoint.showResult(0);
+             }
+             });*/
 
         };
     }
@@ -418,7 +426,7 @@ function Place($scope, CardSvc) {
         $scope.route.addPoint(this);
     };
 
-    this.addLike = function() {
+    this.addLike = function () {
         this.fields.likes += 1;
         CardSvc.addPlaceLike(this.fields.id);
     };
@@ -427,14 +435,41 @@ function Place($scope, CardSvc) {
         CardSvc.getPlaceInfo($scope, id)
     }
 
-    this.isEmpty = function(value)
-    {
+    this.isEmptyVK = function () {
+        var value = this.fields.vk_link
+        console.log(value)
         console.log(typeof value);
-        if( typeof value == "undefined")
-        {
+        if (typeof value == "undefined") {
             return false;
-        }else
-        {
+        } else if (value == "") {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    this.isEmptyEmail = function () {
+        var value = this.fields.e_mail
+        console.log(value)
+        console.log(typeof value);
+        if (typeof value == "undefined") {
+            return false;
+        } else if (value == "") {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    this.isEmptyWebsite = function () {
+        var value = this.fields.website
+        console.log(value)
+        console.log(typeof value);
+        if (typeof value == "undefined") {
+            return false;
+        } else if (value == "") {
+            return false;
+        } else {
             return true;
         }
     }
@@ -552,16 +587,15 @@ function Slider($scope) {
     this.apply = []
 }
 
-function colorPalette()
-{
-    var _palette = ["#CE5256","#3FBF7A","#AD8255","#2CD3BA","#E5A43B","#D44465","#726868"];
-    var _shift = Math.floor(Math.random()*( 31 - 17 ) + 17);
-    function _getColor(indx)
-    {
+function colorPalette() {
+    var _palette = ["#CE5256", "#3FBF7A", "#AD8255", "#2CD3BA", "#E5A43B", "#D44465", "#726868"];
+    var _shift = Math.floor(Math.random() * ( 31 - 17 ) + 17);
+
+    function _getColor(indx) {
         return _palette[(_shift + indx) % _palette.length];
     }
 
-    var obj = { "background-color" : _getColor(1)};
+    var obj = { "background-color": _getColor(1)};
 
     return obj;
 }
