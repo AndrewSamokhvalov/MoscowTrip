@@ -108,8 +108,8 @@ roadtrippersApp
                         return;
                     }
 
-                    //$scope.currentPlace.init(parseInt($scope.place.fields.id));
-                    //$scope.currentPlace.load(parseInt($scope.place.fields.id));
+                    $scope.currentPlace.init(parseInt($scope.place.fields.id));
+                    $scope.currentPlace.load(parseInt($scope.place.fields.id));
                     $('#detailPlaceInfo').modal('show');
                 });
 
