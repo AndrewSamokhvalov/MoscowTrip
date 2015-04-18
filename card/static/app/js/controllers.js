@@ -468,70 +468,13 @@ function Place($scope, CardSvc) {
     this.open = function () {
         $scope.map.balloon.close();
         $scope.rom.getRom().objects.balloon.open(this.fields.id);
-    }
+    };
 
-    this.isEmptyVK = function () {
-        var value = this.fields.vk_link
-        if (typeof value == "undefined") {
-            return false;
-        } else if (value == "") {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    this.isEmptyEmail = function () {
-        var value = this.fields.e_mail
-        if (typeof value == "undefined") {
-            return false;
-        } else if (value == "") {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    this.isEmptyWebsite = function () {
-        var value = this.fields.website
-        if (typeof value == "undefined") {
-            return false;
-        } else if (value == "") {
-            return false;
-        } else {
-            return true;
-        }
-    }
-    this.isEmptyPhone = function () {
-        var value = this.fields.phone
-        if (typeof value == "undefined") {
-            return false;
-        } else if (value == "") {
-            return false;
-        } else {
-            return true;
-        }
-    }
-    this.isEmptyWorkingTime = function () {
-        var value = this.fields.working_hours
-        if (typeof value == "undefined") {
-            return false;
-        } else if (value == "") {
-            return false;
-        } else {
-            return true;
-        }
-    }
-    this.isEmptyTags = function () {
-        var value = this.fields.tags
-        if (typeof value == "undefined") {
-            return false;
-        } else if (value == "") {
-            return false;
-        } else {
-            return true;
-        }
-    }
+    this.isEmpty = function (str)
+    {
+        var value = this.fields[str];
+        return !((typeof value == "undefined") || (value == ""));
+    };
 }
 
 function Route($scope, CardSvc) {

@@ -68,9 +68,9 @@
                     </div>
                 </div>
                 <div class="media-span-header">
-                    <a href="{{ currentPlace.fields.vk_link }}" ng-if="currentPlace.isEmptyVK()" target="_blank"><span class="icon-vk"></span></a>
-                    <a href="{{ currentPlace.fields.website }}" ng-if="currentPlace.isEmptyWebsite()" target="_blank"><span class="icon-globe"></span></a>
-                    <a href="{{ currentPlace.fields.e_mail }}"  ng-if="currentPlace.isEmptyEmail()" target="_blank"><span class="icon-email"></span></a>
+                    <a href="{{ currentPlace.fields.vk_link }}" ng-if="currentPlace.isEmpty('vk_link')" target="_blank"><span class="icon-vk"></span></a>
+                    <a href="{{ currentPlace.fields.website }}" ng-if="currentPlace.isEmpty('website')" target="_blank"><span class="icon-globe"></span></a>
+                    <a href="{{ currentPlace.fields.e_mail }}"  ng-if="currentPlace.isEmpty('e_mail')" target="_blank"><span class="icon-email"></span></a>
                 </div>
 
                 <h2 class="modal-title" id="gridSystemModalLabel">{{ currentPlace.fields.name }}  </h2>
@@ -79,7 +79,7 @@
 
             <div class="modal-body">
                 <div class="container-fluid">
-                    <div class="row row-labels" ng-if="currentPlace.isEmptyTags()">
+                    <div class="row row-labels" ng-if="currentPlace.isEmpty('tags')">
                         <div class="place-labels" ng-repeat="tag in currentPlace.fields.tags">
                             <span>{{ tag }}</span>
                         </div>
@@ -113,7 +113,7 @@
 
                         <div class="col-md-5">
                             </br>
-                            <div class="panel panel-default" ng-if="currentPlace.isEmptyPhone()">
+                            <div class="panel panel-default" ng-if="currentPlace.isEmpty('phone')">
                                 <div class="panel-body">
                                     <span class="icon-phone"></span>
                                     Телефон
@@ -129,7 +129,7 @@
                                 <div class="panel-footer">{{ currentPlace.fields.address }}  </div>
                             </div>
                             </br>
-                            <div class="panel panel-default" ng-if="currentPlace.isEmptyWorkingTime()">
+                            <div class="panel panel-default" ng-if="currentPlace.isEmpty('working_hours')">
                                 <div class="panel-body">
                                     <span class="icon-clock"></span>
                                     Рабочие часы
