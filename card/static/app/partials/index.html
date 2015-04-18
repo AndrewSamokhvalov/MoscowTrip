@@ -67,9 +67,11 @@
                         {{ currentPlace.fields.rating }}
                     </div>
                 </div>
-                <a href="{{ currentPlace.fields.vk_link }}" ng-if="currentPlace.isEmptyVK()" target="_blank"><span class="icon-vk"></span></a>
-                <a href="{{ currentPlace.fields.website }}" ng-if="currentPlace.isEmptyWebsite()" target="_blank"><span class="icon-globe"></span></a>
-                <a href="{{ currentPlace.fields.e_mail }}"  ng-if="currentPlace.isEmptyEmail()" target="_blank"><span class="icon-email"></span></a>
+                <div class="media-span-header">
+                    <a href="{{ currentPlace.fields.vk_link }}" ng-if="currentPlace.isEmptyVK()" target="_blank"><span class="icon-vk"></span></a>
+                    <a href="{{ currentPlace.fields.website }}" ng-if="currentPlace.isEmptyWebsite()" target="_blank"><span class="icon-globe"></span></a>
+                    <a href="{{ currentPlace.fields.e_mail }}"  ng-if="currentPlace.isEmptyEmail()" target="_blank"><span class="icon-email"></span></a>
+                </div>
 
                 <h2 class="modal-title" id="gridSystemModalLabel">{{ currentPlace.fields.name }}  </h2>
             </div>
@@ -77,6 +79,11 @@
 
             <div class="modal-body">
                 <div class="container-fluid">
+                    <div class="row row-labels">
+                        <div class="place-labels" ng-repeat="tag in currentPlace.fields.tags">
+                            <span>{{ tag }}</span>
+                        </div>
+                    </div>
                     <div class="row">
                         <div style="height: 300px">
                             <carousel interval="myInterval">
@@ -99,12 +106,6 @@
                             </span>
 
                             <span class="icon-cab" ng-click="currentPlace.addToTrip()"></span>
-                            <div class="well">
-                                Теги:
-                                <div class="place-labels" ng-repeat="tag in currentPlace.fields.tags">
-                                    <span>{{ tag }}</span>
-                                </div>
-                            </div>
 
                             <p class="description-text">{{ currentPlace.fields.description }}  </p>
 
@@ -112,7 +113,7 @@
 
                         <div class="col-md-5">
                             </br>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" ng-if="currentPlace.isEmptyPhone()">
                                 <div class="panel-body">
                                     <span class="icon-phone"></span>
                                     Телефон
@@ -128,7 +129,7 @@
                                 <div class="panel-footer">{{ currentPlace.fields.address }}  </div>
                             </div>
                             </br>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" ng-if="currentPlace.isEmptyWorkingTime()">
                                 <div class="panel-body">
                                     <span class="icon-clock"></span>
                                     Рабочие часы

@@ -442,8 +442,6 @@ function Place($scope, CardSvc) {
 
     this.isEmptyVK = function () {
         var value = this.fields.vk_link
-        console.log(value)
-        console.log(typeof value);
         if (typeof value == "undefined") {
             return false;
         } else if (value == "") {
@@ -455,8 +453,6 @@ function Place($scope, CardSvc) {
 
     this.isEmptyEmail = function () {
         var value = this.fields.e_mail
-        console.log(value)
-        console.log(typeof value);
         if (typeof value == "undefined") {
             return false;
         } else if (value == "") {
@@ -468,8 +464,26 @@ function Place($scope, CardSvc) {
 
     this.isEmptyWebsite = function () {
         var value = this.fields.website
-        console.log(value)
-        console.log(typeof value);
+        if (typeof value == "undefined") {
+            return false;
+        } else if (value == "") {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    this.isEmptyPhone = function () {
+        var value = this.fields.phone
+        if (typeof value == "undefined") {
+            return false;
+        } else if (value == "") {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    this.isEmptyWorkingTime = function () {
+        var value = this.fields.working_hours
         if (typeof value == "undefined") {
             return false;
         } else if (value == "") {

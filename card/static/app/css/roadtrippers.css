@@ -485,30 +485,35 @@ li.show-btn-right
 }
 #detailPlaceInfo .icon-vk
 {
-    position: absolute;
-    margin-left: 650px;
-    top:19px;
+    position: relative;
+    left: 5px;
     font-size: 2em;
     color:#00a8f3;
     cursor: pointer;
 }
 #detailPlaceInfo .icon-email
 {
-    position: absolute;
-    margin-left:700px;
-    top:19px;
+    position: relative;
+    left:15px;
     font-size: 2em;
     color:#00a8f3;
     cursor: pointer;
 }
 #detailPlaceInfo .icon-globe
 {
-    position: absolute;
-    margin-left:750px;
-    top:19px;
+    position: relative;
+    left: 15px;
     font-size: 2em;
     color:#00a8f3;
     cursor: pointer;
+}
+#detailPlaceInfo .media-span-header
+{
+    position: absolute;
+    width:100px;
+    height: 2em;
+    left: 650px;
+    top:19px;
 }
 #detailPlaceInfo .icon-phone,
 #detailPlaceInfo .icon-address-book,
@@ -594,5 +599,11 @@ li.show-btn-right
     left: 2px;
     cursor: pointer;
     color: #fff;
-
 }
+#detailPlaceInfo .row-labels
+{
+    height: 30px;
+    position: relative;
+    top:-5px;
+}
+

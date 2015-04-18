@@ -360,7 +360,7 @@ def get_place_info(request):
                 'e_mail',
                 'vk_link',
                 'website',
-                'phone',
+                'C',
                 'lat',
                 'lon',
                 'id_tag',
