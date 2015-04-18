@@ -492,6 +492,16 @@ function Place($scope, CardSvc) {
             return true;
         }
     }
+    this.isEmptyTags = function () {
+        var value = this.fields.tags
+        if (typeof value == "undefined") {
+            return false;
+        } else if (value == "") {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
 
 function Route($scope, CardSvc) {

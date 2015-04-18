@@ -79,7 +79,7 @@
 
             <div class="modal-body">
                 <div class="container-fluid">
-                    <div class="row row-labels">
+                    <div class="row row-labels" ng-if="currentPlace.isEmptyTags()">
                         <div class="place-labels" ng-repeat="tag in currentPlace.fields.tags">
                             <span>{{ tag }}</span>
                         </div>
