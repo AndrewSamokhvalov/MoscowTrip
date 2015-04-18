@@ -426,6 +426,18 @@ function Place($scope, CardSvc) {
     this.load = function (id) {
         CardSvc.getPlaceInfo($scope, id)
     }
+
+    this.isEmpty = function(value)
+    {
+        console.log(typeof value);
+        if( typeof value == "undefined")
+        {
+            return false;
+        }else
+        {
+            return true;
+        }
+    }
 }
 
 function Route($scope, CardSvc) {
